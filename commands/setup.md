@@ -19,8 +19,10 @@ If `$ARGUMENTS` specifies a use case, use it. Otherwise ask:
 
 "What pipeline are you managing?"
 1. **Sales** — B2B/B2C sales pipeline
-2. **Hiring** — Recruiting candidates
-3. **Fundraising** — Investor outreach
+2. **Fundraising** — Investor outreach
+3. **Hiring** — Recruiting candidates
+4. **BD / Partnerships** — Strategic partnerships
+5. **Job Search** — Finding your next role
 
 ## Step 3: Name the Pipeline
 
@@ -118,23 +120,17 @@ CREATE INDEX idx_activities_scheduled ON vibe_closer_{{PIPELINE_NAME}}_activitie
 {"contacts": [{"name": "string", "email": "string"}], "account": {"company": "string", "domain": "string"}, "initial_stage": "string", "source": "string"}
 ```
 
-## Step 7: Customize Profile & Messaging
+## Step 7: Build Pipeline Content
 
-Ask the user:
-1. "Tell me about your ideal customers / candidates / investors" → Update `profile/icps.md`
-2. "What tone should outreach have?" → Update `messaging-guidelines/tone.md`
-3. "Do you have email templates you like?" → Update `messaging-guidelines/email-templates.md`
+Execute `actions/update-content.md`. This will:
+1. Ask foundational questions about your business, goals, and targets
+2. Research available sources (website, emails, meetings, network) using configured MCPs
+3. Generate workspace content in 3 rounds (profile → strategy → messaging), pausing after each for your feedback
+4. Present a final summary of everything generated
 
-## Step 8: Optional Deep Research
+Wait for update-content to complete before proceeding.
 
-Ask: "Want me to do any research to populate your workspace? Examples:"
-- "Check my sent emails for the past 3 weeks to learn my style"
-- "Browse [website] to understand the product offering"
-- "Read files in [directory] for context"
-
-If yes, execute the research and update relevant workspace files.
-
-## Step 9: Confirm
+## Step 8: Confirm
 
 Print a summary:
 ```
