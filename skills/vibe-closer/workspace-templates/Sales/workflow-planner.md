@@ -9,6 +9,24 @@
 5. **Always draft replies and follow-ups on the last message** — never let a thread go cold without a planned next touch.
 6. **Never follow up more than once per channel** if the last message is from you. After 1 email follow-up + 1 LinkedIn message with no response, move to "Paused" and revisit in 30 days with a new angle.
 
+---
+
+## Execution Sequence
+
+For each lead, follow these steps:
+
+1. Fetch warm paths via {{FETCH_RELATIONSHIPS}}
+2. Send initial outreach directly to the target — if warm path exists, mention them as social proof in the email
+3. If no reply after 3 days, send follow-up (in recipient's timezone)
+4. If no reply after 1 day, move to the next path and repeat from step 2
+5. Always draft a reply and follow-up on the last message
+6. If the last email is from me, never follow-up more than once
+7. If the lead replies and is not interested, mark as Closed Lost in {{CRM_TRACKER}}
+8. If no reply after completing all paths, set follow-up date to 6 months from now
+9. If still no reply after the 6-month follow-up, set follow-up date to 1 year from now
+
+---
+
 ## Pipeline Stages
 
 | Stage | Description | Entry Criteria |

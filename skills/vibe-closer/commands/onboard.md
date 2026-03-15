@@ -1,6 +1,6 @@
 ---
 description: "Onboard into a new vibe-closer pipeline workspace, or update an existing one"
-argument-hint: "[use-case: sales|hiring|fundraising|bd|jobsearch] or [update]"
+argument-hint: "[use-case: sales|hiring|fundraising|bd|jobsearch|vcdealflow] or [update]"
 ---
 
 # Onboard
@@ -74,6 +74,7 @@ If `$ARGUMENTS` specifies a use case, use it. Otherwise ask:
 3. **Hiring** — Recruiting candidates
 4. **BD / Partnerships** — Strategic partnerships
 5. **Job Search** — Finding your next role
+6. **VC Deal Flow** — Investor sourcing startups
 
 #### Step 3: Name the Pipeline
 

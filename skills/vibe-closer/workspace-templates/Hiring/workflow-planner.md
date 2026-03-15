@@ -10,6 +10,24 @@
 6. If the last message is from us, never follow-up more than once per channel
 7. After a positive reply, move fast — schedule the call within 48 hours
 
+---
+
+## Execution Sequence
+
+For each lead, follow these steps:
+
+1. Fetch warm paths via {{FETCH_RELATIONSHIPS}}
+2. Send initial outreach directly to the candidate — if warm path exists, mention them as social proof in the email
+3. If no reply after 3 days, send follow-up (in recipient's timezone)
+4. If no reply after 1 day, move to the next path and repeat from step 2
+5. Always draft a reply and follow-up on the last message
+6. If the last email is from me, never follow-up more than once
+7. If the lead replies and is not interested, mark as Declined in {{CRM_TRACKER}}
+8. If no reply after completing all paths, set follow-up date to 6 months from now
+9. If still no reply after the 6-month follow-up, set follow-up date to 1 year from now
+
+---
+
 ## Pipeline Stages
 
 1. **Sourced** — Candidate identified, not yet contacted
