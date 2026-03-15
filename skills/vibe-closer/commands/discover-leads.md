@@ -22,4 +22,4 @@ For each potential lead, check if already tracked in `{{CRM_TRACKER}}` using the
 Present discovered leads to user for review.
 
 ## Phase 5: Add Approved Leads
-For approved leads: read `actions/add-leads.md` → add to CRM.
+For approved leads: read `actions/add-update-leads.md` → add to CRM.

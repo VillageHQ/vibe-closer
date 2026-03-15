@@ -23,7 +23,8 @@ Tell the user: "No leads are due for follow-up today." Query `{{CRM_TRACKER}}` f
 ## Phase 3: Gather Context & Draft Activities
 For each lead:
 1. Read `actions/gather-lead-context.md` → fetch full context
-2. Read `actions/generate-lead-activity.md` → determine next step and draft activity
+2. Read `actions/generate-lead-activity.md` → determine next step and draft outreach message
+3. Read `actions/add-update-leads.md` → directly update the lead's follow-up date and pipeline stage based on workflow rules (no activity/approval needed for these CRM updates)
 
 ## Phase 4: Present for Approval
 If any activities were auto-approved during Phase 3 (confidence score >= `{{AUTO_APPROVE_THRESHOLD}}`):
