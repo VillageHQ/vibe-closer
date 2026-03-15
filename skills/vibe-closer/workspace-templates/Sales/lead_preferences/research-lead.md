@@ -26,7 +26,7 @@ How to research a new lead before outreach. Follow these steps in order, using a
 
 ## Custom Research
 
-<!-- This section is personalized during workspace setup. Examples of what users add here: -->
+<!-- This section is personalized during onboarding. Examples of what users add here: -->
 <!-- - "Check the founder's LinkedIn posts for recent takes on industry trends" -->
 <!-- - "Look for recent press coverage or product launches on TechCrunch, Product Hunt" -->
 <!-- - "Scan their engineering blog for tech stack and infrastructure decisions" -->

@@ -5,7 +5,7 @@ Pipeline management skill for Claude Code. Manages sales, recruiting, fundraisin
 ## Quick Start
 
 1. Install as a Claude Code plugin
-2. Run `/setup` to create a workspace
+2. Run `/onboard` to create a workspace
 3. Run `/followup` to process due leads
 4. Run `/discover-leads` to find new prospects
 5. Run `/learn` to improve over time

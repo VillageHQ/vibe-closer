@@ -15,7 +15,7 @@ This is a vibe-closer workspace for managing your job search outreach and pipeli
 - **Lead Research**: `lead_preferences/research-lead.md` — how to research companies before outreach
 
 ## Commands
-- `/setup` — Initial workspace configuration
+- `/onboard` — Initial workspace configuration
 - `/followup` — Process due opportunities and generate activities
 - `/discover-leads` — Find new job opportunities from conversations and emails
 - `/learn` — Analyze performance and improve workspace files

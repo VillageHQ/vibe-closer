@@ -15,7 +15,7 @@ This is a vibe-closer workspace for managing your fundraising outreach and inves
 - **Lead Research**: `lead_preferences/research-lead.md` — how to research investors before outreach
 
 ## Commands
-- `/setup` — Initial workspace configuration
+- `/onboard` — Initial workspace configuration
 - `/followup` — Process warm intros and due leads
 - `/discover-leads` — Find new investor prospects from warm paths and signals
 - `/learn` — Analyze outreach performance and refine investor targeting
