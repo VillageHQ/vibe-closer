@@ -28,18 +28,6 @@ Only execute activities where:
 5. Wait for user confirmation that it was sent
 6. Update `execution_status` to `finished`
 
-### update_followup_date
-1. Update `execution_status` to `running`
-2. Use `{{CRM_TRACKER}}` to update the follow-up date field
-3. Add a note in CRM with the reason
-4. Update `execution_status` to `finished`
-
-### change_pipeline_stage
-1. Update `execution_status` to `running`
-2. Use `{{CRM_TRACKER}}` to update the status field
-3. Add a note in CRM with the reason
-4. Update `execution_status` to `finished`
-
 ### add_lead
 1. Update `execution_status` to `running`
 2. Use `{{CRM_TRACKER}}` to add the new lead

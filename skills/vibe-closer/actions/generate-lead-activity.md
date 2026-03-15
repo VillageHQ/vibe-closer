@@ -19,9 +19,8 @@
 
 6. **If not yet connected** — Run `gather-lead-context.md` → `research-lead` first
 
-7. **Generate activity** — Based on the determined step:
+7. **Generate outreach message** — Based on the determined step:
 
-   ### For outreach messages:
    a. Select appropriate template from `messaging-guidelines/email-templates.md`
    b. Apply tone from `messaging-guidelines/tone.md`
    c. Follow channel-specific guidelines (`email-guidelines.md` or `linkedin-dm-guidelines.md`)
@@ -29,10 +28,7 @@
    e. **Generate fingerprint** — Create a UUID v4 and store it in `body.fingerprint`. For emails, embed the fingerprint as a hidden HTML comment in the email signature (e.g., `<!-- vc:UUID -->`). This allows `poll-new-activity.md` to match replies back to the original outreach by searching for the fingerprint in quoted reply text.
    f. Check for warm paths — if found, mention mutual connection as social proof
 
-   ### For CRM updates:
-   a. Determine new follow-up date based on workflow rules
-   b. Draft note summarizing rationale
-   c. Update pipeline stage if warranted
+   > **Note:** This action only generates outreach messages (`send_email`, `send_linkedin`). Pipeline stage and follow-up date updates are handled directly via `actions/add-update-leads.md` during followup orchestration.
 
 8. **Score activity** — Invoke `actions/score-activity.md` as a sub-agent, passing:
    - The generated activity (type, body, summary, contacts, account)

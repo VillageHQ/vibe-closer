@@ -67,15 +67,6 @@ Does this follow the expected workflow sequence from `workflow-planner.md`? Is t
 | 11–15 | Compliant — follows all rules |
 | 16–20 | Perfectly sequenced — optimal step given full history |
 
-## CRM-Only Activities
-
-For non-outreach activities (`update_followup_date`, `change_pipeline_stage`, `add_lead`):
-- Auto-score **Personalization Quality** at 15
-- Auto-score **Messaging Guideline Adherence** at 15
-- Score the remaining 3 dimensions normally
-
-These activities have fewer subjective dimensions and will typically score higher.
-
 ## Output Format
 
 Return as JSON:
