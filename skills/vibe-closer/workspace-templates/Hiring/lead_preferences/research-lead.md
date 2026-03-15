@@ -28,7 +28,7 @@ How to research a candidate before outreach. Follow these steps in order, using 
 
 ## Custom Research
 
-<!-- This section is personalized during workspace setup. Examples of what users add here: -->
+<!-- This section is personalized during onboarding. Examples of what users add here: -->
 <!-- - "Check their GitHub contributions to assess technical depth and collaboration style" -->
 <!-- - "Look for conference talks or meetup presentations in our domain" -->
 <!-- - "Review their blog posts or Twitter for culture fit signals" -->

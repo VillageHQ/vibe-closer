@@ -28,7 +28,7 @@ How to research a target company or hiring manager before outreach. Follow these
 
 ## Custom Research
 
-<!-- This section is personalized during workspace setup. Examples of what users add here: -->
+<!-- This section is personalized during onboarding. Examples of what users add here: -->
 <!-- - "Check the hiring manager's recent LinkedIn posts to find common ground" -->
 <!-- - "Look for engineering blog posts to understand their technical challenges" -->
 <!-- - "Research the team's recent open-source contributions" -->

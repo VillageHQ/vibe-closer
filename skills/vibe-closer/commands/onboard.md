@@ -1,11 +1,11 @@
 ---
-description: "Set up a new vibe-closer pipeline workspace, or update an existing one"
+description: "Onboard into a new vibe-closer pipeline workspace, or update an existing one"
 argument-hint: "[use-case: sales|hiring|fundraising|bd|jobsearch] or [update]"
 ---
 
-# Setup
+# Onboard
 
-Guide the user through creating or updating a vibe-closer pipeline workspace.
+Walk the user through creating or updating a vibe-closer pipeline workspace.
 
 ## Mode Detection
 
@@ -20,13 +20,13 @@ Trigger update mode if ANY of these are true:
 
 **In update mode**, skip to the [Update Existing Pipeline](#update-existing-pipeline) section below.
 
-### First-time setup mode
+### First-time onboarding mode
 
-If none of the update conditions are met, proceed with the full setup flow below.
+If none of the update conditions are met, proceed with the full onboarding flow below.
 
 ---
 
-## First-Time Setup
+## First-Time Onboarding
 
 ### Step 1: Choose Location
 

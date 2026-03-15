@@ -15,7 +15,7 @@ This is a vibe-closer workspace for managing your recruiting and talent acquisit
 - **Lead Research**: `lead_preferences/research-lead.md` — how to research candidates before outreach
 
 ## Commands
-- `/setup` — Initial workspace configuration
+- `/onboard` — Initial workspace configuration
 - `/followup` — Process candidates who need follow-up
 - `/discover-leads` — Find new candidate prospects from referrals and signals
 - `/learn` — Analyze outreach performance and refine candidate targeting

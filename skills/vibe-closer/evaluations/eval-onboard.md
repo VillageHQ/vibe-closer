@@ -1,6 +1,6 @@
-# Eval: Setup Flow
+# Eval: Onboarding Flow
 
-Test that workspace setup works end-to-end.
+Test that workspace onboarding works end-to-end.
 
 ## Test Cases
 
@@ -26,8 +26,8 @@ Test that workspace setup works end-to-end.
 
 ### TC-6: Missing required MCP
 **Input**: User has no CRM MCP configured
-**Pass if**: Setup warns user and does NOT proceed without required providers
+**Pass if**: Onboarding warns user and does NOT proceed without required providers
 
-### TC-7: Idempotent setup
-**Input**: Run setup twice on same location
+### TC-7: Idempotent onboarding
+**Input**: Run onboarding twice on same location
 **Pass if**: Does NOT overwrite existing customized files, asks user what to do

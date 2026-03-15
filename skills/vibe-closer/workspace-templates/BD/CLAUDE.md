@@ -15,7 +15,7 @@ This is a vibe-closer workspace for managing business development and partnershi
 - **Partner Research**: `partner_preferences/research-lead.md` — how to research partners before outreach
 
 ## Commands
-- `/setup` — Initial workspace configuration
+- `/onboard` — Initial workspace configuration
 - `/followup` — Process due partnerships and generate activities
 - `/discover-leads` — Find new partner opportunities from conversations and emails
 - `/learn` — Analyze partnership performance and improve workspace files

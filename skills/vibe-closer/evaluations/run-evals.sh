@@ -15,7 +15,7 @@ while [[ $# -gt 0 ]]; do
       ;;
     *)
       echo "Usage: $0 [--eval <name>]"
-      echo "Available evals: routing, outreach-quality, setup, learning, context, poll, add-note, update-content"
+      echo "Available evals: routing, outreach-quality, onboard, learning, context, poll, add-note, update-content"
       exit 1
       ;;
   esac

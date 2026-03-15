@@ -1,6 +1,6 @@
 ---
 name: vibe-closer
-description: "Manage a sales, recruiting, fundraising, or partnerships pipeline end-to-end. Use when the user wants to track leads, generate outreach, follow up on prospects, discover new leads, or improve their pipeline workflows. Handles workspace setup, pipeline selection, and configuration updates."
+description: "Manage a sales, recruiting, fundraising, or partnerships pipeline end-to-end. Use when the user wants to track leads, generate outreach, follow up on prospects, discover new leads, or improve their pipeline workflows. Handles workspace onboarding, pipeline selection, and configuration updates."
 ---
 
 # Vibe-Closer
@@ -22,20 +22,20 @@ Look for `config.md` in the current working directory. A valid pipeline director
 
 **If the current directory is inside a `vibe-closer/` folder but has no `config.md`:**
 - Tell the user: "This directory is inside a vibe-closer workspace but doesn't have a configured pipeline. Would you like to:"
-  1. "Run `/setup` to create a new pipeline here"
+  1. "Run `/onboard` to create a new pipeline here"
   2. "Switch to an existing pipeline" — list any sibling `pipeline-*/` directories that do have `config.md`
 
 **If the current directory is NOT inside a vibe-closer directory at all:**
 - Check if `~/vibe-closer/` exists and contains any `pipeline-*/config.md` directories
-- **If pipelines exist:** List them and ask the user to select one, or offer to create a new one with `/setup`
+- **If pipelines exist:** List them and ask the user to select one, or offer to create a new one with `/onboard`
 - **If no pipelines exist anywhere:** Tell the user:
-  > "No vibe-closer workspace found. To get started, run `/setup` to create your first pipeline."
+  > "No vibe-closer workspace found. To get started, run `/onboard` to create your first pipeline."
   >
   > A vibe-closer workspace requires:
   > - A root `vibe-closer/` directory (recommended: `~/vibe-closer/`)
   > - At least one pipeline inside it (`pipeline-[name]/`) with a `config.md`
   >
-  > `/setup` will walk you through creating everything.
+  > `/onboard` will walk you through creating everything.
 - **Stop here** — do not proceed with any other action until the user has a valid workspace.
 
 ### Check 2: Pipeline selection (if multiple pipelines exist)
@@ -56,7 +56,7 @@ After confirming the active pipeline, check whether a re-index is due:
 
 ## Context Resilience
 
-Multi-step commands (`/setup`, `/followup`, `/discover-leads`, `/learn`) must survive context compaction. Follow these rules:
+Multi-step commands (`/onboard`, `/followup`, `/discover-leads`, `/learn`) must survive context compaction. Follow these rules:
 
 ### TodoWrite as Session Checkpoint
 Before starting a multi-step command, create TodoWrite tasks for each phase. Include the command name and phase details in each task description. Example:
@@ -92,7 +92,7 @@ These are user-facing commands that orchestrate multiple actions:
 
 | Command | File | Description |
 |---|---|---|
-| `/setup` | `commands/setup.md` | Create a new pipeline workspace or update an existing one |
+| `/onboard` | `commands/onboard.md` | Create a new pipeline workspace or update an existing one |
 | `/followup` | `commands/followup.md` | Process all due leads: fetch, gather context, draft outreach, approve, execute |
 | `/discover-leads` | `commands/discover-leads.md` | Find new leads from email, meetings, network, and CRM |
 | `/learn` | `commands/learn.md` | Analyze pipeline performance and improve workspace content |
