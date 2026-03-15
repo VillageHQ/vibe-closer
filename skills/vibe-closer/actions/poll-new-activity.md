@@ -39,7 +39,7 @@ Scheduled action that checks for new incoming email replies and triggers follow-
 
 - The cursor is stored as `{{POLL_CURSOR}}` in the pipeline's `config.md`
 - Format: ISO 8601 datetime (e.g., `2026-03-14T10:30:00Z`)
-- Initial value after setup: `Never` (first poll fetches last 24h of emails)
+- Initial value after onboarding: `Never` (first poll fetches last 24h of emails)
 - After each successful poll: updated to current datetime
 
 ## Why This Approach

@@ -9,7 +9,7 @@ Test suite to validate skill quality across key workflows.
 ./evaluations/run-evals.sh
 
 # Run a specific eval
-./evaluations/run-evals.sh --eval setup
+./evaluations/run-evals.sh --eval onboard
 ./evaluations/run-evals.sh --eval outreach-quality
 ./evaluations/run-evals.sh --eval routing
 ```
@@ -22,8 +22,8 @@ Does the skill correctly route user intents to the right action file?
 ### 2. Outreach Quality (`eval-outreach-quality.md`)
 Are generated messages personalized, on-tone, and following template guidelines?
 
-### 3. Setup Flow (`eval-setup.md`)
-Does setup correctly create workspace, configure providers, and create DB?
+### 3. Onboarding Flow (`eval-onboard.md`)
+Does onboarding correctly create workspace, configure providers, and create DB?
 
 ### 4. Learning Loop (`eval-learning.md`)
 Does the learn action correctly identify patterns and propose workspace updates?

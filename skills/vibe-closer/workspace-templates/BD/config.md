@@ -33,6 +33,9 @@
 - **{{NOTETAKER}}**: Fathom, Granola
   <!-- Track partnership conversations and exploratory calls -->
 
+## Scoring
+- **{{AUTO_APPROVE_THRESHOLD}}**: 80
+
 ## Polling
 - **{{POLL_CURSOR}}**: Never
   - Source: {{EMAIL_INBOX}}

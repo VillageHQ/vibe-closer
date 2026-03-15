@@ -26,4 +26,11 @@ For each lead:
 2. Read `actions/generate-lead-activity.md` → determine next step and draft activity
 
 ## Phase 4: Present for Approval
-Read `actions/view-pending-activity.md` → present all drafted activities for approval. Wait for user to approve/edit/reject each activity.
+If any activities were auto-approved during Phase 3 (confidence score >= `{{AUTO_APPROVE_THRESHOLD}}`):
+- Summarize them first: "Auto-approved [N] activities with confidence >= [threshold]: [brief list of contact names and summaries]"
+- These will execute in Phase 5 alongside manually approved ones
+
+Read `actions/view-pending-activity.md` → present activities with `approval_status = 'pending'` for manual review. Wait for user to approve/edit/reject each activity.
+
+## Phase 5: Execute Approved Activities
+For approved activities: read `actions/execute-activity.md` → execute.

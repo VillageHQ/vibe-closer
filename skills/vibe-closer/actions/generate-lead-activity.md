@@ -34,8 +34,15 @@
    b. Draft note summarizing rationale
    c. Update pipeline stage if warranted
 
-8. **Store in DB** — Insert into `{{ACTIONS_DB}}`:
-   - `approval_status`: pending
+8. **Score activity** — Invoke `actions/score-activity.md` as a sub-agent, passing:
+   - The generated activity (type, body, summary, contacts, account)
+   - The `full_lead_context` used for generation
+   - Relevant workspace files: `profile/icps.md`, `messaging-guidelines/tone.md`, applicable channel guidelines, `workflow-planner.md`
+
+   The sub-agent returns `confidence_score`, `scoring_breakdown`, and `overall_reasoning`.
+
+9. **Store in DB** — Insert into `{{ACTIONS_DB}}`:
+   - `approval_status`: if `confidence_score` >= `{{AUTO_APPROVE_THRESHOLD}}` from `config.md`, set to `'approved'`; otherwise `'pending'`
    - `execution_status`: pending
    - `activity_type`: determined type
    - `contacts`: lead contacts
@@ -44,8 +51,13 @@
    - `summary`: human-readable description
    - `full_lead_context`: snapshot of context used
    - `body`: action-specific payload
+   - `confidence_score`: score from scoring step
+   - `scoring_breakdown`: full breakdown JSON from scoring step
 
-9. **Present to user** — Show the drafted activity for approval
+10. **Present to user** — Show the drafted activity with its confidence score:
+   - Display: "Confidence: [score]/100 — [overall_reasoning]"
+   - If auto-approved (score >= threshold): "Auto-approved (score [X] >= threshold [Y]). Will execute on scheduled date."
+   - If pending (score < threshold): show for manual review as before
 
 ## Activity Quality Checks
 
@@ -54,6 +66,7 @@ Before presenting, verify:
 - [ ] Tone matches `messaging-guidelines/tone.md`
 - [ ] Follows workflow sequencing rules from `workflow-planner.md` — find the lead's current stage, look up the next action for that stage, and select the matching template from `email-templates.md`
 - [ ] Doesn't duplicate recent outreach on same channel
+- [ ] Confidence score is reasonable (flag if scoring seems miscalibrated)
 
 ## Data Safety
 

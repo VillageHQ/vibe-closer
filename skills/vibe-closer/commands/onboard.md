@@ -1,11 +1,11 @@
 ---
-description: "Set up a new vibe-closer pipeline workspace, or update an existing one"
+description: "Onboard into a new vibe-closer pipeline workspace, or update an existing one"
 argument-hint: "[use-case: sales|hiring|fundraising|bd|jobsearch] or [update]"
 ---
 
-# Setup
+# Onboard
 
-Guide the user through creating or updating a vibe-closer pipeline workspace.
+Walk the user through creating or updating a vibe-closer pipeline workspace.
 
 ## Mode Detection
 
@@ -20,13 +20,13 @@ Trigger update mode if ANY of these are true:
 
 **In update mode**, skip to the [Update Existing Pipeline](#update-existing-pipeline) section below.
 
-### First-time setup mode
+### First-time onboarding mode
 
-If none of the update conditions are met, proceed with the full setup flow below.
+If none of the update conditions are met, proceed with the full onboarding flow below.
 
 ---
 
-## First-Time Setup
+## First-Time Onboarding
 
 ### Step 1: Choose Location
 
@@ -93,6 +93,9 @@ Walk through each `{{VARIABLE}}` in `config.md` and ask the user to set values:
 9. `{{FETCH_RELATIONSHIPS}}` — Default: Village MCP
 10. `{{NOTETAKER}}` — Default: Fathom, Granola
 
+#### Scoring
+10. `{{AUTO_APPROVE_THRESHOLD}}` — Minimum confidence score (0–100) for auto-approval. Default: 80. Set to 101 to disable auto-approval entirely.
+
 For each variable, update `config.md` with the value: `{{VARIABLE_NAME : user_value}}`.
 
 ### Step 6: Create Activities Database
@@ -117,6 +120,8 @@ CREATE TABLE IF NOT EXISTS vibe_closer_{{PIPELINE_NAME}}_activities (
   needs_regeneration BOOLEAN NOT NULL DEFAULT false,
   body JSONB NOT NULL DEFAULT '{}',
   body_history JSONB NOT NULL DEFAULT '[]',
+  confidence_score INTEGER CHECK (confidence_score >= 0 AND confidence_score <= 100),
+  scoring_breakdown JSONB NOT NULL DEFAULT '{}',
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -219,6 +224,13 @@ Present the current pipeline summary (name, use case, providers) and ask:
   - Recreate the table (warning: this drops existing data)
   - Add columns or indexes (provide the ALTER TABLE statements)
 - Execute the chosen SQL via `{{ACTIONS_DB}}`
+
+If upgrading to v1.8.0+ (confidence scoring), run this migration:
+```sql
+ALTER TABLE vibe_closer_{{PIPELINE_NAME}}_activities
+  ADD COLUMN IF NOT EXISTS confidence_score INTEGER CHECK (confidence_score >= 0 AND confidence_score <= 100),
+  ADD COLUMN IF NOT EXISTS scoring_breakdown JSONB NOT NULL DEFAULT '{}';
+```
 
 #### Option 4: Use Case / Template
 - Warn: "Switching use cases will overwrite template files (profile, messaging guidelines, workflow planner, lead preferences). Your config.md and database will be preserved. Custom changes to overwritten files will be lost."

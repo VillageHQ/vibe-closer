@@ -30,6 +30,9 @@
 ## Meeting Notes (Optional)
 - **{{NOTETAKER}}**: Fathom, Granola
 
+## Scoring
+- **{{AUTO_APPROVE_THRESHOLD}}**: 80
+
 ## Polling
 - **{{POLL_CURSOR}}**: Never
   - Source: {{EMAIL_INBOX}}

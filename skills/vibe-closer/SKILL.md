@@ -1,6 +1,6 @@
 ---
 name: vibe-closer
-description: "Manage a sales, recruiting, fundraising, or partnerships pipeline end-to-end. Use when the user wants to track leads, generate outreach, follow up on prospects, discover new leads, or improve their pipeline workflows. Handles workspace setup, pipeline selection, and configuration updates."
+description: "Manage a sales, recruiting, fundraising, or partnerships pipeline end-to-end. Use when the user wants to track leads, generate outreach, follow up on prospects, discover new leads, or improve their pipeline workflows. Handles workspace onboarding, pipeline selection, and configuration updates."
 ---
 
 # Vibe-Closer
@@ -22,20 +22,20 @@ Look for `config.md` in the current working directory. A valid pipeline director
 
 **If the current directory is inside a `vibe-closer/` folder but has no `config.md`:**
 - Tell the user: "This directory is inside a vibe-closer workspace but doesn't have a configured pipeline. Would you like to:"
-  1. "Run `/setup` to create a new pipeline here"
+  1. "Run `/onboard` to create a new pipeline here"
   2. "Switch to an existing pipeline" — list any sibling `pipeline-*/` directories that do have `config.md`
 
 **If the current directory is NOT inside a vibe-closer directory at all:**
 - Check if `~/vibe-closer/` exists and contains any `pipeline-*/config.md` directories
-- **If pipelines exist:** List them and ask the user to select one, or offer to create a new one with `/setup`
+- **If pipelines exist:** List them and ask the user to select one, or offer to create a new one with `/onboard`
 - **If no pipelines exist anywhere:** Tell the user:
-  > "No vibe-closer workspace found. To get started, run `/setup` to create your first pipeline."
+  > "No vibe-closer workspace found. To get started, run `/onboard` to create your first pipeline."
   >
   > A vibe-closer workspace requires:
   > - A root `vibe-closer/` directory (recommended: `~/vibe-closer/`)
   > - At least one pipeline inside it (`pipeline-[name]/`) with a `config.md`
   >
-  > `/setup` will walk you through creating everything.
+  > `/onboard` will walk you through creating everything.
 - **Stop here** — do not proceed with any other action until the user has a valid workspace.
 
 ### Check 2: Pipeline selection (if multiple pipelines exist)
@@ -56,7 +56,7 @@ After confirming the active pipeline, check whether a re-index is due:
 
 ## Context Resilience
 
-Multi-step commands (`/setup`, `/followup`, `/discover-leads`, `/learn`) must survive context compaction. Follow these rules:
+Multi-step commands (`/onboard`, `/followup`, `/discover-leads`, `/learn`) must survive context compaction. Follow these rules:
 
 ### TodoWrite as Session Checkpoint
 Before starting a multi-step command, create TodoWrite tasks for each phase. Include the command name and phase details in each task description. Example:
@@ -92,7 +92,7 @@ These are user-facing commands that orchestrate multiple actions:
 
 | Command | File | Description |
 |---|---|---|
-| `/setup` | `commands/setup.md` | Create a new pipeline workspace or update an existing one |
+| `/onboard` | `commands/onboard.md` | Create a new pipeline workspace or update an existing one |
 | `/followup` | `commands/followup.md` | Process all due leads: fetch, gather context, draft outreach, approve, execute |
 | `/discover-leads` | `commands/discover-leads.md` | Find new leads from email, meetings, network, and CRM |
 | `/learn` | `commands/learn.md` | Analyze pipeline performance and improve workspace content |
@@ -128,6 +128,7 @@ Based on the user's request, route to the appropriate action file in `actions/`:
 | "How am I doing?" / "Show metrics" | `actions/evaluate-performance.md` |
 | "Learn from results" / "Improve messaging" | `actions/learn.md` |
 | "Update my content" / "Rebuild profile" / "Redo messaging" | `actions/update-content.md` |
+| "What's the confidence on this?" / "Why was this scored low?" | `actions/view-pending-activity.md` (view scoring breakdown) |
 | "Add a note" / "Give feedback on this draft" | `actions/add-note.md` |
 | *(scheduled)* New email replies detected | `actions/poll-new-activity.md` |
 
@@ -143,8 +144,9 @@ Read the matched action file and follow its instructions. Each action file conta
 For any action that sends a message or modifies CRM data:
 1. Draft the output and present it to the user
 2. Wait for explicit approval before executing
-3. Store the activity in `{{ACTIONS_DB}}` with `approval_status: pending`
-4. Only execute after `approval_status: approved`
+3. Score the activity using `actions/score-activity.md` (invoked as sub-agent)
+4. Store the activity in `{{ACTIONS_DB}}` with `approval_status: pending` (or `approved` if confidence score >= `{{AUTO_APPROVE_THRESHOLD}}`)
+5. Only execute after `approval_status: approved`
 
 ## Actions Reference
 
@@ -163,6 +165,7 @@ All action files live in `actions/`:
 | Evaluate performance | `evaluate-performance.md` | Measure pipeline metrics against goals |
 | Learn | `learn.md` | Extract learnings from results and update workspace files |
 | Update content | `update-content.md` | Rebuild profile, goals, strategy, and messaging guidelines |
+| Score activity | `score-activity.md` | Evaluate activity quality and assign confidence score (0–100) |
 | Add note | `add-note.md` | Add feedback to a pending activity and flag for regeneration |
 | Poll new activity | `poll-new-activity.md` | Scheduled: detect email replies and trigger follow-ups |
 

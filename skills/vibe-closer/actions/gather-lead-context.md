@@ -44,7 +44,7 @@ Deep context for activity generation. Aggregate from all sources:
 
 When a lead is new and not yet connected, follow the research strategy defined in `lead_preferences/research-lead.md` (or `partner_preferences/research-lead.md` for BD pipelines).
 
-This file contains the ordered research steps and any custom research preferences the user configured during setup. Execute each step using the specified MCPs, then cross-reference findings with `profile/icps.md` to identify relevant pain points and personalization hooks.
+This file contains the ordered research steps and any custom research preferences the user configured during onboarding. Execute each step using the specified MCPs, then cross-reference findings with `profile/icps.md` to identify relevant pain points and personalization hooks.
 
 ## Output Format
 

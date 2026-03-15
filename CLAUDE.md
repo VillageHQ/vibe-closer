@@ -17,6 +17,6 @@
 ## Key Files
 - `.claude-plugin/plugin.json` — plugin manifest (name, version, description)
 - `skills/vibe-closer/SKILL.md` — main skill: intent routing, workspace validation, provider resolution
-- `skills/vibe-closer/commands/` — canonical command logic (setup, followup, discover-leads, learn)
-- `skills/vibe-closer/actions/` — 13 action files referenced by SKILL.md routing table
+- `skills/vibe-closer/commands/` — canonical command logic (onboard, followup, discover-leads, learn)
+- `skills/vibe-closer/actions/` — 14 action files referenced by SKILL.md routing table
 - `commands/` — thin wrappers for plugin discovery (mirror frontmatter, delegate to skill)

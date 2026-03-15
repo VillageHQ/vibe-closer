@@ -28,7 +28,7 @@ How to research a potential partner before outreach. Follow these steps in order
 
 ## Custom Research
 
-<!-- This section is personalized during workspace setup. Examples of what users add here: -->
+<!-- This section is personalized during onboarding. Examples of what users add here: -->
 <!-- - "Check their integration marketplace for existing partnerships in our category" -->
 <!-- - "Look for co-marketing content they've done with other partners" -->
 <!-- - "Research their API docs to assess integration complexity" -->

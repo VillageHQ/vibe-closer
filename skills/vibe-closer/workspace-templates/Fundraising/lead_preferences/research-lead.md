@@ -28,7 +28,7 @@ How to research an investor before outreach. Follow these steps in order, using 
 
 ## Custom Research
 
-<!-- This section is personalized during workspace setup. Examples of what users add here: -->
+<!-- This section is personalized during onboarding. Examples of what users add here: -->
 <!-- - "Check the partner's recent tweets/posts for thesis signals and hot topics" -->
 <!-- - "Look for podcast appearances where they discuss what they look for in founders" -->
 <!-- - "Research their most recent 3 investments — what pattern emerges?" -->
