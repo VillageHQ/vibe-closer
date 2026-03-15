@@ -253,6 +253,20 @@ Present a complete summary of everything generated:
 
 ---
 
+## Phase 6: Update Workspace Index
+
+After all content has been generated and approved, update the workspace's index files to reflect the current state.
+
+1. Read the existing `CLAUDE.md` in the pipeline directory.
+2. Update the **Quick Reference** section to list every file that now exists in the workspace. For each file, include the relative path and a brief description (format: `- **Label**: \`path\` — description`).
+3. Preserve all other sections (Commands, How It Works, Maintenance) unchanged.
+4. If new files were created in any directory (e.g., `profile/`), ensure each is listed individually.
+5. Copy the updated `CLAUDE.md` content to `AGENTS.md` in the same directory — these files must stay in sync. `AGENTS.md` is the cross-platform equivalent read by Codex, Copilot, and other AI coding tools.
+
+This keeps the workspace self-describing so the core workflow's "Read Workspace Context" step can discover all files.
+
+---
+
 ## Quality Standards
 
 Apply these throughout all content generation:

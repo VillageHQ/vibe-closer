@@ -38,3 +38,4 @@
 
 ## Meta
 - **{{LAST_LEARNING_DATE}}**: Never
+- **{{LAST_REINDEX_CHECK}}**: Never
