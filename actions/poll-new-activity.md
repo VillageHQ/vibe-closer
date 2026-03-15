@@ -8,12 +8,28 @@ Scheduled action that checks for new incoming email replies and triggers follow-
 
 1. **Read cursor** — Get `{{POLL_CURSOR}}` from `config.md`. This is the datetime of the last poll.
 2. **Fetch new emails** — Use `{{EMAIL_INBOX}}` to search for emails received after the cursor datetime.
-3. **Filter relevant replies** — For each new email:
-   a. Check if the sender or thread matches a lead tracked in `{{CRM_TRACKER}}`
-   b. Skip emails that are not replies to pipeline-related threads (use fingerprint matching if available)
-   c. Skip internal emails, newsletters, and automated messages
-4. **For each relevant reply:**
-   a. Identify the lead in `{{CRM_TRACKER}}`
+3. **Build matching sets** — Query `{{ACTIONS_DB}}` once to get all executed outbound activities:
+   ```
+   SELECT DISTINCT contacts, body->>'fingerprint' as fingerprint
+   FROM vibe_closer_{{PIPELINE_NAME}}_activities
+   WHERE activity_type IN ('send_email', 'send_linkedin')
+   AND execution_status = 'finished'
+   AND created_at > now() - interval '90 days'
+   ```
+   From results, derive:
+   - `known_emails` — all email addresses from `contacts` JSONB
+   - `known_domains` — domains extracted from those emails (e.g., `jane@acme.com` → `acme.com`)
+   - `known_fingerprints` — all fingerprint values from `body`
+4. **Filter emails** — For each new email, apply in order:
+   a. **Hygiene filter** — Skip automated/no-reply emails, marketing newsletters, calendar invites, internal team emails, and already-processed emails (sender + thread ID + timestamp match existing activity)
+   b. **Local matching** (no MCP calls needed):
+      - Sender email is in `known_emails` → RELEVANT
+      - Email body contains a value from `known_fingerprints` → RELEVANT
+      - Sender domain is in `known_domains` → LIKELY RELEVANT (colleague at a tracked company)
+   c. **CRM fallback** — Only for emails that passed hygiene but matched nothing above: check if sender matches a lead in `{{CRM_TRACKER}}`. This should be rare (0-3 emails per cycle).
+   d. Skip all remaining emails.
+5. **For each relevant reply:**
+   a. Identify the lead in `{{CRM_TRACKER}}` (if not already known from step 4b)
    b. Create an activity in `{{ACTIONS_DB}}` with:
       - `activity_type`: depends on context (likely `send_email` for a follow-up reply)
       - `approval_status`: `pending`
@@ -23,8 +39,8 @@ Scheduled action that checks for new incoming email replies and triggers follow-
       - `scheduled_date`: now (immediate follow-up cycle)
    c. Update the lead's follow-up date in `{{CRM_TRACKER}}` to today
    d. Add a note in CRM: "Received reply on [date] — follow-up cycle triggered"
-5. **Update cursor** — Set `{{POLL_CURSOR}}` in `config.md` to the current datetime
-6. **Trigger follow-up** — If any new replies were found, trigger the `/followup` command for those specific leads
+6. **Update cursor** — Set `{{POLL_CURSOR}}` in `config.md` to the current datetime
+7. **Trigger follow-up** — If any new replies were found, trigger the `/followup` command for those specific leads
 
 ## Cursor Management
 
@@ -33,19 +49,15 @@ Scheduled action that checks for new incoming email replies and triggers follow-
 - Initial value after setup: `Never` (first poll fetches last 24h of emails)
 - After each successful poll: updated to current datetime
 
-## Email Filtering Rules
+## Why This Approach
 
-Include:
-- Direct replies to threads where we sent outreach
-- New emails from contacts in `{{CRM_TRACKER}}`
-- Forwarded intros mentioning tracked leads
+The Activities DB already stores every outbound email — including recipient addresses, company domains, and fingerprints. One SQL query builds a complete set of "known contacts" that catches ~95% of relevant replies locally, without hitting the CRM. This reduces per-poll MCP calls from ~N (one CRM call per email) to ~3 (1 Gmail + 1 Supabase + 0-3 CRM fallbacks).
 
-Exclude:
-- Automated/no-reply emails
-- Marketing newsletters
-- Calendar invites
-- Internal team emails
-- Emails already processed (sender + thread ID + timestamp match existing activity)
+Edge cases:
+- **New pipeline with zero activities:** matching sets are empty, all emails fall through to CRM fallback — same behavior as before, no regression
+- **Reply from a different email at the same company:** caught by domain matching
+- **Forwarded intro:** fingerprint in quoted reply body catches it
+- **Very old leads (>90 days):** fall through to CRM fallback, which is fine since these are rare
 
 ## Output
 
@@ -53,6 +65,9 @@ After each poll, log:
 ```
 Poll completed at [datetime]
 Emails scanned: [N]
+Filtered by hygiene rules: [N]
+Matched locally (email/fingerprint/domain): [N]
+Checked via CRM fallback: [N]
 Relevant replies found: [N]
 Follow-up cycles triggered: [N]
 Next poll cursor: [datetime]
