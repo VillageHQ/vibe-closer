@@ -84,6 +84,7 @@ Based on the user's request, route to the appropriate action file in `actions/`:
 | "How am I doing?" / "Show metrics" | `actions/evaluate-performance.md` |
 | "Learn from results" / "Improve messaging" | `actions/learn.md` |
 | "Update my content" / "Rebuild profile" / "Redo messaging" | `actions/update-content.md` |
+| "Add a note" / "Give feedback on this draft" | `actions/add-note.md` |
 | *(scheduled)* New email replies detected | `actions/poll-new-activity.md` |
 
 ### 3. Execute Action
@@ -118,6 +119,7 @@ All action files live in `actions/`:
 | Evaluate performance | `evaluate-performance.md` | Measure pipeline metrics against goals |
 | Learn | `learn.md` | Extract learnings from results and update workspace files |
 | Update content | `update-content.md` | Rebuild profile, goals, strategy, and messaging guidelines |
+| Add note | `add-note.md` | Add feedback to a pending activity and flag for regeneration |
 | Poll new activity | `poll-new-activity.md` | Scheduled: detect email replies and trigger follow-ups |
 
 ## Provider Resolution
