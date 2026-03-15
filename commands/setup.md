@@ -84,6 +84,8 @@ CREATE TABLE IF NOT EXISTS vibe_closer_{{PIPELINE_NAME}}_activities (
   learnings TEXT,
   body JSONB NOT NULL DEFAULT '{}',
   body_history JSONB NOT NULL DEFAULT '[]',
+  notes TEXT[] NOT NULL DEFAULT '{}',
+  needs_regeneration BOOLEAN NOT NULL DEFAULT false,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
