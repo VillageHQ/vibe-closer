@@ -5,10 +5,8 @@
 ### Adding Leads
 
 1. Ask user to share leads (or receive from `discover-leads` workflow)
-2. For each lead:
-   a. Check if contact already exists in `{{CRM_TRACKER}}` lead list
-   b. If exists: inform user, ask if they want to update
-   c. If new: add to `{{CRM_TRACKER}}` with:
+2. For each lead, add to `{{CRM_TRACKER}}` with the fields below. The CRM handles deduplication natively — if the CRM returns a duplicate error, inform the user and ask if they want to update the existing record instead.
+   Fields:
       - Contact name and email
       - Company and domain
       - Initial pipeline stage

@@ -3,6 +3,7 @@
 ## Pipeline
 - **{{PIPELINE_NAME}}**:
   <!-- Example: Seed Round, Series A, etc. -->
+- **{{USER_EMAIL}}**:
 
 ## CRM Tracker (Required)
 - **{{CRM_TRACKER}}**: Attio MCP

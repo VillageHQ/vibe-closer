@@ -17,6 +17,9 @@ Query `{{ACTIONS_DB}}` for activities where `needs_regeneration = true`. For eac
 ## Phase 2: Fetch Due Leads
 Read `actions/get-leads.md` → fetch due leads (follow-up date <= today). If `$ARGUMENTS` specifies a lead name, filter to that lead only.
 
+**If no leads are due AND no regeneration requests were found in Phase 1:**
+Tell the user: "No leads are due for follow-up today." Query `{{CRM_TRACKER}}` for the next earliest follow-up date and show it: "Next due: [date]." Stop here.
+
 ## Phase 3: Gather Context & Draft Activities
 For each lead:
 1. Read `actions/gather-lead-context.md` → fetch full context

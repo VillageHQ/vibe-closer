@@ -22,7 +22,7 @@ Measure pipeline effectiveness against goals.
    - Rejection rate
 
    ### Response metrics (via `{{EMAIL_INBOX}}` and LinkedIn)
-   - Emails sent vs replied
+   - Emails sent vs replied — use the same matching logic as `poll-new-activity.md` (build matching sets of known_emails, known_domains, known_fingerprints from `{{ACTIONS_DB}}`, then match against inbox)
    - Reply rate by template/approach
    - Average time to reply
    - LinkedIn messages sent vs accepted/replied

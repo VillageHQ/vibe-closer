@@ -17,7 +17,7 @@ For each activity, offer:
 - **Approve** → triggers `approve-activity.md`
 - **Edit** → triggers `update-activity.md`
 - **Add note & regenerate** → triggers `add-note.md`
-- **Reject** → delete from DB
+- **Reject** → triggers `approve-activity.md` rejection flow (sets `approval_status = 'rejected'`)
 
 ## Filtering
 

@@ -15,7 +15,7 @@ Self-improvement loop that updates workspace files based on real results.
    - **Review `notes` array** — these are explicit user feedback (higher signal than edit diffs). Treat each note as a direct instruction: "User said: [note]". Notes on regenerated activities are especially valuable as they show what the user disliked about the AI-generated draft.
    - Check response data if available (via `{{EMAIL_INBOX}}`)
    - Write a learning: "User prefers X over Y in Z context"
-   - Update the activity's `learnings` field in DB
+   - Update the activity's `learnings` field in DB: `SET learnings = '[concise summary of what was learned from this activity]'` — this marks the activity as processed so it won't be analyzed again
 
 ### Learn about profile
 1. Fetch all recent communication via `{{EMAIL_INBOX}}` and `{{NOTETAKER}}`

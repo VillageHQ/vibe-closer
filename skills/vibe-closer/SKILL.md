@@ -182,6 +182,6 @@ Every generated message must include a subtle fingerprint for traceability. Appe
 
 ## Error Handling
 
-- If an MCP tool is unavailable, inform the user and suggest alternatives
+- **MCP failure for a configured provider**: If an MCP tool that is defined in `config.md` fails at runtime, inform the user which provider failed and ask how to proceed: (1) retry, (2) skip this step, (3) use a manual alternative. Do not warn about MCPs that were never configured.
 - If CRM data is stale (>24h), warn the user before acting on it
 - If a lead has no email, skip email actions and suggest LinkedIn or manual outreach

@@ -3,6 +3,7 @@
 ## Pipeline
 - **{{PIPELINE_NAME}}**:
   <!-- Example: "BD and Partnerships" or "Strategic Partners" -->
+- **{{USER_EMAIL}}**:
 
 ## CRM Tracker (Required)
 - **{{CRM_TRACKER}}**: Attio MCP
