@@ -12,9 +12,9 @@ You have 20+ years of experience and have helped dozens of companies achieve ext
 
 Read all workspace files silently to understand what exists:
 
-1. `config.md` — pipeline name, MCP providers configured, pipeline type
+1. `pipeline-config.md` — pipeline name, MCP providers configured, pipeline type
 2. `goals.md` — current goals (real content or placeholders?)
-3. `workflow-planner.md` — existing sequencing rules
+3. `sequence-flow.md` — existing sequencing rules
 4. `profile/` — read every file in this directory
 5. `messaging-guidelines/` — read every file in this directory
 6. `lead_preferences/` or `partner_preferences/` — read every file
@@ -85,7 +85,7 @@ End with: **"Anything else I should know? Drop any context that would help me bu
 
 Announce: **"Great — let me research your background to build the strongest possible content. This will take a moment..."**
 
-Run all available research in parallel using the MCPs configured in `config.md`. Do NOT ask for permission — just do it and report what you found.
+Run all available research in parallel using the MCPs configured in `pipeline-config.md`. Do NOT ask for permission — just do it and report what you found.
 
 1. **Website** via `{{WEBSITE_CRAWLING}}`:
    - Product/service description, pricing, customer logos, testimonials, case studies
@@ -158,17 +158,23 @@ Accept edits. Update files based on feedback. Then continue.
 
 ### Round 2 — Strategy: Workflow & Discovery
 
-**`workflow-planner.md`** — Keep this as SIMPLE as possible. This is the main document for deciding the next action for every lead in the pipeline. It should be a clear, numbered sequence — not a complex flowchart.
+**`sequence-flow.md`** — This is the main document for deciding the next action for every lead in the pipeline. Keep it as SIMPLE as possible — a clear numbered sequence, not a complex flowchart.
+
+**DRY principle — reference, don't repeat.** Do NOT duplicate content that belongs in other files:
+- Email timing, structure, personalization, deliverability rules → `messaging-guidelines/email-guidelines.md`
+- Tone, voice, do/don't rules → `messaging-guidelines/tone.md`
+- LinkedIn message format, connection requests, engagement strategy → `messaging-guidelines/linkedin-dm-guidelines.md`
+- Pipeline stages and transition rules → `pipeline-config.md` → `## Pipeline Stages`
+
+If a rule is already defined in messaging-guidelines or pipeline-config, sequence-flow.md should reference the file, not restate the rule. The only content that belongs in sequence-flow.md is:
+
+1. **Execution Sequence** (hero section) — numbered steps for "what to do next for this lead"
+2. **Frequency Rules** — pipeline-specific cadence (max touches per channel, timing between steps)
+3. **Key Principles** — ONLY principles unique to this pipeline type that are NOT covered in messaging-guidelines
 
 Key principles by pipeline type:
-- **Fundraising / JobSearch / BD**: Warm intros are the PRIMARY strategy. Cold outreach is a last resort. Invest energy in mapping warm paths before any direct contact.
-- **Sales / Hiring**: Direct outreach to the target is the primary goal. Warm intros are leverage to warm up a relationship, but you should be reaching out directly. Mention mutual connections as social proof in outreach.
-
-Include:
-1. Simple numbered outreach sequence (what to do at each step)
-2. Pipeline stages with clear transition triggers
-3. Frequency rules (max touches per channel, timing)
-4. When to escalate vs. nurture vs. close
+- **Fundraising / JobSearch / BD**: Warm intros are the PRIMARY strategy. Cold outreach is a last resort.
+- **Sales / Hiring**: Direct outreach is primary. Warm intros are leverage (social proof), not a prerequisite.
 
 **`lead_preferences/lead-discovery.md`** (or `partner_preferences/`) — Discovery and research strategies tailored to:
 - Available MCPs (what can be automated vs. manual)
@@ -215,7 +221,7 @@ Accept edits. Then continue.
 Templates should cover the full lifecycle: first touch, follow-ups, warm intros, post-meeting, nurture re-engagement.
 
 **`messaging-guidelines/linkedin-dm-guidelines.md`** — Channel-adapted messaging:
-- When to use LinkedIn vs. email (based on workflow-planner)
+- When to use LinkedIn vs. email (based on sequence-flow)
 - Connection request copy (short, specific, no pitch)
 - First DM templates per target type
 - Engagement strategy (comment on posts before DM)

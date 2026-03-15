@@ -16,7 +16,7 @@ List all files in the pipeline directory recursively. **Exclude** these from the
 
 ## Step 2: Parse the current index
 
-Read the existing `CLAUDE.md` and extract the **Quick Reference** section. Build a set of all file paths currently listed (the backtick-wrapped paths, e.g. `config.md`, `profile/icps.md`).
+Read the existing `CLAUDE.md` and extract the **Quick Reference** section. Build a set of all file paths currently listed (the backtick-wrapped paths, e.g. `pipeline-config.md`, `profile/icps.md`).
 
 ## Step 3: Diff filesystem vs index
 
@@ -25,7 +25,7 @@ Compare the files found on disk (Step 1) against the indexed paths (Step 2):
 - **Added**: files on disk that are NOT in the Quick Reference
 - **Removed**: paths in Quick Reference that no longer exist on disk
 
-If there are no differences, tell the user: "Workspace index is up to date — no changes needed." Update `{{LAST_REINDEX_CHECK}}` in `config.md` to the current ISO 8601 timestamp and stop.
+If there are no differences, tell the user: "Workspace index is up to date — no changes needed." Update `{{LAST_REINDEX_CHECK}}` in `pipeline-config.md` to the current ISO 8601 timestamp and stop.
 
 ## Step 4: Describe new files
 
@@ -58,7 +58,7 @@ Wait for user confirmation before proceeding.
    - Remove entries for deleted files
    - Preserve the order and formatting of unchanged entries
 2. Copy the updated `CLAUDE.md` content to `AGENTS.md` — these must stay in sync
-3. Update `{{LAST_REINDEX_CHECK}}` in `config.md` to the current ISO 8601 timestamp
+3. Update `{{LAST_REINDEX_CHECK}}` in `pipeline-config.md` to the current ISO 8601 timestamp
 
 ## Step 7: Confirm
 

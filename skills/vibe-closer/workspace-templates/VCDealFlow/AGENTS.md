@@ -3,9 +3,9 @@
 This is a vibe-closer workspace for managing your VC deal flow — sourcing, evaluating, and investing in startups.
 
 ## Quick Reference
-- **Config**: `config.md` — MCP providers, outreach channels, and field mappings
+- **Config**: `pipeline-config.md` — MCP providers, outreach channels, field mappings, and pipeline stages
 - **Goals**: `goals.md` — deal flow targets and timeline
-- **Workflow**: `workflow-planner.md` — founder outreach sequencing rules
+- **Workflow**: `sequence-flow.md` — founder outreach sequencing rules (stages are in config)
 - **Fund Brief**: `profile/fund-brief.md` — your fund thesis, check size, and portfolio
 - **Startup Profiles**: `profile/icps.md` — ideal startup profiles by stage/sector
 - **Scheduling**: `profile/scheduling-links.md` — meeting booking links

@@ -3,9 +3,9 @@
 This is a vibe-closer workspace for managing your fundraising outreach and investor pipeline.
 
 ## Quick Reference
-- **Config**: `config.md` — MCP providers, outreach channels, and field mappings
+- **Config**: `pipeline-config.md` — MCP providers, outreach channels, field mappings, and pipeline stages
 - **Goals**: `goals.md` — fundraising targets and timeline
-- **Workflow**: `workflow-planner.md` — investor outreach sequencing rules
+- **Workflow**: `sequence-flow.md` — investor outreach sequencing rules (stages are in config)
 - **Company Brief**: `profile/company-brief.md` — your pitch narrative and metrics
 - **Investor Profiles**: `profile/icps.md` — ideal investor profiles by stage/check size
 - **Scheduling**: `profile/scheduling-links.md` — booking links and key URLs

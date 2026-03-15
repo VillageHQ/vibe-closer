@@ -3,9 +3,9 @@
 This is a vibe-closer workspace for managing your recruiting and talent acquisition pipeline.
 
 ## Quick Reference
-- **Config**: `config.md` — MCP providers, outreach channels, and field mappings
+- **Config**: `pipeline-config.md` — MCP providers, outreach channels, field mappings, and pipeline stages
 - **Goals**: `goals.md` — hiring targets and timeline
-- **Workflow**: `workflow-planner.md` — recruiting outreach sequencing rules
+- **Workflow**: `sequence-flow.md` — recruiting outreach sequencing rules (stages are in config)
 - **Candidate Profiles**: `profile/icps.md` — ideal candidate profiles by role/seniority
 - **Company Brief**: `profile/company-brief.md` — your employer brand and pitch to candidates
 - **Scheduling**: `profile/scheduling-links.md` — booking links and key URLs

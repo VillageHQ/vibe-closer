@@ -12,10 +12,19 @@
   - Status field: stage
   - Notes field: conversation_notes
 
+## Pipeline Stages
+<!-- Imported from CRM during onboard. Stages must be configured in your CRM first. -->
+
+### Stages
+<!-- numbered list of stages with descriptions, populated from CRM status field -->
+
+### Stage Transition Rules
+<!-- From → To → Trigger table, populated during onboard -->
+
 ## Actions Database
 - **{{ACTIONS_DB}}**: Supabase
-  - Table name: vibe_closer_{{PIPELINE_NAME}}_activities
-  - Logs table: vibe_closer_{{PIPELINE_NAME}}_logs
+- **{{ACTIVITIES_TABLE}}**: vibe_closer_{{PIPELINE_NAME}}_activities
+- **{{LOGS_TABLE}}**: vibe_closer_{{PIPELINE_NAME}}_logs
 
 ## Channels
 

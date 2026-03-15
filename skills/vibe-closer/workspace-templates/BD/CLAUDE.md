@@ -3,9 +3,9 @@
 This is a vibe-closer workspace for managing business development and partnership outreach pipelines.
 
 ## Quick Reference
-- **Config**: `config.md` — MCP providers, outreach channels, and field mappings
+- **Config**: `pipeline-config.md` — MCP providers, outreach channels, field mappings, and pipeline stages
 - **Goals**: `goals.md` — partnership targets and success metrics
-- **Workflow**: `workflow-planner.md` — partnership outreach sequencing and pipeline stages
+- **Workflow**: `sequence-flow.md` — partnership outreach sequencing rules (stages are in config)
 - **Company Brief**: `profile/company-brief.md` — your partnership value proposition
 - **Partner Profiles**: `profile/ipp.md` — ideal partner profiles (IPPs)
 - **Scheduling**: `profile/scheduling-links.md` — booking links and key URLs

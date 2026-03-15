@@ -36,7 +36,7 @@ How well does this lead match the ideal customer profiles in `profile/icps.md`? 
 
 ### 3. Timing Appropriateness (0–20)
 
-Is the scheduled date reasonable given `workflow-planner.md` rules? Is the channel appropriate for the current stage? Has enough time passed since last contact?
+Is the scheduled date reasonable given `pipeline-config.md` stage transition rules and `sequence-flow.md` timing rules? Is the channel appropriate for the current stage? Has enough time passed since last contact?
 
 | Range | Meaning |
 |-------|---------|
@@ -47,7 +47,7 @@ Is the scheduled date reasonable given `workflow-planner.md` rules? Is the chann
 
 ### 4. Messaging Guideline Adherence (0–20)
 
-Does the tone match `messaging-guidelines/tone.md`? Does the format follow the channel's Guidelines file (as specified in `config.md` → `## Channels` → `### {channel}` → `Guidelines`)? Are template structures from the channel's Templates file respected?
+Does the tone match `messaging-guidelines/tone.md`? Does the format follow the channel's Guidelines file (as specified in `pipeline-config.md` → `## Channels` → `### {channel}` → `Guidelines`)? Are template structures from the channel's Templates file respected?
 
 | Range | Meaning |
 |-------|---------|
@@ -58,7 +58,7 @@ Does the tone match `messaging-guidelines/tone.md`? Does the format follow the c
 
 ### 5. Workflow Compliance (0–20)
 
-Does this follow the expected workflow sequence from `workflow-planner.md`? Is the activity type appropriate for the current stage? No duplicate outreach on the same channel recently?
+Does this follow the expected workflow sequence from `pipeline-config.md` → `## Pipeline Stages` (stage definitions and transitions) and `sequence-flow.md` (outreach sequencing)? Is the activity type appropriate for the current stage? No duplicate outreach on the same channel recently?
 
 | Range | Meaning |
 |-------|---------|

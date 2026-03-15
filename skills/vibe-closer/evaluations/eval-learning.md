@@ -10,7 +10,7 @@ Test that the self-improvement loop works correctly.
 
 ### TC-2: Detect workflow deviations
 **Setup**: Workflow says 3-day follow-up, but user consistently changes to 5 days
-**Pass if**: Learning suggests updating workflow-planner.md to 5 days
+**Pass if**: Learning suggests updating sequence-flow.md to 5 days
 
 ### TC-3: User confirmation required
 **Setup**: Learnings generated
@@ -26,4 +26,4 @@ Test that the self-improvement loop works correctly.
 
 ### TC-6: Timestamp updated
 **Setup**: Learning loop completes
-**Pass if**: `{{LAST_LEARNING_DATE}}` in config.md updated to today
+**Pass if**: `{{LAST_LEARNING_DATE}}` in pipeline-config.md updated to today
