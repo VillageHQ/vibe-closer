@@ -167,6 +167,10 @@ Include:
 
 Ask the user: "Any preferences for how you discover leads? For example: polling your inbox for inbound demos, checking form submissions, monitoring specific communities, or any other sources you use?"
 
+**`lead_preferences/research-lead.md`** (or `partner_preferences/research-lead.md`) — How to research individual leads before outreach. The template has sensible defaults (profile enrichment, company research, ICP matching, warm path check). Customize the "Custom Research" section based on what the user tells you.
+
+Ask the user: "How do you want leads researched before outreach? For example: check the founder's LinkedIn posts for hot takes, look for recent press coverage or product launches, review their engineering blog, scan job postings for hiring signals — or anything else specific to your domain?"
+
 **PAUSE.** Present what you built:
 ```
 Here's your strategy:

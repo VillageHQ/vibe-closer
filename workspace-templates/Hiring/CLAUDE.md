@@ -12,6 +12,7 @@ This is a vibe-closer workspace for managing your recruiting and talent acquisit
 - **Email Templates**: `messaging-guidelines/email-templates.md` — outreach and follow-up templates
 - **LinkedIn Guide**: `messaging-guidelines/linkedin-dm-guidelines.md` — candidate outreach on LinkedIn
 - **Lead Discovery**: `lead_preferences/lead-discovery.md` — sources for finding candidates
+- **Lead Research**: `lead_preferences/research-lead.md` — how to research candidates before outreach
 
 ## Commands
 - `/setup` — Initial workspace configuration

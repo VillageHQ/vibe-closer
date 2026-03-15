@@ -12,6 +12,7 @@ This is a vibe-closer workspace for managing your fundraising outreach and inves
 - **Email Templates**: `messaging-guidelines/email-templates.md` — forwardable blurbs and cold outreach
 - **LinkedIn Guide**: `messaging-guidelines/linkedin-dm-guidelines.md` — investor outreach on LinkedIn
 - **Lead Discovery**: `lead_preferences/lead-discovery.md` — sources for finding investors
+- **Lead Research**: `lead_preferences/research-lead.md` — how to research investors before outreach
 
 ## Commands
 - `/setup` — Initial workspace configuration

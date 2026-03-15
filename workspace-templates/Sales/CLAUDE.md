@@ -7,6 +7,7 @@ This is a vibe-closer workspace for managing a B2B/B2C sales pipeline.
 - **Goals**: `goals.md` — success metrics
 - **Workflow**: `workflow-planner.md` — outreach sequencing rules
 - **ICPs**: `profile/icps.md` — ideal customer profiles
+- **Lead Research**: `lead_preferences/research-lead.md` — how to research leads before outreach
 - **Templates**: `messaging-guidelines/email-templates.md` — outreach templates
 
 ## Commands
