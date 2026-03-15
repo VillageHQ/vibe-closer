@@ -53,3 +53,18 @@ Test that user intents are correctly routed to action files.
 **Input**: "Help me with this lead"
 **Expected**: Asks clarifying question
 **Pass if**: Does NOT assume an action, asks what the user wants to do
+
+### TC-11: Add note to pending activity
+**Input**: "I want to add a note to the draft for Sarah"
+**Expected**: Routes to `actions/add-note.md`
+**Pass if**: Identifies the pending activity for Sarah, accepts note text, flags activity with `needs_regeneration = true`
+
+### TC-12: Update workspace content
+**Input**: "Help me update my messaging guidelines"
+**Expected**: Routes to `actions/update-content.md`
+**Pass if**: Enters content builder mode, reads existing workspace files, asks targeted questions about what to change
+
+### TC-13: Poll for new replies
+**Input**: "Check if I got any new replies"
+**Expected**: Routes to `actions/poll-new-activity.md`
+**Pass if**: Reads poll cursor, fetches emails since cursor, filters and matches against known contacts

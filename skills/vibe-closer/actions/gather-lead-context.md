@@ -42,11 +42,9 @@ Deep context for activity generation. Aggregate from all sources:
 
 ## research-lead
 
-When a lead is new and not yet connected:
-1. Use `{{PROFILE_ENRICHMENT}}` for detailed profile
-2. Use `{{WEBSITE_CRAWLING}}` for company research
-3. Cross-reference with `profile/icps.md` to identify relevant pain points
-4. Summarize findings for use in outreach
+When a lead is new and not yet connected, follow the research strategy defined in `lead_preferences/research-lead.md` (or `partner_preferences/research-lead.md` for BD pipelines).
+
+This file contains the ordered research steps and any custom research preferences the user configured during setup. Execute each step using the specified MCPs, then cross-reference findings with `profile/icps.md` to identify relevant pain points and personalization hooks.
 
 ## Output Format
 

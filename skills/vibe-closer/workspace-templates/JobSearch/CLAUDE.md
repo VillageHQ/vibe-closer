@@ -12,6 +12,7 @@ This is a vibe-closer workspace for managing your job search outreach and pipeli
 - **Email Templates**: `messaging-guidelines/email-templates.md` — outreach templates
 - **LinkedIn**: `messaging-guidelines/linkedin-dm-guidelines.md` — LinkedIn outreach guidelines
 - **Lead Discovery**: `lead_preferences/lead-discovery.md` — sources for finding opportunities
+- **Lead Research**: `lead_preferences/research-lead.md` — how to research companies before outreach
 
 ## Commands
 - `/setup` — Initial workspace configuration

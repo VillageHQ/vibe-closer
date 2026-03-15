@@ -12,6 +12,7 @@ This is a vibe-closer workspace for managing business development and partnershi
 - **Email Templates**: `messaging-guidelines/email-templates.md` — partnership outreach templates
 - **LinkedIn**: `messaging-guidelines/linkedin-dm-guidelines.md` — LinkedIn partnership outreach
 - **Discovery**: `partner_preferences/lead-discovery.md` — how to find and qualify partners
+- **Partner Research**: `partner_preferences/research-lead.md` — how to research partners before outreach
 
 ## Commands
 - `/setup` — Initial workspace configuration

@@ -11,12 +11,13 @@ This command is triggered in two ways:
 
 Invoke the `vibe-closer` skill using the Skill tool, then execute this workflow:
 
-1. Read `actions/get-leads.md` → fetch due leads (follow-up date <= today)
-2. For each lead:
+1. **Check for regeneration requests** — Query `{{ACTIONS_DB}}` for activities where `needs_regeneration = true`. For each, run `actions/generate-lead-activity.md` for that lead (which will pick up the notes and regenerate).
+2. Read `actions/get-leads.md` → fetch due leads (follow-up date <= today)
+3. For each lead:
    a. Read `actions/gather-lead-context.md` → fetch full context
    b. Read `actions/generate-lead-activity.md` → determine next step and draft activity
-3. Read `actions/view-pending-activity.md` → present all drafted activities for approval
-4. Wait for user to approve/edit/reject each activity
-5. For approved activities: read `actions/execute-activity.md` → execute
+4. Read `actions/view-pending-activity.md` → present all drafted activities for approval
+5. Wait for user to approve/edit/reject each activity
+6. For approved activities: read `actions/execute-activity.md` → execute
 
 If `$ARGUMENTS` specifies a lead name, filter to that lead only.

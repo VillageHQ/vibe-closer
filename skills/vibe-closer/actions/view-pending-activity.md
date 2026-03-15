@@ -15,6 +15,7 @@ For each activity, offer:
 - **View context** — Show the lead context used to generate it
 - **Approve** → triggers `approve-activity.md`
 - **Edit** → triggers `update-activity.md`
+- **Add note & regenerate** → triggers `add-note.md`
 - **Reject** → delete from DB
 
 ## Filtering

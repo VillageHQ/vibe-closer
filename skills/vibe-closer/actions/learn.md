@@ -7,11 +7,12 @@ Self-improvement loop that updates workspace files based on real results.
 ### Learn about messaging
 1. Query `{{ACTIONS_DB}}` for activities where:
    - `execution_status = 'finished'`
-   - `body_history` is not empty (was edited before approval)
+   - `body_history` is not empty (was edited before approval) OR `notes` is not empty
    - `learnings` field is empty
 2. For each activity:
    - Compare original `body` (from `body_history[0]`) with final approved `body`
    - Identify patterns: what did the user change? (tone, length, structure, personalization)
+   - **Review `notes` array** — these are explicit user feedback (higher signal than edit diffs). Treat each note as a direct instruction: "User said: [note]". Notes on regenerated activities are especially valuable as they show what the user disliked about the AI-generated draft.
    - Check response data if available (via `{{EMAIL_INBOX}}`)
    - Write a learning: "User prefers X over Y in Z context"
    - Update the activity's `learnings` field in DB
