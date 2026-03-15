@@ -8,6 +8,7 @@ This is a vibe-closer workspace for managing your job search outreach and pipeli
 - **Workflow**: `workflow-planner.md` — outreach sequencing rules
 - **TCPs**: `profile/target-company-profiles.md` — target company profiles
 - **Candidate Brief**: `profile/candidate-brief.md` — your value proposition
+- **Lead Research**: `lead_preferences/research-lead.md` — how to research companies before outreach
 - **Templates**: `messaging-guidelines/email-templates.md` — outreach templates
 
 ## Commands
