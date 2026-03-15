@@ -13,12 +13,14 @@ Pipeline management skill for Claude Code. Manages sales, recruiting, fundraisin
 ## Structure
 
 ```
-.claude-plugin/plugin.json     # Plugin manifest
-skills/vibe-closer/SKILL.md    # Main skill (intent routing + execution)
-commands/                       # User-facing commands
-actions/                        # Action instruction files
-workspace-templates/            # Per-use-case templates (Sales, Hiring, Fundraising)
-evaluations/                    # Quality eval test cases
+.claude-plugin/plugin.json                      # Plugin manifest
+commands/                                        # Thin wrappers (plugin slash command discovery)
+skills/vibe-closer/
+  SKILL.md                                       # Main skill (intent routing + execution)
+  commands/                                      # Canonical command logic
+  actions/                                       # Action instruction files
+  workspace-templates/                           # Per-use-case templates (Sales, Hiring, etc.)
+  evaluations/                                   # Quality eval test cases
 ```
 
 ## Requirements
