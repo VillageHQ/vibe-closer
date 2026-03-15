@@ -75,3 +75,10 @@ My resume shows two companies in 6 years -- both were intentional multi-year com
 - Happy to do product exercises, case studies, or portfolio walkthroughs
 - Available for interviews Tuesday-Thursday, 9am-5pm PT
 - Video preferred over phone for deeper conversations
+
+## Links
+
+- **Scheduling**: https://calendly.com/jordan/coffee-chat
+- **Resume**: https://drive.google.com/file/d/jordan-resume
+- **LinkedIn**: https://linkedin.com/in/jordan-chen
+- **Portfolio**: https://jordan-chen.com

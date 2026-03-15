@@ -30,6 +30,24 @@
 - The goal of a networking call is to learn, build rapport, and potentially get referred -- not to pitch yourself
 - After a good networking conversation, the other person should want to refer you without being asked
 
+---
+
+## Execution Sequence
+
+For each lead, follow these steps:
+
+1. Fetch warm paths via {{FETCH_RELATIONSHIPS}}
+2. Send initial outreach via the 1st path — always prioritize warm intros and networking before cold outreach
+3. If no reply after 5 days, send follow-up (in recipient's timezone)
+4. If no reply after 2 days, move to the next path and repeat from step 2
+5. Always draft a reply and follow-up on the last message
+6. If the last email is from me, never follow-up more than once
+7. If the lead replies and is not interested, mark as Declined in {{CRM_TRACKER}}
+8. If no reply after completing all paths, set follow-up date to 6 months from now
+9. If still no reply after the 6-month follow-up, set follow-up date to 1 year from now
+
+---
+
 ## Pipeline Stages
 
 1. **Target Company** -- Company identified as fit based on TCP criteria, added to tracker

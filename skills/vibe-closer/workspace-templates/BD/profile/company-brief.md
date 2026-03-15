@@ -3,6 +3,9 @@
 ## One-Liner
 Unified developer portal that consolidates docs, APIs, and internal tools.
 
+## Partnership Pitch One-Liner
+We're looking for monitoring, CI/CD, and security partners to build native integrations that surface their data inside 1,200+ engineering teams' daily workflow.
+
 ## What We Do
 DevStack is a developer portal platform that brings together documentation, API management, internal tooling, and service catalogs into a single, searchable interface. Engineering teams use DevStack to reduce context-switching, standardize how developers discover and interact with internal services, and accelerate onboarding for new engineers. We replace the patchwork of wikis, Notion docs, and custom admin panels that most engineering orgs cobble together.
 

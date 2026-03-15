@@ -8,6 +8,7 @@ This is a vibe-closer workspace for managing your fundraising outreach and inves
 - **Workflow**: `workflow-planner.md` — investor outreach sequencing rules
 - **Company Brief**: `profile/company-brief.md` — your pitch narrative and metrics
 - **Investor Profiles**: `profile/icps.md` — ideal investor profiles by stage/check size
+- **Scheduling**: `profile/scheduling-links.md` — booking links and key URLs
 - **Tone**: `messaging-guidelines/tone.md` — founder-to-investor voice guidelines
 - **Email Templates**: `messaging-guidelines/email-templates.md` — forwardable blurbs and cold outreach
 - **LinkedIn**: `messaging-guidelines/linkedin-dm-guidelines.md` — investor outreach on LinkedIn

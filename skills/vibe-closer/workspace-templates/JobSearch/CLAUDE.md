@@ -8,6 +8,7 @@ This is a vibe-closer workspace for managing your job search outreach and pipeli
 - **Workflow**: `workflow-planner.md` — outreach sequencing rules
 - **Target Companies**: `profile/target-company-profiles.md` — target company profiles
 - **Candidate Brief**: `profile/candidate-brief.md` — your value proposition
+- **Scheduling**: `profile/scheduling-links.md` — booking links and key URLs
 - **Tone**: `messaging-guidelines/tone.md` — voice and style guidelines
 - **Email Templates**: `messaging-guidelines/email-templates.md` — outreach templates
 - **LinkedIn**: `messaging-guidelines/linkedin-dm-guidelines.md` — LinkedIn outreach guidelines

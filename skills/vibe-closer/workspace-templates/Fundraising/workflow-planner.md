@@ -40,6 +40,24 @@
    - Set a decision deadline that gives firms enough time but creates urgency
    - Never bluff about competing term sheets — it destroys trust
 
+---
+
+## Execution Sequence
+
+For each lead, follow these steps:
+
+1. Fetch warm paths via {{FETCH_RELATIONSHIPS}}
+2. Send initial outreach via the 1st path — always prioritize warm intros, cold email only as last resort
+3. If no reply after 3 days, send follow-up (in recipient's timezone)
+4. If no reply after 1 day, move to the next path and repeat from step 2
+5. Always draft a reply and follow-up on the last message
+6. If the last email is from me, never follow-up more than once
+7. If the lead replies and is not interested, mark as Closed Lost in {{CRM_TRACKER}}
+8. If no reply after completing all paths, set follow-up date to 6 months from now
+9. If still no reply after the 6-month follow-up, set follow-up date to 1 year from now
+
+---
+
 ## Pipeline Stages
 
 1. **New Lead** — Investor identified and qualified

@@ -8,6 +8,7 @@ This is a vibe-closer workspace for managing business development and partnershi
 - **Workflow**: `workflow-planner.md` — partnership outreach sequencing and pipeline stages
 - **Company Brief**: `profile/company-brief.md` — your partnership value proposition
 - **Partner Profiles**: `profile/ipp.md` — ideal partner profiles (IPPs)
+- **Scheduling**: `profile/scheduling-links.md` — booking links and key URLs
 - **Tone**: `messaging-guidelines/tone.md` — BD partnership tone and voice
 - **Email Templates**: `messaging-guidelines/email-templates.md` — partnership outreach templates
 - **LinkedIn**: `messaging-guidelines/linkedin-dm-guidelines.md` — LinkedIn partnership outreach
