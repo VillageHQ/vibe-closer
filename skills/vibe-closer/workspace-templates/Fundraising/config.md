@@ -32,6 +32,9 @@
 - **{{NOTETAKER}}**: Fathom, Granola
   <!-- Track investor conversations for follow-ups and signals -->
 
+## Scoring
+- **{{AUTO_APPROVE_THRESHOLD}}**: 80
+
 ## Polling
 - **{{POLL_CURSOR}}**: Never
   - Source: {{EMAIL_INBOX}}
