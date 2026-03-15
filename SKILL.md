@@ -69,7 +69,7 @@ When an action references `{{VARIABLE_NAME}}`, look up the value in `config.md`.
 
 ## Activity Fingerprinting
 
-Every generated message must include a subtle fingerprint for traceability. Append a transparent tracking pixel or unique ID in the message metadata (not visible to recipient). This enables the `learn` action to correlate sent messages with responses.
+Every generated message must include a fingerprint for traceability. The fingerprint value is stored in the activity's `body.fingerprint` field in `{{ACTIONS_DB}}`. Embed the fingerprint in the email body itself (e.g., as a hidden HTML element or zero-width characters at the end of the message) so that it survives in quoted replies when recipients respond. This enables both the `learn` action to correlate sent messages with responses and the `poll-new-activity` action to identify relevant replies without a CRM lookup.
 
 ## Error Handling
 

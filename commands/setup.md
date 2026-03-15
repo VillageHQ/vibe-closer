@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS vibe_closer_{{PIPELINE_NAME}}_activities (
 CREATE INDEX idx_activities_approval ON vibe_closer_{{PIPELINE_NAME}}_activities (approval_status);
 CREATE INDEX idx_activities_execution ON vibe_closer_{{PIPELINE_NAME}}_activities (execution_status);
 CREATE INDEX idx_activities_scheduled ON vibe_closer_{{PIPELINE_NAME}}_activities (scheduled_date);
+CREATE INDEX idx_activities_type_status ON vibe_closer_{{PIPELINE_NAME}}_activities (activity_type, execution_status);
 ```
 
 ### Body Schemas by Activity Type
