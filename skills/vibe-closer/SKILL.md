@@ -97,6 +97,9 @@ These are user-facing commands that orchestrate multiple actions:
 | `/discover-leads` | `commands/discover-leads.md` | Find new leads from email, meetings, network, and CRM |
 | `/learn` | `commands/learn.md` | Analyze pipeline performance and improve workspace content |
 | `/re-index` | `commands/re-index.md` | Re-index workspace files to update CLAUDE.md and AGENTS.md |
+| `/poll-new-activity` | `commands/poll-new-activity.md` | Check for new email replies and trigger follow-up cycles |
+| `/execute-actions` | `commands/execute-actions.md` | Execute all approved activities (send emails, update CRM, etc.) |
+| `/view-pending-activity` | `commands/view-pending-activity.md` | View pending activities awaiting approval |
 
 ## Core Workflow
 
@@ -121,16 +124,16 @@ Based on the user's request, route to the appropriate action file in `actions/`:
 | "Add these leads" / "Track this company" | `actions/add-leads.md` |
 | "Tell me about this lead" | `actions/gather-lead-context.md` |
 | "Draft outreach for X" / "What should I send?" | `actions/generate-lead-activity.md` |
-| "Show pending drafts" | `actions/view-pending-activity.md` |
+| "Show pending drafts" | `commands/view-pending-activity.md` |
 | "Edit this draft" | `actions/update-activity.md` |
 | "Approve this" / "LGTM" | `actions/approve-activity.md` |
-| "Send it" / "Execute" | `actions/execute-activity.md` |
+| "Send it" / "Execute" | `commands/execute-actions.md` |
 | "How am I doing?" / "Show metrics" | `actions/evaluate-performance.md` |
-| "Learn from results" / "Improve messaging" | `actions/learn.md` |
+| "Learn from results" / "Improve messaging" | `commands/learn.md` |
 | "Update my content" / "Rebuild profile" / "Redo messaging" | `actions/update-content.md` |
-| "What's the confidence on this?" / "Why was this scored low?" | `actions/view-pending-activity.md` (view scoring breakdown) |
+| "What's the confidence on this?" / "Why was this scored low?" | `commands/view-pending-activity.md` (view scoring breakdown) |
 | "Add a note" / "Give feedback on this draft" | `actions/add-note.md` |
-| *(scheduled)* New email replies detected | `actions/poll-new-activity.md` |
+| *(scheduled)* New email replies detected | `commands/poll-new-activity.md` |
 
 ### 3. Execute Action
 
@@ -158,16 +161,12 @@ All action files live in `actions/`:
 | Add leads | `add-leads.md` | Add, update, or remove leads in CRM |
 | Gather context | `gather-lead-context.md` | Aggregate lead info from CRM, email, LinkedIn, meetings, network |
 | Generate activity | `generate-lead-activity.md` | Draft outreach following workflow rules and messaging guidelines |
-| View pending | `view-pending-activity.md` | Show drafted activities awaiting approval |
 | Update activity | `update-activity.md` | Edit a pending activity's body |
 | Approve activity | `approve-activity.md` | Human-in-the-loop approval (single or bulk) |
-| Execute activity | `execute-activity.md` | Send emails, LinkedIn messages, or update CRM |
 | Evaluate performance | `evaluate-performance.md` | Measure pipeline metrics against goals |
-| Learn | `learn.md` | Extract learnings from results and update workspace files |
 | Update content | `update-content.md` | Rebuild profile, goals, strategy, and messaging guidelines |
 | Score activity | `score-activity.md` | Evaluate activity quality and assign confidence score (0–100) |
 | Add note | `add-note.md` | Add feedback to a pending activity and flag for regeneration |
-| Poll new activity | `poll-new-activity.md` | Scheduled: detect email replies and trigger follow-ups |
 
 ## Provider Resolution
 
