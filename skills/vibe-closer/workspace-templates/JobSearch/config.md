@@ -2,6 +2,7 @@
 
 ## Pipeline
 - **{{PIPELINE_NAME}}**:
+- **{{USER_EMAIL}}**:
 
 ## CRM Tracker (Required)
 - **{{CRM_TRACKER}}**: Attio MCP

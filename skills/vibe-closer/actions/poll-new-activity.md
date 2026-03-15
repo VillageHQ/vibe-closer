@@ -30,17 +30,10 @@ Scheduled action that checks for new incoming email replies and triggers follow-
    d. Skip all remaining emails.
 5. **For each relevant reply:**
    a. Identify the lead in `{{CRM_TRACKER}}` (if not already known from step 4b)
-   b. Create an activity in `{{ACTIONS_DB}}` with:
-      - `activity_type`: depends on context (likely `send_email` for a follow-up reply)
-      - `approval_status`: `pending`
-      - `execution_status`: `pending`
-      - `summary`: "New reply from [name] — needs follow-up"
-      - `full_lead_context`: include the reply content and thread summary
-      - `scheduled_date`: now (immediate follow-up cycle)
-   c. Update the lead's follow-up date in `{{CRM_TRACKER}}` to today
-   d. Add a note in CRM: "Received reply on [date] — follow-up cycle triggered"
+   b. Update the lead's follow-up date in `{{CRM_TRACKER}}` to today (moves them back into the due queue)
+   c. Add a note in CRM: "Received reply on [date] — follow-up cycle triggered"
 6. **Update cursor** — Set `{{POLL_CURSOR}}` in `config.md` to the current datetime
-7. **Trigger follow-up** — If any new replies were found, trigger the `/followup` command for those specific leads
+7. **Trigger follow-up** — If any new replies were found, trigger the `/followup` command. Followup will fetch these leads (now due), gather context (including the new reply), and draft response activities for approval.
 
 ## Cursor Management
 

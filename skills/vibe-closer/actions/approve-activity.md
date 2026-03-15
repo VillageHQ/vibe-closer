@@ -15,7 +15,9 @@ Human-in-the-loop approval gate.
    - Update `approval_status` to `approved`
    - Update `updated_at`
 5. If edit requested: redirect to `update-activity.md`
-6. If rejected: delete the activity from DB
+6. If rejected:
+   - Confirm with user: "Are you sure you want to reject this activity?"
+   - On confirmation: update `approval_status` to `rejected` and `updated_at`
 
 ## Bulk Approval
 

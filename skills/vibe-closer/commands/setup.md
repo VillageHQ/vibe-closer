@@ -77,20 +77,21 @@ Walk through each `{{VARIABLE}}` in `config.md` and ask the user to set values:
 
 #### Required
 1. `{{PIPELINE_NAME}}` — Set to the pipeline name from Step 3
-2. `{{CRM_TRACKER}}` — Which CRM MCP? (e.g., Attio MCP, HubSpot MCP)
+2. `{{USER_EMAIL}}` — The user's email address (used for polling and reply detection)
+3. `{{CRM_TRACKER}}` — Which CRM MCP? (e.g., Attio MCP, HubSpot MCP)
    - Pull all leads tool hint
    - Follow-up date field name
    - Status field name
    - Notes field name
-3. `{{EMAIL_SENDING}}` — Email provider MCP (e.g., Gmail MCP)
-4. `{{EMAIL_INBOX}}` — Email inbox MCP (e.g., Gmail MCP)
+4. `{{EMAIL_SENDING}}` — Email provider MCP (e.g., Gmail MCP)
+5. `{{EMAIL_INBOX}}` — Email inbox MCP (e.g., Gmail MCP)
 
 #### Optional
-5. `{{EMAIL_ENRICHMENT}}` — Default: Use CRM
-6. `{{PROFILE_ENRICHMENT}}` — Default: Open LinkedIn in browser
-7. `{{WEBSITE_CRAWLING}}` — Default: Open website in browser
-8. `{{FETCH_RELATIONSHIPS}}` — Default: Village MCP
-9. `{{NOTETAKER}}` — Default: Fathom, Granola
+6. `{{EMAIL_ENRICHMENT}}` — Default: Use CRM
+7. `{{PROFILE_ENRICHMENT}}` — Default: Open LinkedIn in browser
+8. `{{WEBSITE_CRAWLING}}` — Default: Open website in browser
+9. `{{FETCH_RELATIONSHIPS}}` — Default: Village MCP
+10. `{{NOTETAKER}}` — Default: Fathom, Granola
 
 For each variable, update `config.md` with the value: `{{VARIABLE_NAME : user_value}}`.
 
@@ -103,7 +104,7 @@ Replace `{{PIPELINE_NAME}}` with the actual pipeline name and execute:
 ```sql
 CREATE TABLE IF NOT EXISTS vibe_closer_{{PIPELINE_NAME}}_activities (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  approval_status TEXT NOT NULL DEFAULT 'pending' CHECK (approval_status IN ('pending', 'approved')),
+  approval_status TEXT NOT NULL DEFAULT 'pending' CHECK (approval_status IN ('pending', 'approved', 'rejected')),
   execution_status TEXT NOT NULL DEFAULT 'pending' CHECK (execution_status IN ('pending', 'running', 'finished')),
   activity_type TEXT NOT NULL CHECK (activity_type IN ('send_email', 'send_linkedin', 'update_followup_date', 'change_pipeline_stage', 'add_lead')),
   contacts JSONB NOT NULL DEFAULT '[]',
@@ -112,6 +113,8 @@ CREATE TABLE IF NOT EXISTS vibe_closer_{{PIPELINE_NAME}}_activities (
   summary TEXT,
   full_lead_context TEXT,
   learnings TEXT,
+  notes JSONB NOT NULL DEFAULT '[]',
+  needs_regeneration BOOLEAN NOT NULL DEFAULT false,
   body JSONB NOT NULL DEFAULT '{}',
   body_history JSONB NOT NULL DEFAULT '[]',
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -121,6 +124,7 @@ CREATE TABLE IF NOT EXISTS vibe_closer_{{PIPELINE_NAME}}_activities (
 CREATE INDEX idx_activities_approval ON vibe_closer_{{PIPELINE_NAME}}_activities (approval_status);
 CREATE INDEX idx_activities_execution ON vibe_closer_{{PIPELINE_NAME}}_activities (execution_status);
 CREATE INDEX idx_activities_scheduled ON vibe_closer_{{PIPELINE_NAME}}_activities (scheduled_date);
+CREATE INDEX idx_activities_regeneration ON vibe_closer_{{PIPELINE_NAME}}_activities (needs_regeneration) WHERE needs_regeneration = true;
 ```
 
 #### Body Schemas by Activity Type
