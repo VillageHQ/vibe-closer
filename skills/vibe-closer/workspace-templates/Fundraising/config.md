@@ -3,6 +3,7 @@
 ## Pipeline
 - **{{PIPELINE_NAME}}**:
   <!-- Example: Seed Round, Series A, etc. -->
+- **{{USER_EMAIL}}**:
 
 ## CRM Tracker (Required)
 - **{{CRM_TRACKER}}**: Attio MCP
@@ -31,6 +32,9 @@
 ## Meeting Notes (Optional)
 - **{{NOTETAKER}}**: Fathom, Granola
   <!-- Track investor conversations for follow-ups and signals -->
+
+## Scoring
+- **{{AUTO_APPROVE_THRESHOLD}}**: 80
 
 ## Polling
 - **{{POLL_CURSOR}}**: Never

@@ -3,6 +3,7 @@
 ## Pipeline
 - **{{PIPELINE_NAME}}**:
   <!-- Example: "BD and Partnerships" or "Strategic Partners" -->
+- **{{USER_EMAIL}}**:
 
 ## CRM Tracker (Required)
 - **{{CRM_TRACKER}}**: Attio MCP
@@ -31,6 +32,9 @@
 ## Meeting Notes (Optional)
 - **{{NOTETAKER}}**: Fathom, Granola
   <!-- Track partnership conversations and exploratory calls -->
+
+## Scoring
+- **{{AUTO_APPROVE_THRESHOLD}}**: 80
 
 ## Polling
 - **{{POLL_CURSOR}}**: Never

@@ -17,13 +17,21 @@ Query `{{ACTIONS_DB}}` for activities where `needs_regeneration = true`. For eac
 ## Phase 2: Fetch Due Leads
 Read `actions/get-leads.md` → fetch due leads (follow-up date <= today). If `$ARGUMENTS` specifies a lead name, filter to that lead only.
 
+**If no leads are due AND no regeneration requests were found in Phase 1:**
+Tell the user: "No leads are due for follow-up today." Query `{{CRM_TRACKER}}` for the next earliest follow-up date and show it: "Next due: [date]." Stop here.
+
 ## Phase 3: Gather Context & Draft Activities
 For each lead:
 1. Read `actions/gather-lead-context.md` → fetch full context
-2. Read `actions/generate-lead-activity.md` → determine next step and draft activity
+2. Read `actions/generate-lead-activity.md` → determine next step and draft outreach message
+3. Read `actions/add-update-leads.md` → directly update the lead's follow-up date and pipeline stage based on workflow rules (no activity/approval needed for these CRM updates)
 
 ## Phase 4: Present for Approval
-Read `actions/view-pending-activity.md` → present all drafted activities for approval. Wait for user to approve/edit/reject each activity.
+If any activities were auto-approved during Phase 3 (confidence score >= `{{AUTO_APPROVE_THRESHOLD}}`):
+- Summarize them first: "Auto-approved [N] activities with confidence >= [threshold]: [brief list of contact names and summaries]"
+- These will execute in Phase 5 alongside manually approved ones
+
+Read `actions/view-pending-activity.md` → present activities with `approval_status = 'pending'` for manual review. Wait for user to approve/edit/reject each activity.
 
 ## Phase 5: Execute Approved Activities
 For approved activities: read `actions/execute-activity.md` → execute.

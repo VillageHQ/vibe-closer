@@ -31,7 +31,22 @@ Test that the content builder mode correctly audits, questions, researches, and 
 **Action**: Content builder runs through all phases
 **Pass if**: Pauses after each round (profile/goals, strategy, messaging) for user feedback before continuing
 
-### TC-7: Pipeline-type adaptation
+### TC-7: Pipeline-type adaptation (Fundraising)
 **Setup**: Fundraising pipeline workspace
 **Action**: Trigger update-content
 **Pass if**: Questions, research, and generated content are adapted for fundraising (investor profiles, pitch narrative, etc.) — not generic sales content
+
+### TC-8: Pipeline-type adaptation (Hiring)
+**Setup**: Hiring pipeline workspace
+**Action**: Trigger update-content
+**Pass if**: Generated content uses candidate-focused language, creates candidate brief and target company profiles, recruiter tone in templates
+
+### TC-9: Pipeline-type adaptation (BD)
+**Setup**: BD pipeline workspace
+**Action**: Trigger update-content
+**Pass if**: Generated content focuses on partner profiles, partnership models, mutual value propositions — not sales ICPs
+
+### TC-10: Pipeline-type adaptation (JobSearch)
+**Setup**: JobSearch pipeline workspace
+**Action**: Trigger update-content
+**Pass if**: Generated content creates candidate brief, target company profiles, career narrative — outreach framed as job seeker, not seller

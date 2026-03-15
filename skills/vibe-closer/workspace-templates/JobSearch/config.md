@@ -2,6 +2,7 @@
 
 ## Pipeline
 - **{{PIPELINE_NAME}}**:
+- **{{USER_EMAIL}}**:
 
 ## CRM Tracker (Required)
 - **{{CRM_TRACKER}}**: Attio MCP
@@ -28,6 +29,9 @@
 
 ## Meeting Notes (Optional)
 - **{{NOTETAKER}}**: Fathom, Granola
+
+## Scoring
+- **{{AUTO_APPROVE_THRESHOLD}}**: 80
 
 ## Polling
 - **{{POLL_CURSOR}}**: Never

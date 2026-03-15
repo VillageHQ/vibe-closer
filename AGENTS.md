@@ -9,13 +9,14 @@
 ## Version Bumping
 - When making changes to any file within the plugin, bump the `version` in `.claude-plugin/plugin.json` (semver: patch for fixes, minor for features, major for breaking changes)
 
-## Workspace Template Index Files
+## Workspace Template Index Files (CLAUDE.md + AGENTS.md)
 - Each directory under `skills/vibe-closer/workspace-templates/` has both a `CLAUDE.md` and an `AGENTS.md` with quick reference links and commands
-- These files are mirrors of each other — when modifying files in a workspace-template directory, update both index files to reflect the changes
+- `AGENTS.md` mirrors `CLAUDE.md` content — it is the cross-platform standard read by Codex, Copilot, Zed, Cursor, and other AI coding tools
+- When modifying files in a workspace-template directory, update **both** `CLAUDE.md` and `AGENTS.md` to reflect the changes
 
 ## Key Files
 - `.claude-plugin/plugin.json` — plugin manifest (name, version, description)
 - `skills/vibe-closer/SKILL.md` — main skill: intent routing, workspace validation, provider resolution
 - `skills/vibe-closer/commands/` — canonical command logic (onboard, followup, discover-leads, learn)
-- `skills/vibe-closer/actions/` — 12 action files referenced by SKILL.md routing table
+- `skills/vibe-closer/actions/` — 14 action files referenced by SKILL.md routing table
 - `commands/` — thin wrappers for plugin discovery (mirror frontmatter, delegate to skill)

@@ -16,7 +16,7 @@ Test that user intents are correctly routed to action files.
 
 ### TC-3: Add leads
 **Input**: "Add John Smith from Acme Corp to my pipeline"
-**Expected**: Routes to `actions/add-leads.md`
+**Expected**: Routes to `actions/add-update-leads.md`
 **Pass if**: Checks CRM for existing, then adds if new
 
 ### TC-4: Draft outreach
@@ -68,3 +68,21 @@ Test that user intents are correctly routed to action files.
 **Input**: "Check if I got any new replies"
 **Expected**: Routes to `actions/poll-new-activity.md`
 **Pass if**: Reads poll cursor, fetches emails since cursor, filters and matches against known contacts
+
+### TC-14: Routing in Hiring pipeline
+**Setup**: Hiring pipeline workspace with candidate-focused config
+**Input**: "Draft outreach for this candidate"
+**Expected**: Routes to `actions/generate-lead-activity.md`
+**Pass if**: Context gathering and activity generation use hiring-specific workflow (candidate brief, recruiter tone)
+
+### TC-15: Routing in BD pipeline
+**Setup**: BD pipeline workspace with partner-focused config
+**Input**: "Who should I follow up with?"
+**Expected**: Routes to `actions/get-leads.md` → `fetch-due-leads`
+**Pass if**: CRM queried using partnership list query from BD config
+
+### TC-16: Routing in JobSearch pipeline
+**Setup**: JobSearch pipeline workspace
+**Input**: "Find me new opportunities"
+**Expected**: Routes to `discover-leads` command
+**Pass if**: Discovery uses JobSearch-specific sources (company research, contact finder)
