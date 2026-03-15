@@ -16,7 +16,7 @@ Test that user intents are correctly routed to action files.
 
 ### TC-3: Add leads
 **Input**: "Add John Smith from Acme Corp to my pipeline"
-**Expected**: Routes to `actions/add-leads.md`
+**Expected**: Routes to `actions/add-update-leads.md`
 **Pass if**: Checks CRM for existing, then adds if new
 
 ### TC-4: Draft outreach

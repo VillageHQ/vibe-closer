@@ -118,7 +118,7 @@ Based on the user's request, route to the appropriate action file in `actions/`:
 | User Intent | Action File |
 |---|---|
 | "Show me my leads" / "Who needs follow-up?" | `actions/get-leads.md` |
-| "Add these leads" / "Track this company" | `actions/add-leads.md` |
+| "Add these leads" / "Track this company" | `actions/add-update-leads.md` |
 | "Tell me about this lead" | `actions/gather-lead-context.md` |
 | "Draft outreach for X" / "What should I send?" | `actions/generate-lead-activity.md` |
 | "Show pending drafts" | `actions/view-pending-activity.md` |
@@ -155,13 +155,13 @@ All action files live in `actions/`:
 | Action | File | Description |
 |---|---|---|
 | Get leads | `get-leads.md` | Fetch due leads or all leads from CRM |
-| Add leads | `add-leads.md` | Add, update, or remove leads in CRM |
+| Add/update leads | `add-update-leads.md` | Add, update, or remove leads in CRM |
 | Gather context | `gather-lead-context.md` | Aggregate lead info from CRM, email, LinkedIn, meetings, network |
-| Generate activity | `generate-lead-activity.md` | Draft outreach following workflow rules and messaging guidelines |
+| Generate activity | `generate-lead-activity.md` | Draft outreach messages following workflow rules and messaging guidelines |
 | View pending | `view-pending-activity.md` | Show drafted activities awaiting approval |
 | Update activity | `update-activity.md` | Edit a pending activity's body |
 | Approve activity | `approve-activity.md` | Human-in-the-loop approval (single or bulk) |
-| Execute activity | `execute-activity.md` | Send emails, LinkedIn messages, or update CRM |
+| Execute activity | `execute-activity.md` | Send emails and LinkedIn messages |
 | Evaluate performance | `evaluate-performance.md` | Measure pipeline metrics against goals |
 | Learn | `learn.md` | Extract learnings from results and update workspace files |
 | Update content | `update-content.md` | Rebuild profile, goals, strategy, and messaging guidelines |
