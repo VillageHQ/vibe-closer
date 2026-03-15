@@ -54,6 +54,38 @@ After confirming the active pipeline, check whether a re-index is due:
    - Execute `commands/re-index.md`
 3. Otherwise, skip — index was recently verified
 
+## Context Resilience
+
+Multi-step commands (`/setup`, `/followup`, `/discover-leads`, `/learn`) must survive context compaction. Follow these rules:
+
+### TodoWrite as Session Checkpoint
+Before starting a multi-step command, create TodoWrite tasks for each phase. Include the command name and phase details in each task description. Example:
+- `[followup] Phase 1: Fetch due leads` → in_progress
+- `[followup] Phase 2: Gather lead context` → pending
+- `[followup] Phase 3: Generate outreach drafts` → pending
+- `[followup] Phase 4: Present for approval` → pending
+
+Mark each task `in_progress` as you begin it and `completed` when done. Only one task should be `in_progress` at a time. TodoWrite is per-session and survives compaction.
+
+### Progressive Context Loading
+Load everything from the workspace that is relevant and could be useful for the current task:
+- **Always load**: `config.md` (providers, settings)
+- **Load per-phase**: the action/command file needed for the current step
+- **Load when beneficial**: workspace content files (profile, messaging-guidelines, etc.) when the phase would benefit from them
+
+This delays compaction and reduces context lost when it happens.
+
+### Sub-Agent Isolation
+Use sub-agents for MCP calls and isolated research to keep heavy responses out of the main context. Always provide the sub-agent with detailed context about what's relevant so it returns only what matters — a summary, key data, and source references.
+
+Skip sub-agents for trivially small responses (e.g., `whoami`, single-record lookups). Multi-source orchestration stays in the main context.
+
+### Post-Compaction Recovery
+After context compaction:
+1. Check TodoWrite tasks — the `in_progress` task tells you the current command and phase
+2. Use a sub-agent to extract the current phase instructions from the relevant command file — you don't need to reload the full SKILL.md or command file if you don't need it
+3. Resume from the `in_progress` task
+
 ## Commands
 
 These are user-facing commands that orchestrate multiple actions:
@@ -70,13 +102,14 @@ These are user-facing commands that orchestrate multiple actions:
 
 ### 1. Read Workspace Context
 
-Before any action, load the workspace context:
+Before any action, load the relevant context:
 
-1. Read `CLAUDE.md` in the pipeline directory — this is the workspace index listing all files and their purposes. (An `AGENTS.md` mirror exists for non-Claude tools — both files have identical content.)
-2. Read `config.md` — MCP providers, pipeline name, field mappings (always required).
-3. Read every file referenced in the Quick Reference section of `CLAUDE.md`.
+1. Read `config.md` — MCP providers, pipeline name, field mappings (always required).
+2. Read `CLAUDE.md` in the pipeline directory — the workspace index listing all files and their purposes. (An `AGENTS.md` mirror exists for non-Claude tools — both files have identical content.)
+3. Read the specific action or command file for the current intent.
+4. Load additional workspace files that could be of benefit to the action being executed (e.g., messaging-guidelines when drafting outreach, profile when generating content).
 
-The `CLAUDE.md` is the source of truth for what files exist. Different pipeline types have different file structures, and `update-content` may create additional files over time. Always use `CLAUDE.md` to discover what to load rather than assuming a fixed file list. When writing updates to the workspace index, update both `CLAUDE.md` and `AGENTS.md` to keep them in sync.
+You don't need to load all referenced files upfront — this wastes context window and accelerates compaction. `CLAUDE.md` is the source of truth for what files exist. Different pipeline types have different file structures, and `update-content` may create additional files over time. Always use `CLAUDE.md` to discover what to load rather than assuming a fixed file list. When writing updates to the workspace index, update both `CLAUDE.md` and `AGENTS.md` to keep them in sync.
 
 ### 2. Determine Intent
 

@@ -6,13 +6,22 @@ description: "Discover new leads from email, meetings, and conversations"
 
 Invoke the `vibe-closer` skill using the Skill tool, then execute this workflow:
 
-1. Read `lead_preferences/lead-discovery.md` for discovery instructions
-2. Search for potential leads using configured sources:
-   - `{{NOTETAKER}}` — recent meeting transcripts
-   - `{{EMAIL_INBOX}}` — recent email conversations
-   - `{{FETCH_RELATIONSHIPS}}` — relationship graph
-3. For each potential lead:
-   a. Check if already tracked in `{{CRM_TRACKER}}`
-   b. If not tracked, draft an `add_lead` activity
-4. Present discovered leads to user for review
-5. For approved leads: read `actions/add-leads.md` → add to CRM
+## Phase 1: Load Discovery Instructions
+Read `lead_preferences/lead-discovery.md` for discovery instructions.
+
+## Phase 2: Search for Potential Leads
+Search for potential leads using configured sources:
+- `{{NOTETAKER}}` — recent meeting transcripts
+- `{{EMAIL_INBOX}}` — recent email conversations
+- `{{FETCH_RELATIONSHIPS}}` — relationship graph
+
+## Phase 3: Deduplicate Against CRM
+For each potential lead:
+1. Check if already tracked in `{{CRM_TRACKER}}`
+2. If not tracked, draft an `add_lead` activity
+
+## Phase 4: Present for Review
+Present discovered leads to user for review.
+
+## Phase 5: Add Approved Leads
+For approved leads: read `actions/add-leads.md` → add to CRM.
