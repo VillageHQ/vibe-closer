@@ -3,9 +3,9 @@
 This is a vibe-closer workspace for managing a B2B/B2C sales pipeline.
 
 ## Quick Reference
-- **Config**: `config.md` — MCP providers, outreach channels, and field mappings
+- **Config**: `pipeline-config.md` — MCP providers, outreach channels, field mappings, and pipeline stages
 - **Goals**: `goals.md` — success metrics
-- **Workflow**: `workflow-planner.md` — outreach sequencing rules
+- **Workflow**: `sequence-flow.md` — outreach sequencing rules (stages are in config)
 - **ICPs**: `profile/icps.md` — ideal customer profiles
 - **Scheduling**: `profile/scheduling-links.md` — booking links and key URLs
 - **Tone**: `messaging-guidelines/tone.md` — voice and style guidelines

@@ -33,7 +33,7 @@ Self-improvement loop that updates workspace files based on real results.
    - Did the user skip suggested steps?
    - Did they change the follow-up timing?
    - Did they prefer certain channels over others?
-2. Compare actual workflow vs `workflow-planner.md` rules
+2. Compare actual workflow vs `sequence-flow.md` rules
 
 ## Step 2: Clarify with User
 
@@ -56,13 +56,13 @@ Wait for user confirmation before making changes.
 For each approved learning, update the relevant file:
 - Messaging patterns → `messaging-guidelines/` files
 - Profile/ICP changes → `profile/icps.md`
-- Workflow changes → `workflow-planner.md`
+- Workflow changes → `sequence-flow.md`
 - Tone adjustments → `messaging-guidelines/tone.md`
 
 ## Step 4: Record & Timestamp
 
 1. Generate a learning report in `progress/learnings/[date]-learnings.md`
-2. Update `{{LAST_LEARNING_DATE}}` in `config.md` to today's date
+2. Update `{{LAST_LEARNING_DATE}}` in `pipeline-config.md` to today's date
 
 ## Learning Report Format
 

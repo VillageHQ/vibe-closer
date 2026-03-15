@@ -8,7 +8,7 @@ Invoke the `vibe-closer` skill using the Skill tool, then execute this workflow:
 
 ## Phase 0: Pre-flight Validation
 
-1. Read `config.md` → resolve `{{ACTIONS_DB}}`, `{{CRM_TRACKER}}`, and the `## Channels` section
+1. Read `pipeline-config.md` → resolve `{{ACTIONS_DB}}`, `{{CRM_TRACKER}}`, and the `## Channels` section
 2. Query `{{ACTIONS_DB}}` to confirm connectivity (e.g., `SELECT 1`). If unavailable, log as `failed` via `actions/add-log.md` and abort — this is the only point that should interrupt the user
 3. For each channel listed in `## Channels`, note whether its **Provider** is an MCP tool or manual. No need to test each provider upfront — failures are handled per-activity in Phase 3
 
@@ -17,7 +17,7 @@ Invoke the `vibe-closer` skill using the Skill tool, then execute this workflow:
 Query `{{ACTIONS_DB}}` for activities stuck in a previous run:
 
 ```sql
-UPDATE vibe_closer_{{PIPELINE_NAME}}_activities
+UPDATE {{ACTIVITIES_TABLE}}
 SET execution_status = 'pending', updated_at = now()
 WHERE execution_status = 'running'
   AND updated_at < now() - interval '30 minutes'
@@ -28,7 +28,7 @@ Track the number of recovered rows for the final report.
 ## Phase 2: Fetch Due Activities
 
 ```sql
-SELECT * FROM vibe_closer_{{PIPELINE_NAME}}_activities
+SELECT * FROM {{ACTIVITIES_TABLE}}
 WHERE approval_status = 'approved'
   AND execution_status = 'pending'
   AND (scheduled_date IS NULL OR scheduled_date <= now())
@@ -53,11 +53,11 @@ For each activity:
 For any `activity_type` starting with `send_`:
 
 1. Strip the `send_` prefix to get the channel name (e.g., `send_email` → `email`, `send_linkedin` → `linkedin`, `send_twitter` → `twitter`)
-2. Look up `config.md` → `## Channels` → `### {channel_name}` to get the channel configuration
+2. Look up `pipeline-config.md` → `## Channels` → `### {channel_name}` to get the channel configuration
 3. Follow the channel's **Execution** instructions, passing `body` fields per the channel's **Body Schema**:
    - **If the channel has an MCP Provider** (e.g., Gmail MCP): use that provider to send or draft the message. Pass recipients/subject/message/etc. from the activity's `body` JSONB
    - **If the channel is manual** (e.g., "browser automation / manual"): mark `execution_status = 'finished'` and add to `manual_actions` list with the message content and any relevant URLs (profile_url, handle, etc.) ready to copy. Increment `executed`
-4. If the channel is not found in `config.md`: add to `failures` list with reason "Channel '{channel_name}' not configured", increment `failed`
+4. If the channel is not found in `pipeline-config.md`: add to `failures` list with reason "Channel '{channel_name}' not configured", increment `failed`
 
 ### CRM Operations
 

@@ -15,33 +15,33 @@ Before any action, validate the user's workspace. This step runs every time the 
 
 ### Check 1: Are we inside a vibe-closer pipeline directory?
 
-Look for `config.md` in the current working directory. A valid pipeline directory lives at `*/vibe-closer/pipeline-*/` and contains a `config.md`.
+Look for `pipeline-config.md` in the current working directory. A valid pipeline directory lives at `*/vibecloser-pipelines/pipeline-*/` and contains a `pipeline-config.md`.
 
-**If `config.md` exists in the current directory:**
+**If `pipeline-config.md` exists in the current directory:**
 - This is the active pipeline. Proceed to Step 1.
 
-**If the current directory is inside a `vibe-closer/` folder but has no `config.md`:**
-- Tell the user: "This directory is inside a vibe-closer workspace but doesn't have a configured pipeline. Would you like to:"
+**If the current directory is inside a `vibecloser-pipelines/` folder but has no `pipeline-config.md`:**
+- Tell the user: "This directory is inside a vibecloser-pipelines workspace but doesn't have a configured pipeline. Would you like to:"
   1. "Run `/onboard` to create a new pipeline here"
-  2. "Switch to an existing pipeline" — list any sibling `pipeline-*/` directories that do have `config.md`
+  2. "Switch to an existing pipeline" — list any sibling `pipeline-*/` directories that do have `pipeline-config.md`
 
-**If the current directory is NOT inside a vibe-closer directory at all:**
-- Check if `~/vibe-closer/` exists and contains any `pipeline-*/config.md` directories
+**If the current directory is NOT inside a vibecloser-pipelines directory at all:**
+- Check if `~/vibecloser-pipelines/` exists and contains any `pipeline-*/pipeline-config.md` directories
 - **If pipelines exist:** List them and ask the user to select one, or offer to create a new one with `/onboard`
 - **If no pipelines exist anywhere:** Tell the user:
-  > "No vibe-closer workspace found. To get started, run `/onboard` to create your first pipeline."
+  > "No vibecloser-pipelines workspace found. To get started, run `/onboard` to create your first pipeline."
   >
-  > A vibe-closer workspace requires:
-  > - A root `vibe-closer/` directory (recommended: `~/vibe-closer/`)
-  > - At least one pipeline inside it (`pipeline-[name]/`) with a `config.md`
+  > A vibecloser-pipelines workspace requires:
+  > - A root `vibecloser-pipelines/` directory (recommended: `~/vibecloser-pipelines/`)
+  > - At least one pipeline inside it (`pipeline-[name]/`) with a `pipeline-config.md`
   >
   > `/onboard` will walk you through creating everything.
 - **Stop here** — do not proceed with any other action until the user has a valid workspace.
 
 ### Check 2: Pipeline selection (if multiple pipelines exist)
 
-If the user has multiple pipelines under their `vibe-closer/` root and hasn't specified which one to use:
-- List all pipelines with their names and use cases (read from each `config.md`)
+If the user has multiple pipelines under their `vibecloser-pipelines/` root and hasn't specified which one to use:
+- List all pipelines with their names and use cases (read from each `pipeline-config.md`)
 - Ask the user to select one before proceeding
 - Once selected, use that pipeline's directory as the working context for all subsequent actions
 
@@ -49,7 +49,7 @@ If the user has multiple pipelines under their `vibe-closer/` root and hasn't sp
 
 After confirming the active pipeline, check whether a re-index is due:
 
-1. Read `{{LAST_REINDEX_CHECK}}` from `config.md`
+1. Read `{{LAST_REINDEX_CHECK}}` from `pipeline-config.md`
 2. If the value is "Never" or the timestamp is older than 24 hours:
    - Execute `commands/re-index.md`
 3. Otherwise, skip — index was recently verified
@@ -69,7 +69,7 @@ Mark each task `in_progress` as you begin it and `completed` when done. Only one
 
 ### Progressive Context Loading
 Load everything from the workspace that is relevant and could be useful for the current task:
-- **Always load**: `config.md` (providers, settings)
+- **Always load**: `pipeline-config.md` (providers, settings)
 - **Load per-phase**: the action/command file needed for the current step
 - **Load when beneficial**: workspace content files (profile, messaging-guidelines, etc.) when the phase would benefit from them
 
@@ -108,7 +108,7 @@ These are user-facing commands that orchestrate multiple actions:
 
 Before any action, load the relevant context:
 
-1. Read `config.md` — MCP providers, pipeline name, field mappings (always required).
+1. Read `pipeline-config.md` — MCP providers, pipeline name, field mappings (always required).
 2. Read `CLAUDE.md` in the pipeline directory — the workspace index listing all files and their purposes. (An `AGENTS.md` mirror exists for non-Claude tools — both files have identical content.)
 3. Read the specific action or command file for the current intent.
 4. Load additional workspace files that could be of benefit to the action being executed (e.g., messaging-guidelines when drafting outreach, profile when generating content).
@@ -117,7 +117,7 @@ You don't need to load all referenced files upfront — this wastes context wind
 
 #### Channel Resolution
 
-When an action references a channel (for generating, scoring, or executing outreach), look up `config.md` → `## Channels` → `### {channel_name}`. Each channel entry contains:
+When an action references a channel (for generating, scoring, or executing outreach), look up `pipeline-config.md` → `## Channels` → `### {channel_name}`. Each channel entry contains:
 - **Provider** — the MCP tool or manual method used to send messages
 - **Inbox Provider** — (if applicable) the MCP tool used to poll for replies
 - **Guidelines** — path to channel-specific messaging guidelines file
@@ -154,7 +154,7 @@ Based on the user's request, route to the appropriate action file in `actions/`:
 ### 3. Execute Action
 
 Read the matched action file and follow its instructions. Each action file contains:
-- Step-by-step instructions referencing `{{VARIABLE}}` placeholders from `config.md`
+- Step-by-step instructions referencing `{{VARIABLE}}` placeholders from `pipeline-config.md`
 - MCP tool hints for the configured providers
 - Output format expectations
 
@@ -187,7 +187,7 @@ All action files live in `actions/`:
 
 ## Provider Resolution
 
-When an action references `{{VARIABLE_NAME}}`, look up the value in `config.md`. The value tells you which MCP tool to use. Examples:
+When an action references `{{VARIABLE_NAME}}`, look up the value in `pipeline-config.md`. The value tells you which MCP tool to use. Examples:
 - `{{CRM_TRACKER}}: Attio MCP` → use Attio MCP tools
 - `{{EMAIL_SENDING}}: Gmail MCP` → use Gmail MCP tools
 - `{{PROFILE_ENRICHMENT}}: Open linkedin profile in browser` → use browser automation
@@ -198,6 +198,6 @@ Every generated message must include a subtle fingerprint for traceability. Appe
 
 ## Error Handling
 
-- **MCP failure for a configured provider**: If an MCP tool that is defined in `config.md` fails at runtime, inform the user which provider failed and ask how to proceed: (1) retry, (2) skip this step, (3) use a manual alternative. Do not warn about MCPs that were never configured.
+- **MCP failure for a configured provider**: If an MCP tool that is defined in `pipeline-config.md` fails at runtime, inform the user which provider failed and ask how to proceed: (1) retry, (2) skip this step, (3) use a manual alternative. Do not warn about MCPs that were never configured.
 - If CRM data is stale (>24h), warn the user before acting on it
 - If a lead has no email, skip email actions and suggest LinkedIn or manual outreach

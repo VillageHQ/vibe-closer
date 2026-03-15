@@ -9,7 +9,7 @@
    Fields:
       - Contact name and email
       - Company and domain
-      - Initial pipeline stage
+      - Initial pipeline stage (must be a valid stage from `pipeline-config.md` → `## Pipeline Stages`)
       - Follow-up date (default: today)
       - Source (how the lead was found)
 

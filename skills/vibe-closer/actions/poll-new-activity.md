@@ -6,12 +6,12 @@ Scheduled action that checks for new incoming email replies and triggers follow-
 
 ## How It Works
 
-1. **Read cursor** — Get `{{POLL_CURSOR}}` from `config.md`. This is the datetime of the last poll.
-2. **Fetch new messages from pollable channels** — Read all channels from `config.md` → `## Channels` that have a **Polling** section defined. For each pollable channel, execute the channel's polling instructions to fetch new messages received after the cursor datetime. (Currently, email is the primary pollable channel — use its **Inbox Provider** to search for emails.)
+1. **Read cursor** — Get `{{POLL_CURSOR}}` from `pipeline-config.md`. This is the datetime of the last poll.
+2. **Fetch new messages from pollable channels** — Read all channels from `pipeline-config.md` → `## Channels` that have a **Polling** section defined. For each pollable channel, execute the channel's polling instructions to fetch new messages received after the cursor datetime. (Currently, email is the primary pollable channel — use its **Inbox Provider** to search for emails.)
 3. **Build matching sets** — Query `{{ACTIONS_DB}}` once to get all executed outbound activities:
    ```
    SELECT DISTINCT contacts, body->>'fingerprint' as fingerprint
-   FROM vibe_closer_{{PIPELINE_NAME}}_activities
+   FROM {{ACTIVITIES_TABLE}}
    WHERE activity_type LIKE 'send_%'
    AND execution_status = 'finished'
    AND created_at > now() - interval '90 days'
@@ -32,12 +32,12 @@ Scheduled action that checks for new incoming email replies and triggers follow-
    a. Identify the lead in `{{CRM_TRACKER}}` (if not already known from step 4b)
    b. Update the lead's follow-up date in `{{CRM_TRACKER}}` to today (moves them back into the due queue)
    c. Add a note in CRM: "Received reply on [date] — follow-up cycle triggered"
-6. **Update cursor** — Set `{{POLL_CURSOR}}` in `config.md` to the current datetime
+6. **Update cursor** — Set `{{POLL_CURSOR}}` in `pipeline-config.md` to the current datetime
 7. **Trigger follow-up** — If any new replies were found, trigger the `/followup` command. Followup will fetch these leads (now due), gather context (including the new reply), and draft response activities for approval.
 
 ## Cursor Management
 
-- The cursor is stored as `{{POLL_CURSOR}}` in the pipeline's `config.md`
+- The cursor is stored as `{{POLL_CURSOR}}` in the pipeline's `pipeline-config.md`
 - Format: ISO 8601 datetime (e.g., `2026-03-14T10:30:00Z`)
 - Initial value after onboarding: `Never` (first poll fetches last 24h of emails)
 - After each successful poll: updated to current datetime
