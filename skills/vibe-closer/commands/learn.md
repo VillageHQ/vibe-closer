@@ -81,3 +81,7 @@ For each approved learning, update the relevant file:
 ### Skipped (user declined)
 - [Learning 1]: [reason]
 ```
+
+## Final: Log
+
+Log a summary of this entire execution using `actions/add-log.md`.

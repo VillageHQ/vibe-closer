@@ -3,7 +3,7 @@
 This is a vibe-closer workspace for managing a B2B/B2C sales pipeline.
 
 ## Quick Reference
-- **Config**: `config.md` — MCP providers and field mappings
+- **Config**: `config.md` — MCP providers, outreach channels, and field mappings
 - **Goals**: `goals.md` — success metrics
 - **Workflow**: `workflow-planner.md` — outreach sequencing rules
 - **ICPs**: `profile/icps.md` — ideal customer profiles
@@ -21,6 +21,7 @@ This is a vibe-closer workspace for managing a B2B/B2C sales pipeline.
 - `/followup` — Process due leads and generate activities
 - `/discover-leads` — Find new leads from conversations and emails
 - `/learn` — Analyze performance and improve workspace files
+- `/view-logs` — View command execution logs and outcomes
 
 ## Maintenance
 - When files are added, removed, or renamed in this directory, update both CLAUDE.md and AGENTS.md to reflect the changes

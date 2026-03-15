@@ -98,8 +98,9 @@ These are user-facing commands that orchestrate multiple actions:
 | `/learn` | `commands/learn.md` | Analyze pipeline performance and improve workspace content |
 | `/re-index` | `commands/re-index.md` | Re-index workspace files to update CLAUDE.md and AGENTS.md |
 | `/poll-new-activity` | `commands/poll-new-activity.md` | Check for new email replies and trigger follow-up cycles |
-| `/execute-actions` | `commands/execute-actions.md` | Execute all approved activities (send emails, update CRM, etc.) |
+| `/execute-approved-activity` | `commands/execute-approved-activity.md` | Execute all approved, due activities — sends outreach, updates CRM, adds leads |
 | `/view-pending-activity` | `commands/view-pending-activity.md` | View pending activities awaiting approval |
+| `/view-logs` | `commands/view-logs.md` | View command execution logs and outcomes |
 
 ## Core Workflow
 
@@ -114,6 +115,20 @@ Before any action, load the relevant context:
 
 You don't need to load all referenced files upfront — this wastes context window and accelerates compaction. `CLAUDE.md` is the source of truth for what files exist. Different pipeline types have different file structures, and `update-content` may create additional files over time. Always use `CLAUDE.md` to discover what to load rather than assuming a fixed file list. When writing updates to the workspace index, update both `CLAUDE.md` and `AGENTS.md` to keep them in sync.
 
+#### Channel Resolution
+
+When an action references a channel (for generating, scoring, or executing outreach), look up `config.md` → `## Channels` → `### {channel_name}`. Each channel entry contains:
+- **Provider** — the MCP tool or manual method used to send messages
+- **Inbox Provider** — (if applicable) the MCP tool used to poll for replies
+- **Guidelines** — path to channel-specific messaging guidelines file
+- **Templates** — path to channel-specific message templates file (if applicable)
+- **Body Schema** — the JSON structure for the activity's `body` column
+- **Fingerprint Method** — how to embed a tracing UUID for reply matching
+- **Execution** — natural-language instructions for executing this activity type
+- **Polling** — instructions for polling replies (or "None" if not supported)
+
+The `activity_type` for outreach is always `send_{channel_name}` (e.g., `send_email`, `send_linkedin`, `send_twitter`). CRM operations (`update_followup_date`, `change_pipeline_stage`, `add_lead`) are not channels and remain hardcoded.
+
 ### 2. Determine Intent
 
 Based on the user's request, route to the appropriate action file in `actions/`:
@@ -127,12 +142,13 @@ Based on the user's request, route to the appropriate action file in `actions/`:
 | "Show pending drafts" | `commands/view-pending-activity.md` |
 | "Edit this draft" | `actions/update-activity.md` |
 | "Approve this" / "LGTM" | `actions/approve-activity.md` |
-| "Send it" / "Execute" | `commands/execute-actions.md` |
+| "Send it" / "Execute" | `commands/execute-approved-activity.md` |
 | "How am I doing?" / "Show metrics" | `actions/evaluate-performance.md` |
 | "Learn from results" / "Improve messaging" | `commands/learn.md` |
 | "Update my content" / "Rebuild profile" / "Redo messaging" | `actions/update-content.md` |
 | "What's the confidence on this?" / "Why was this scored low?" | `commands/view-pending-activity.md` (view scoring breakdown) |
 | "Add a note" / "Give feedback on this draft" | `actions/add-note.md` |
+| "Show me the logs" / "What happened recently?" | `commands/view-logs.md` |
 | *(scheduled)* New email replies detected | `commands/poll-new-activity.md` |
 
 ### 3. Execute Action
@@ -167,6 +183,7 @@ All action files live in `actions/`:
 | Update content | `update-content.md` | Rebuild profile, goals, strategy, and messaging guidelines |
 | Score activity | `score-activity.md` | Evaluate activity quality and assign confidence score (0–100) |
 | Add note | `add-note.md` | Add feedback to a pending activity and flag for regeneration |
+| Add log | `add-log.md` | Log a command execution result to the logs table |
 
 ## Provider Resolution
 

@@ -15,10 +15,27 @@
 ## Actions Database
 - **{{ACTIONS_DB}}**: Supabase
   - Table name: vibe_closer_{{PIPELINE_NAME}}_activities
+  - Logs table: vibe_closer_{{PIPELINE_NAME}}_logs
 
-## Email (Required)
-- **{{EMAIL_SENDING}}**: Gmail MCP
-- **{{EMAIL_INBOX}}**: Gmail MCP
+## Channels
+
+### email
+- **Provider**: Gmail MCP
+- **Inbox Provider**: Gmail MCP
+- **Guidelines**: messaging-guidelines/email-guidelines.md
+- **Templates**: messaging-guidelines/email-templates.md
+- **Body Schema**: {"subject": "string", "message": "string", "recipients": [{"name": "string", "email": "string"}], "fingerprint": "string"}
+- **Fingerprint Method**: Embed `<!-- vc:UUID -->` as hidden HTML comment in email signature
+- **Execution**: Draft via Provider (P0: create as draft, P1: send directly)
+- **Polling**: Read inbox via Inbox Provider, match replies by sender email, domain, or fingerprint
+
+### linkedin
+- **Provider**: Browser automation / manual
+- **Guidelines**: messaging-guidelines/linkedin-dm-guidelines.md
+- **Body Schema**: {"message": "string", "profile_url": "string", "fingerprint": "string"}
+- **Fingerprint Method**: None (manual matching)
+- **Execution**: Present message and profile URL, user sends manually or via browser automation
+- **Polling**: None
 
 ## Enrichment (Optional)
 - **{{COMPANY_ENRICHMENT}}**: Village MCP or open website in browser

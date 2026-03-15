@@ -66,3 +66,7 @@ Print a short confirmation:
 ```
 Re-index complete: [N] added, [M] removed. CLAUDE.md and AGENTS.md updated.
 ```
+
+## Final: Log
+
+Log a summary of this entire execution using `actions/add-log.md`.

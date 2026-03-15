@@ -3,13 +3,14 @@
 This is a vibe-closer workspace for managing your job search outreach and pipeline.
 
 ## Quick Reference
-- **Config**: `config.md` — MCP providers and field mappings
+- **Config**: `config.md` — MCP providers, outreach channels, and field mappings
 - **Goals**: `goals.md` — job search targets and success metrics
 - **Workflow**: `workflow-planner.md` — outreach sequencing rules
 - **Target Companies**: `profile/target-company-profiles.md` — target company profiles
 - **Candidate Brief**: `profile/candidate-brief.md` — your value proposition
 - **Scheduling**: `profile/scheduling-links.md` — booking links and key URLs
 - **Tone**: `messaging-guidelines/tone.md` — voice and style guidelines
+- **Email Guidelines**: `messaging-guidelines/email-guidelines.md` — email best practices
 - **Email Templates**: `messaging-guidelines/email-templates.md` — outreach templates
 - **LinkedIn**: `messaging-guidelines/linkedin-dm-guidelines.md` — LinkedIn outreach guidelines
 - **Lead Discovery**: `lead_preferences/lead-discovery.md` — sources for finding opportunities
@@ -20,6 +21,7 @@ This is a vibe-closer workspace for managing your job search outreach and pipeli
 - `/followup` — Process due opportunities and generate activities
 - `/discover-leads` — Find new job opportunities from conversations and emails
 - `/learn` — Analyze performance and improve workspace files
+- `/view-logs` — View command execution logs and outcomes
 
 ## How It Works
 

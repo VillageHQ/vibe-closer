@@ -47,7 +47,7 @@ Is the scheduled date reasonable given `workflow-planner.md` rules? Is the chann
 
 ### 4. Messaging Guideline Adherence (0–20)
 
-Does the tone match `messaging-guidelines/tone.md`? Does the format follow `email-guidelines.md` or `linkedin-dm-guidelines.md`? Are template structures from `email-templates.md` respected?
+Does the tone match `messaging-guidelines/tone.md`? Does the format follow the channel's Guidelines file (as specified in `config.md` → `## Channels` → `### {channel}` → `Guidelines`)? Are template structures from the channel's Templates file respected?
 
 | Range | Meaning |
 |-------|---------|
