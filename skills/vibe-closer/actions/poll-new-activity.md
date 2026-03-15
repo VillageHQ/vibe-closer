@@ -7,12 +7,12 @@ Scheduled action that checks for new incoming email replies and triggers follow-
 ## How It Works
 
 1. **Read cursor** — Get `{{POLL_CURSOR}}` from `config.md`. This is the datetime of the last poll.
-2. **Fetch new emails** — Use `{{EMAIL_INBOX}}` to search for emails received after the cursor datetime.
+2. **Fetch new messages from pollable channels** — Read all channels from `config.md` → `## Channels` that have a **Polling** section defined. For each pollable channel, execute the channel's polling instructions to fetch new messages received after the cursor datetime. (Currently, email is the primary pollable channel — use its **Inbox Provider** to search for emails.)
 3. **Build matching sets** — Query `{{ACTIONS_DB}}` once to get all executed outbound activities:
    ```
    SELECT DISTINCT contacts, body->>'fingerprint' as fingerprint
    FROM vibe_closer_{{PIPELINE_NAME}}_activities
-   WHERE activity_type IN ('send_email', 'send_linkedin')
+   WHERE activity_type LIKE 'send_%'
    AND execution_status = 'finished'
    AND created_at > now() - interval '90 days'
    ```

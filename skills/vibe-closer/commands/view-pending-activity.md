@@ -14,3 +14,7 @@ Query `{{ACTIONS_DB}}` for activities where `approval_status = 'pending'` and pr
 
 ## Phase 3: Offer Actions
 For each activity, offer: view details, view context, view scoring breakdown, approve, edit, add note & regenerate, reject.
+
+## Final: Log
+
+Log a summary of this entire execution using `actions/add-log.md`.

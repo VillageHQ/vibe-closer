@@ -36,7 +36,7 @@ Test that user intents are correctly routed to action files.
 
 ### TC-7: Execute
 **Input**: "Send the approved emails"
-**Expected**: Routes to `actions/execute-activity.md`
+**Expected**: Routes to `commands/execute-approved-activity.md`
 **Pass if**: Only executes approved+pending activities
 
 ### TC-8: Performance

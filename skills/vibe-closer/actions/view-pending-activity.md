@@ -22,7 +22,7 @@ For each activity, offer:
 ## Filtering
 
 Support filters:
-- By activity type: `send_email`, `send_linkedin`, etc.
+- By activity type: any configured channel (`send_{channel}`) or CRM operation (`update_followup_date`, `change_pipeline_stage`, `add_lead`)
 - By scheduled date range
 - By contact/company name
 - By confidence score range (e.g., "show low confidence" = score < 60)

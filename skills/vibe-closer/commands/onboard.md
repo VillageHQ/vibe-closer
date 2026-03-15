@@ -109,22 +109,69 @@ Walk through each `{{VARIABLE}}` in `config.md`. Explain what each provider does
    - Follow-up date field name
    - Status field name
    - Notes field name
-4. `{{EMAIL_SENDING}}` — "Which email provider should I use to draft and send outreach? (e.g., Gmail MCP)"
-5. `{{EMAIL_INBOX}}` — "Which email provider should I read incoming emails from? (e.g., Gmail MCP — usually the same as sending)"
+
+#### Step 5b: Configure Outreach Channels
+
+Ask: "Which channels would you like to use for outreach? Select all that apply:"
+
+1. **Email** (recommended) — requires an email MCP (e.g., Gmail MCP, Outlook MCP)
+2. **LinkedIn** — connection requests and DMs (via browser automation or manual)
+3. **Twitter/X** — DMs or public mentions (via logged-in browser or MCP)
+4. **WhatsApp** — direct messaging (via MCP or manual)
+5. **Other** — "Describe your channel and the MCP or manual method you use"
+
+For each selected channel, collect:
+- **Provider**: Which MCP tool or manual method? (e.g., "Gmail MCP", "browser automation", "manual")
+- **Execution mode**: Draft-then-send, send directly, or manual (present message, user sends)?
+- For **email** specifically: also ask about **Inbox Provider** for reply polling (usually same as sending provider)
+
+Then populate the `## Channels` section in `config.md` with one entry per channel. Each channel entry includes:
+- **Provider**: the MCP or method
+- **Inbox Provider** (email only): for polling replies
+- **Guidelines**: path to `messaging-guidelines/{channel}-guidelines.md`
+- **Templates**: path to templates file (if applicable)
+- **Body Schema**: the JSON structure for the activity body (see default schemas below)
+- **Fingerprint Method**: how to embed tracing fingerprints (or "None" for manual channels)
+- **Execution**: natural-language instructions for how to execute this activity type
+- **Polling**: how to poll for replies (or "None" if not supported)
+
+For new channels beyond email and linkedin (e.g., twitter, whatsapp), create a `messaging-guidelines/{channel}-guidelines.md` file with sensible defaults for that channel's constraints (character limits, tone, timing).
+
+##### Default Body Schemas by Channel
+
+**email:**
+```json
+{"subject": "string", "message": "string", "recipients": [{"name": "string", "email": "string"}], "fingerprint": "string"}
+```
+
+**linkedin:**
+```json
+{"message": "string", "profile_url": "string", "fingerprint": "string"}
+```
+
+**twitter:**
+```json
+{"message": "string", "handle": "string", "fingerprint": "string"}
+```
+
+**Generic (other channels):**
+```json
+{"message": "string", "recipient_id": "string", "fingerprint": "string"}
+```
 
 #### Optional Providers (can add later)
 
 Tell the user: "These are optional — each has a sensible default. You can always change them later with `/onboard update`. Want to configure any of these now?"
 
-6. `{{EMAIL_ENRICHMENT}}` — Find email addresses for leads. Default: Use CRM.
-7. `{{PROFILE_ENRICHMENT}}` — Research lead profiles. Default: Open LinkedIn in browser.
-8. `{{WEBSITE_CRAWLING}}` — Crawl company websites. Default: Open website in browser.
-9. `{{FETCH_RELATIONSHIPS}}` — Find mutual connections. Default: Village MCP.
-10. `{{NOTETAKER}}` — Pull meeting transcripts. Default: Fathom, Granola.
+4. `{{EMAIL_ENRICHMENT}}` — Find email addresses for leads. Default: Use CRM.
+5. `{{PROFILE_ENRICHMENT}}` — Research lead profiles. Default: Open LinkedIn in browser.
+6. `{{WEBSITE_CRAWLING}}` — Crawl company websites. Default: Open website in browser.
+7. `{{FETCH_RELATIONSHIPS}}` — Find mutual connections. Default: Village MCP.
+8. `{{NOTETAKER}}` — Pull meeting transcripts. Default: Fathom, Granola.
 
 #### Scoring
 
-11. `{{AUTO_APPROVE_THRESHOLD}}` — "Minimum confidence score (0–100) for auto-approving generated outreach. Default: 80. Set to 101 to disable auto-approval entirely."
+9. `{{AUTO_APPROVE_THRESHOLD}}` — "Minimum confidence score (0–100) for auto-approving generated outreach. Default: 80. Set to 101 to disable auto-approval entirely."
 
 For each variable, update `config.md` with the value: `{{VARIABLE_NAME : user_value}}`.
 
@@ -141,7 +188,9 @@ CREATE TABLE IF NOT EXISTS vibe_closer_{{PIPELINE_NAME}}_activities (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   approval_status TEXT NOT NULL DEFAULT 'pending' CHECK (approval_status IN ('pending', 'approved', 'rejected')),
   execution_status TEXT NOT NULL DEFAULT 'pending' CHECK (execution_status IN ('pending', 'running', 'finished')),
-  activity_type TEXT NOT NULL CHECK (activity_type IN ('send_email', 'send_linkedin', 'update_followup_date', 'change_pipeline_stage', 'add_lead')),
+  activity_type TEXT NOT NULL,
+  -- Convention: 'send_{channel}' for outreach (e.g., send_email, send_linkedin, send_twitter),
+  -- or CRM ops: 'update_followup_date', 'change_pipeline_stage', 'add_lead'
   contacts JSONB NOT NULL DEFAULT '[]',
   account JSONB NOT NULL DEFAULT '{}',
   scheduled_date TIMESTAMPTZ,
@@ -164,31 +213,46 @@ CREATE INDEX idx_activities_scheduled ON vibe_closer_{{PIPELINE_NAME}}_activitie
 CREATE INDEX idx_activities_regeneration ON vibe_closer_{{PIPELINE_NAME}}_activities (needs_regeneration) WHERE needs_regeneration = true;
 ```
 
+Also create the logs table for tracking command execution history:
+
+```sql
+CREATE TABLE IF NOT EXISTS vibe_closer_{{PIPELINE_NAME}}_logs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  action_name TEXT NOT NULL,
+  action_type TEXT NOT NULL CHECK (action_type IN ('action', 'command')),
+  status TEXT NOT NULL CHECK (status IN ('successful', 'failed', 'partial')),
+  summary TEXT NOT NULL,
+  lead_context JSONB DEFAULT '{}',
+  error_detail TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX idx_logs_action ON vibe_closer_{{PIPELINE_NAME}}_logs (action_name);
+CREATE INDEX idx_logs_status ON vibe_closer_{{PIPELINE_NAME}}_logs (status);
+CREATE INDEX idx_logs_created ON vibe_closer_{{PIPELINE_NAME}}_logs (created_at DESC);
+```
+
 #### Body Schemas by Activity Type
 
-##### send_email
-```json
-{"subject": "string", "message": "string", "recipients": [{"name": "string", "email": "string"}], "fingerprint": "string"}
-```
+##### Outreach Activities (`send_{channel}`)
 
-##### send_linkedin
-```json
-{"message": "string", "profile_url": "string", "fingerprint": "string"}
-```
+Each channel defines its own body schema in `config.md` → `## Channels` → `### {channel}` → `Body Schema`. See Step 5b above for default schemas.
 
-##### update_followup_date
+##### CRM Operations
+
+###### update_followup_date
 ```json
 {"new_date": "ISO 8601 date", "reason": "string"}
 ```
 
-##### change_pipeline_stage
+###### change_pipeline_stage
 ```json
 {"from_stage": "string", "to_stage": "string", "reason": "string"}
 ```
 
-##### add_lead
+###### add_lead
 ```json
-{"contacts": [{"name": "string", "email": "string"}], "account": {"company": "string", "domain": "string"}, "initial_stage": "string", "source": "string"}
+{"contacts": [{"name": "string", "email": "string"}], "account": {"company": "string", "domain": "string"}, "initial_stage": "string", "source": "string", "followup_date": "ISO 8601 date (default: today)"}
 ```
 
 ### Phase 4: Build Pipeline Content
@@ -233,7 +297,7 @@ After content building is complete, educate the user on everything they can do:
 >
 > **Pipeline management:**
 > - `/view-pending-activity` — See all drafted activities waiting for your review. Filter by type, date, contact, or confidence score. Approve, edit, or reject from here.
-> - `/execute-actions` — Run all approved activities right now (send emails, update CRM, etc.). Also great as a scheduled command.
+> - `/execute-approved-activity` — Run all approved activities right now (send emails, update CRM, etc.). Also great as a scheduled command.
 > - `/poll-new-activity` — Check for new email replies and automatically trigger follow-up cycles for leads who responded.
 >
 > **Improvement:**
@@ -253,7 +317,7 @@ After content building is complete, educate the user on everything they can do:
 > 2. **`/poll-new-activity`** — Run every 15 minutes
 >    Detects email replies and moves leads back into your follow-up queue automatically.
 >
-> 3. **`/execute-actions`** — Run every 15 minutes
+> 3. **`/execute-approved-activity`** — Run every 15 minutes
 >    Sends approved activities automatically so there's no delay after you approve something.
 >
 > 4. **`/learn`** — Run once daily (e.g., end of day)
@@ -325,6 +389,31 @@ Present the current pipeline summary (name, use case, providers) and ask:
   - Add columns or indexes (provide the ALTER TABLE statements)
 - Execute the chosen SQL via `{{ACTIONS_DB}}`
 
+If upgrading to v1.12.0+ (channel-agnostic activities), run this migration:
+```sql
+ALTER TABLE vibe_closer_{{PIPELINE_NAME}}_activities
+  DROP CONSTRAINT IF EXISTS vibe_closer_{{PIPELINE_NAME}}_activities_activity_type_check;
+```
+Then add the `## Channels` section to `config.md` with entries for each channel the user wants to use (email and linkedin as defaults). Existing `send_email` and `send_linkedin` activity data remains valid.
+
+If upgrading to v1.13.0+ (command logging), run this migration:
+```sql
+CREATE TABLE IF NOT EXISTS vibe_closer_{{PIPELINE_NAME}}_logs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  action_name TEXT NOT NULL,
+  action_type TEXT NOT NULL CHECK (action_type IN ('action', 'command')),
+  status TEXT NOT NULL CHECK (status IN ('successful', 'failed', 'partial')),
+  summary TEXT NOT NULL,
+  lead_context JSONB DEFAULT '{}',
+  error_detail TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_logs_action ON vibe_closer_{{PIPELINE_NAME}}_logs (action_name);
+CREATE INDEX IF NOT EXISTS idx_logs_status ON vibe_closer_{{PIPELINE_NAME}}_logs (status);
+CREATE INDEX IF NOT EXISTS idx_logs_created ON vibe_closer_{{PIPELINE_NAME}}_logs (created_at DESC);
+```
+
 If upgrading to v1.8.0+ (confidence scoring), run this migration:
 ```sql
 ALTER TABLE vibe_closer_{{PIPELINE_NAME}}_activities
@@ -346,3 +435,7 @@ Changes: [list of what was modified]
 
 Your pipeline is ready. Run /followup to continue working.
 ```
+
+## Final: Log
+
+Log a summary of this entire execution using `actions/add-log.md`.

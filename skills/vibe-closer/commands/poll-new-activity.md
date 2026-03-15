@@ -20,3 +20,7 @@ Set `{{POLL_CURSOR}}` in `config.md` to the current datetime.
 
 ## Phase 5: Trigger Follow-up
 If any new replies were found, trigger the `/followup` command to process the updated leads.
+
+## Final: Log
+
+Log a summary of this entire execution using `actions/add-log.md`.

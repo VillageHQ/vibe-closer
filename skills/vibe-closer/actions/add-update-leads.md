@@ -16,8 +16,8 @@
 ### Updating Leads
 
 1. Look up lead in `{{CRM_TRACKER}}`
-2. Update the specified fields
-3. Add a note with the change reason
+2. Update the specified fields (values may come from either a generated activity's workflow determination or a skip result's `recommended_followup_date` / `recommended_stage`)
+3. Add a note with the change reason (e.g., "Follow-up date set to [date]: manual outreach detected on [date]" or "Prospect requested delay — revisit in [timeframe]")
 
 ### Removing Leads
 

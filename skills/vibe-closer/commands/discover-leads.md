@@ -16,10 +16,14 @@ Search for potential leads using configured sources:
 - `{{FETCH_RELATIONSHIPS}}` — relationship graph
 
 ## Phase 3: Deduplicate Against CRM
-For each potential lead, check if already tracked in `{{CRM_TRACKER}}` using the CRM's native record lookup. Skip leads that already exist. For new leads, draft an `add_lead` activity.
+For each potential lead, check if already tracked in `{{CRM_TRACKER}}` using the CRM's native record lookup. Skip leads that already exist. For new leads, draft an `add_lead` activity with `followup_date` set to today so they're assessed on the next `/followup` run.
 
 ## Phase 4: Present for Review
 Present discovered leads to user for review.
 
 ## Phase 5: Add Approved Leads
 For approved leads: read `actions/add-update-leads.md` → add to CRM.
+
+## Final: Log
+
+Log a summary of this entire execution using `actions/add-log.md`.

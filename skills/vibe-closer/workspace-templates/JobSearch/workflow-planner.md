@@ -1,5 +1,7 @@
 # Workflow Planner
 
+> **Note:** Channels referenced below (email, LinkedIn, etc.) correspond to entries in `config.md` → `## Channels`. If a referenced channel is not configured, skip that step. If additional channels are configured, the user's workflow preferences determine when to use them.
+
 ## Outreach Sequencing Rules
 
 ### Core Principles
