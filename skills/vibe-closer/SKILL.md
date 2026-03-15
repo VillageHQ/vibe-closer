@@ -45,6 +45,15 @@ If the user has multiple pipelines under their `vibe-closer/` root and hasn't sp
 - Ask the user to select one before proceeding
 - Once selected, use that pipeline's directory as the working context for all subsequent actions
 
+### Check 3: Workspace index freshness (daily)
+
+After confirming the active pipeline, check whether a re-index is due:
+
+1. Read `{{LAST_REINDEX_CHECK}}` from `config.md`
+2. If the value is "Never" or the timestamp is older than 24 hours:
+   - Execute `commands/re-index.md`
+3. Otherwise, skip — index was recently verified
+
 ## Commands
 
 These are user-facing commands that orchestrate multiple actions:
@@ -55,17 +64,19 @@ These are user-facing commands that orchestrate multiple actions:
 | `/followup` | `commands/followup.md` | Process all due leads: fetch, gather context, draft outreach, approve, execute |
 | `/discover-leads` | `commands/discover-leads.md` | Find new leads from email, meetings, network, and CRM |
 | `/learn` | `commands/learn.md` | Analyze pipeline performance and improve workspace content |
+| `/re-index` | `commands/re-index.md` | Re-index workspace files to update CLAUDE.md and AGENTS.md |
 
 ## Core Workflow
 
 ### 1. Read Workspace Context
 
-Before any action, load:
-1. `config.md` — MCP providers, pipeline name, field mappings
-2. `goals.md` — success criteria
-3. `workflow-planner.md` — outreach sequencing rules
-4. `profile/icps.md` — ideal customer profiles and pitches
-5. `messaging-guidelines/` — tone, templates, channel guidelines
+Before any action, load the workspace context:
+
+1. Read `CLAUDE.md` in the pipeline directory — this is the workspace index listing all files and their purposes. (An `AGENTS.md` mirror exists for non-Claude tools — both files have identical content.)
+2. Read `config.md` — MCP providers, pipeline name, field mappings (always required).
+3. Read every file referenced in the Quick Reference section of `CLAUDE.md`.
+
+The `CLAUDE.md` is the source of truth for what files exist. Different pipeline types have different file structures, and `update-content` may create additional files over time. Always use `CLAUDE.md` to discover what to load rather than assuming a fixed file list. When writing updates to the workspace index, update both `CLAUDE.md` and `AGENTS.md` to keep them in sync.
 
 ### 2. Determine Intent
 
