@@ -11,7 +11,7 @@ Test suite to validate skill quality across key workflows.
 # Run a specific eval
 ./evaluations/run-evals.sh --eval setup
 ./evaluations/run-evals.sh --eval outreach-quality
-./evaluations/run-evals.sh --eval workflow-routing
+./evaluations/run-evals.sh --eval routing
 ```
 
 ## Eval Categories
@@ -30,6 +30,15 @@ Does the learn action correctly identify patterns and propose workspace updates?
 
 ### 5. Context Gathering (`eval-context.md`)
 Does lead context aggregation pull from all configured sources correctly?
+
+### 6. Poll New Activity (`eval-poll.md`)
+Does email polling correctly detect, filter, and route incoming replies?
+
+### 7. Add Note & Regenerate (`eval-add-note.md`)
+Does user feedback get captured and activities flagged for regeneration?
+
+### 8. Update Content (`eval-update-content.md`)
+Does the content builder correctly audit workspace, ask targeted questions, and generate quality content?
 
 ## Adding New Evals
 
