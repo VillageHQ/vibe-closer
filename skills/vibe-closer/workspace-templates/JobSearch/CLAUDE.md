@@ -6,18 +6,19 @@ This is a vibe-closer workspace for managing your job search outreach and pipeli
 - **Config**: `config.md` — MCP providers and field mappings
 - **Goals**: `goals.md` — job search targets and success metrics
 - **Workflow**: `workflow-planner.md` — outreach sequencing rules
-- **TCPs**: `profile/target-company-profiles.md` — target company profiles
+- **Target Companies**: `profile/target-company-profiles.md` — target company profiles
 - **Candidate Brief**: `profile/candidate-brief.md` — your value proposition
+- **Tone**: `messaging-guidelines/tone.md` — voice and style guidelines
+- **Email Templates**: `messaging-guidelines/email-templates.md` — outreach templates
+- **LinkedIn**: `messaging-guidelines/linkedin-dm-guidelines.md` — LinkedIn outreach guidelines
+- **Lead Discovery**: `lead_preferences/lead-discovery.md` — sources for finding opportunities
 - **Lead Research**: `lead_preferences/research-lead.md` — how to research companies before outreach
-- **Templates**: `messaging-guidelines/email-templates.md` — outreach templates
 
 ## Commands
 - `/setup` — Initial workspace configuration
 - `/followup` — Process due opportunities and generate activities
 - `/discover-leads` — Find new job opportunities from conversations and emails
 - `/learn` — Analyze performance and improve workspace files
-
----
 
 ## How It Works
 
@@ -30,3 +31,6 @@ This workspace helps you systematically reach out to target companies and hiring
 5. **Interview Prep**: Move successful contacts toward interviews
 
 The workflow planner defines stages and rules for progression. Templates ensure consistent, personalized messaging. Your candidate brief and target company profiles keep everything aligned.
+
+## Maintenance
+- When files are added, removed, or renamed in this directory, update this CLAUDE.md to reflect the changes
