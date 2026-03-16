@@ -1,3 +1,7 @@
+<!-- EXAMPLE CONTENT — This file contains example content from the template.
+     ALL content below must be replaced with real content during onboarding.
+     Remove this marker once real content has been written. -->
+
 # LinkedIn DM Guidelines
 
 LinkedIn is a **secondary channel** in your job search workflow. Use it strategically to amplify your outreach, build relationships, and follow up when email doesn't land.

@@ -47,3 +47,8 @@ Test that workspace onboarding works end-to-end.
 ### TC-11: MCP installation mid-onboarding
 **Input**: User chooses "Install an MCP" for a channel or provider
 **Pass if**: Onboarding guides user through setup, tracks overall progress, resumes at the correct step after MCP installed, re-detects the new MCP
+
+### TC-12: Phase 4 invokes full content builder
+**Setup**: Fresh onboarding with Sales template
+**Action**: Complete Phases 1-3, reach Phase 4
+**Pass if**: update-content asks comprehensive foundation questions about the user's business, does NOT treat template example content as real content, generates personalized content in 3 rounds with pauses

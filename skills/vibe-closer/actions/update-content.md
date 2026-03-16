@@ -21,8 +21,13 @@ Read all workspace files silently to understand what exists:
 
 **Determine the pipeline type** from the template structure and config. Note which files have real, actionable content vs. HTML-comment placeholders or boilerplate examples.
 
+**Determine content status for each file:**
+- Files containing `<!-- EXAMPLE CONTENT` marker → treat as **EMPTY/placeholder** regardless of how detailed the content looks. This is template example content that must be fully replaced with content specific to THIS user's business.
+- Files with no marker and substantive content → treat as real user content that can be preserved/refined.
+- Remove the `<!-- EXAMPLE CONTENT` marker from each file as you write real content into it.
+
 **Build a mental inventory:**
-- What content already exists and is usable?
+- What content already exists and is usable? (Only files WITHOUT the example marker count as real content)
 - What's missing entirely?
 - What exists but needs to be significantly upgraded?
 
@@ -30,54 +35,98 @@ Do NOT present this inventory to the user. Use it to skip questions about things
 
 ---
 
-## Phase 2: Foundation Questions
+## Phase 2: Expert Discovery Conversation
 
-Present a SINGLE message with 5-8 questions. Adapt the framing to the pipeline type, but the categories are universal. **Skip any category where the workspace already has real content.**
+You are the domain expert. Conduct a real discovery conversation — not a form. Your goal is to learn everything you need to build world-class pipeline content for this specific user. What you ask should be driven by your expertise, the pipeline type, and what you learn as you go.
 
-### Question Categories
+### How this works
 
-1. **Identity & Offering** — Who are you and what do you do?
-   - Get the core identity: company/person, what they sell/build/offer, to whom
-   - For JobSearch: background, expertise, what role they're looking for
+1. **Start with openers.** Ask 3-5 high-level questions to understand who they are, what they do, and what they're trying to achieve. Let the pipeline type guide your framing — a CRO asks differently than a fundraising strategist.
 
-2. **Target Definition** — Who are you going after?
-   - The foundation for ICPs/investor profiles/partner profiles/target companies
-   - Be specific: "Who's your ideal buyer? Give me a role + company type" not "describe your target market"
+2. **Go deep based on what you hear.** After their first response, ask follow-up questions that probe the areas that matter most for THIS user's situation. A real expert doesn't ask the same questions to every client — they listen and dig into what's interesting, what's weak, what's missing.
 
-3. **Pain Points & Value Mapping** — Why should your target care?
-   - The #1 problem solved, the #1 metric or proof point, the "aha moment"
-   - For Fundraising: strongest traction metric, why now, why this team
+3. **Keep going until you have what you need.** You may need 2-4 rounds of questions. Don't rush. The quality of the content you generate is directly proportional to the depth of discovery you do here. Stop when you're confident you can build every file in the workspace with specific, grounded, ready-to-use content.
 
-4. **Competitive Positioning** — Why you vs alternatives?
-   - What makes them genuinely different, not marketing fluff
-   - For JobSearch: what makes them stand out among other candidates
+4. **Always ask about materials.** At some point, ask what they already have — pitch decks, example emails, product docs, LinkedIn URL, website URL, JDs, resumes, CRM exports, campaign data. The more raw material you get, the better your output.
 
-5. **Goal Definition** — What does winning look like?
-   - Concrete outcomes: book demos, close deals, raise $X by date, get hired, sign partners
-   - Timeline and urgency
+### What you're trying to learn
 
-6. **Warm Network Audit** — Who can help you get there?
-   - Existing relationships, connectors, advisors, investors, customers who'd refer
-   - This unlocks warm intro strategies in workflow planning
+Think backwards from what you need to generate. You'll be building profile files, goals, workflow strategy, lead discovery preferences, research guidelines, tone, email guidelines, email templates, and LinkedIn guidelines. For each of these, ask yourself: **"Do I have enough to write this file with zero placeholders and zero generic language?"** If not, ask another question.
 
-7. **Materials Upload** — What do you already have?
-   - "Drop any files: pitch deck, example emails, product docs, LinkedIn URL, website URL, JDs, resume — the more I get, the fewer questions I'll ask"
-   - If they have nothing, that's fine — say so
+**Skip any topic where the workspace already has real content** (files without the `<!-- EXAMPLE CONTENT` marker that contain substantive content).
 
-8. **Tone & Style** — How should outreach feel?
-   - Quick pick: casual founder-to-peer / professional but warm / crisp and data-driven / other
-   - Or: "share 1-2 example emails you've sent and I'll match your voice"
+Your domain expertise should guide you to ask about things the user wouldn't think to volunteer. Use the hints below as a **gap-check** — not a script. Weave them naturally into your conversation based on what matters most for this user.
 
-9. **Links & Scheduling** — Do you have a scheduling link (Calendly, Cal.com)? A demo link? Portfolio URL?
-   - These get used in email templates and make it easy for prospects to book time
-   - For Sales: demo booking link, scheduling link
-   - For Fundraising: scheduling link, pitch deck link (if not already uploaded)
-   - For Hiring: scheduling link for screening calls
-   - For BD: scheduling link for exploratory calls
-   - For JobSearch: scheduling link, resume/portfolio link, LinkedIn URL
-   - For VCDealFlow: scheduling link for founder meetings
+### Universal topics (cover for every pipeline type)
 
-End with: **"Anything else I should know? Drop any context that would help me build the strongest possible pipeline for you."**
+- **Identity & offering** — who they are, what they do, who it's for
+- **Targets** — specific profiles they're going after (roles, company types, segments)
+- **Pain points & value** — #1 problem solved, proof points, "aha moment"
+- **Competitive positioning** — what makes them genuinely different
+- **Goals & timeline** — concrete outcomes, deadlines, urgency
+- **Warm network** — existing relationships, connectors, advisors, referral sources
+- **Materials** — anything they already have (pitch decks, emails, docs, URLs, CRM exports, campaign data)
+- **Tone & style** — how outreach should feel, or share example emails to match
+- **Scheduling links** — Calendly, demo link, portfolio URL, or equivalent
+- **Lead discovery** — where leads come from today, tools/databases/communities used, inbound vs outbound mix
+- **Lead research** — what they want to know about a lead before reaching out, which signals matter most
+- **Outreach channels** — email, LinkedIn, other channels, and preferences for each
+
+### Domain-specific depth hints
+
+**Sales CRO:**
+- Pricing model and packaging (per seat, usage, flat fee), typical deal size
+- Top 3 objections and how they handle each
+- Win/loss patterns — who they lose deals to and why
+- Customer proof points — 2-3 wins with specifics (company, before/after, metrics)
+- Sales cycle — length, key stages/gates, pipeline velocity bottlenecks
+- What's working in current outreach vs what isn't
+
+**Fundraising strategist:**
+- Round details — target amount, valuation range, use of funds breakdown
+- Strongest traction metric (ARR, growth rate, users, retention)
+- Why now — market timing, company inflection point
+- Founding team — unfair advantage, relevant experience
+- Investor targeting — type preferences (lead vs follow, sector specialists vs generalists)
+- Data room readiness — what's in it, what's missing
+- Warm intro paths to target investors
+
+**BD / Partnerships expert:**
+- Partnership model — integration, co-marketing, reseller, channel, referral
+- Technical integration story — APIs, SDKs, embeds, data sync
+- Mutual value proposition — what the partner gets beyond customer benefit
+- Deal structures — revenue share, flat fee, co-investment
+- Past partnerships — what worked, what didn't, why
+
+**Talent executive:**
+- What makes the role hard to fill — scarcity, niche skills, location
+- Comp range and equity — how it compares to market
+- Remote/hybrid/onsite and location constraints
+- Interview process — stages, timeline, who's involved
+- Top selling points vs competitors for talent
+- Employer brand narrative and culture pitch
+- Referral program — what exists, what works
+
+**Career strategist:**
+- Career narrative — why this move, the thread connecting their experience
+- Achievement portfolio — top 3-5 wins with concrete metrics
+- Non-negotiables — comp floor, location, company stage, role scope
+- What they're optimizing for — comp, mission, growth, team, work-life balance
+- Interview weak spots — questions they struggle with, positioning gaps
+- Resume/portfolio/LinkedIn presence
+
+**VC deal flow:**
+- Fund thesis — sector focus, stage, geography, check size range
+- Portfolio construction — target number of investments, follow-on reserves, ownership targets
+- Pass criteria — what makes them pass on an otherwise good deal
+- Evaluation framework — metrics and signals that matter most at their target stage
+- Anti-portfolio learnings — deals they passed on that succeeded, and what they learned
+
+### Ending discovery
+
+When you're confident you have enough depth, close with: **"Anything else I should know? Drop any context that would help me build the strongest possible pipeline for you."**
+
+Then move to Phase 3.
 
 ---
 
@@ -142,15 +191,19 @@ Create every file in `profile/` that would meaningfully strengthen the pipeline.
 
 Write `goals.md` with specific, measurable targets and timeline based on the user's stated success definition. Include realistic benchmarks based on your domain expertise.
 
-**PAUSE.** Present what you built:
+**PAUSE.** Present what you built AND ask targeted follow-up questions to deepen the content:
 ```
 Here's your foundation:
 
 **Profile** — [list each file with 1-line summary]
 **Goals** — [primary goal + key metrics]
-
-Take a look. Any adjustments before I build the strategy layer (workflow + lead discovery)?
 ```
+
+Then ask 2-4 follow-up questions based on gaps you noticed while generating. Examples:
+- "I built [N] ICPs — are there segments I'm missing? Anyone you've closed recently that doesn't fit these?"
+- "Your goals target [X metric]. Is that the metric your team actually tracks, or is there a different north star?"
+- "I didn't have enough info to build [specific asset, e.g., competitive battlecard, objection handler]. Can you tell me about [specific gap]?"
+- "For [ICP name] — is the pain point I described accurate? What's the #1 objection you hear from this persona?"
 
 Accept edits. Update files based on feedback. Then continue.
 
@@ -177,36 +230,46 @@ Key principles by pipeline type:
 - **Sales / Hiring**: Direct outreach is primary. Warm intros are leverage (social proof), not a prerequisite.
 
 **`lead_preferences/lead-discovery.md`** (or `partner_preferences/`) — Discovery and research strategies tailored to:
+- What you learned in discovery about how they find leads — their current sources, tools, and preferences
 - Available MCPs (what can be automated vs. manual)
 - Public resources (LinkedIn, communities, events, databases)
 - The user's specific use-case and targets
 
-Ask the user: "Any preferences for how you discover leads? For example: polling your inbox for inbound demos, checking form submissions, monitoring specific communities, or any other sources you use?"
+**`lead_preferences/research-lead.md`** (or `partner_preferences/research-lead.md`) — How to research individual leads before outreach. Use what you learned in discovery about their research preferences — the signals that matter, sources they check, and domain-specific priorities.
 
-**`lead_preferences/research-lead.md`** (or `partner_preferences/research-lead.md`) — How to research individual leads before outreach. The template has sensible defaults (profile enrichment, company research, ICP matching, warm path check). Customize the "Custom Research" section based on what the user tells you.
-
-Ask the user: "How do you want leads researched before outreach? For example: check the founder's LinkedIn posts for hot takes, look for recent press coverage or product launches, review their engineering blog, scan job postings for hiring signals — or anything else specific to your domain?"
-
-**PAUSE.** Present what you built:
+**PAUSE.** Present what you built AND ask targeted follow-up questions:
 ```
 Here's your strategy:
 
 **Workflow** — [N-step sequence summary, key principle]
 **Lead Discovery** — [configured sources, key strategies]
-
-Any changes before I build the messaging layer?
+**Lead Research** — [research steps summary]
 ```
+
+Then ask 2-3 follow-up questions to refine strategy. Examples:
+- "Your sequence has [N] steps before pausing. Does that feel like enough touches, or do you want to be more/less persistent?"
+- "I set discovery to check [sources]. Are there any niche communities, Slack groups, or events specific to your space?"
+- "For research — is there anything specific you always look for before reaching out that I haven't included?"
 
 Accept edits. Then continue.
 
 ---
 
-### Round 3 — Messaging: Tone, Templates, Channels
+### Round 3 — Messaging: Tone, Guidelines, Templates, Channels
 
 **`messaging-guidelines/tone.md`** — Voice definition based on:
 - User's stated preference OR analyzed patterns from their existing emails
 - Domain best practices (investor outreach is different from sales cold email)
 - Concrete Do/Don't rules with examples
+
+**`messaging-guidelines/email-guidelines.md`** — Operational email standards tailored to this user's domain and style:
+- Structure rules (subject line length/style, opening hooks, body length, CTA style, signature format)
+- Timing (best days/hours for this audience, follow-up spacing)
+- Personalization requirements (minimum research per email, acceptable sources)
+- Subject line rules specific to this domain
+- Threading and follow-up rules
+- Deliverability best practices (links, attachments, plain text)
+- These are the *rules* that govern how templates are used — keep them consistent with tone.md
 
 **`messaging-guidelines/email-templates.md`** — **100x quality standard.** Every template must:
 - Reference specific data from profile/ files (pain points, value props, competitive edge)
@@ -226,16 +289,21 @@ Templates should cover the full lifecycle: first touch, follow-ups, warm intros,
 - First DM templates per target type
 - Engagement strategy (comment on posts before DM)
 
-**PAUSE.** Present what you built:
+**PAUSE.** Present what you built AND ask targeted follow-up questions:
 ```
 Here's your messaging:
 
 **Tone** — [voice summary, key traits]
+**Email Guidelines** — [key rules: structure, timing, personalization]
 **Email Templates** — [N templates: list names and what they're for]
 **LinkedIn** — [adapted guidelines]
-
-Any tone or template adjustments?
 ```
+
+Then ask 2-3 follow-up questions to refine messaging. Examples:
+- "Do the email templates feel like YOUR voice? If not, paste me an email you've actually sent and I'll re-match the tone."
+- "I included [N] template types. Any outreach scenarios I'm missing? (e.g., re-engaging cold leads, event follow-ups, referral asks)"
+- "For LinkedIn — do you actively post/comment, or is it purely for outreach? This affects whether I include an engagement-first strategy."
+- "Any phrases, words, or approaches that are absolutely off-limits for your brand?"
 
 Accept edits.
 

@@ -1,3 +1,7 @@
+<!-- EXAMPLE CONTENT — This file contains example content from the template.
+     ALL content below must be replaced with real content during onboarding.
+     Remove this marker once real content has been written. -->
+
 # Email Templates
 
 Use these as starting points. **Always personalize** -- swap in specific details from their company, products, recent news, or your mutual connection.

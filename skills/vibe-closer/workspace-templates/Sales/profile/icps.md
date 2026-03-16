@@ -1,3 +1,7 @@
+<!-- EXAMPLE CONTENT — This file contains example content from the template.
+     ALL content below must be replaced with real content during onboarding.
+     Remove this marker once real content has been written. -->
+
 # Ideal Customer Profiles
 
 ## ICP 1: VP/Head of Engineering at Series B-D SaaS Companies

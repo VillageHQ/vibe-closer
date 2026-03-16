@@ -407,6 +407,8 @@ Before delegating to `actions/update-content.md`, help the user understand what 
 >
 > **What sources should I pull from?** You can list multiple, or just say "let's start from scratch" and I'll ask you everything directly.
 
+**Important context for update-content:** This is a FRESH onboarding — the workspace was just created from a template. All content files contain example content marked with `<!-- EXAMPLE CONTENT` markers. Every file must be rebuilt from scratch based on the user's actual business. Do NOT preserve or refine template example content — replace it entirely.
+
 Wait for the user to respond, then execute `actions/update-content.md`. This will:
 1. Ask foundational questions about your business, goals, and targets
 2. Research available sources (website, emails, meetings, network) using configured MCPs

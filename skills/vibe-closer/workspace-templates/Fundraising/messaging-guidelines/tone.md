@@ -1,3 +1,7 @@
+<!-- EXAMPLE CONTENT — This file contains example content from the template.
+     ALL content below must be replaced with real content during onboarding.
+     Remove this marker once real content has been written. -->
+
 # Tone Guidelines
 
 Your voice with investors should be confident, founder-to-founder/investor-to-investor, and narrative-driven. You're not selling; you're inviting them into an opportunity.
