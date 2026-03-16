@@ -74,7 +74,24 @@
    - `account`: company info
    - `scheduled_date`: determined date
    - `summary`: human-readable description
-   - `full_lead_context`: snapshot of context used
+   - `full_lead_context`: Store as a single markdown string with TWO parts — do NOT re-summarize or compress:
+     1. **The COMPLETE structured output from `gather-lead-context`** — paste the full markdown verbatim as returned
+     2. **Generation context appendix** — append after the gathered context:
+        ```
+        ---
+        ## Generation Context
+        ### Workspace Guidelines Applied
+        - **Tone**: [key rules from messaging-guidelines/tone.md that shaped this message]
+        - **Template used**: [template name and source file]
+        - **Channel guidelines**: [key rules from the channel's guidelines file]
+        - **Sequence-flow step**: [current step name/number from sequence-flow.md]
+        - **ICP applied**: [which ICP from profile/icps.md was matched]
+        ### Previous Activity History
+        - [Date]: [activity_type] — [summary] — [outcome/status]
+        ### Regeneration Feedback (if applicable)
+        - [Notes from previous rejected activity]
+        ```
+     Quality check: `full_lead_context` must be detailed enough that a human could draft the same outreach from it alone, without accessing any MCP or workspace file
    - `body`: action-specific payload
    - `confidence_score`: score from scoring step
    - `scoring_breakdown`: full breakdown JSON from scoring step

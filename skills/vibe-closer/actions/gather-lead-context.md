@@ -48,23 +48,46 @@ This file contains the ordered research steps and any custom research preference
 
 ## Output Format
 
+Each section must include enough detail that someone reading ONLY this context could draft a personalized follow-up without accessing any other source. If a source is unavailable or returns no data, include the section header with "Source not configured" or "No data found."
+
 ```markdown
 ## Lead Context: [Name] at [Company]
 
 ### Summary
 [2-3 sentence overview of relationship status and next steps]
 
+### ICP Match Analysis
+- **Matched ICP**: [ICP name from profile/icps.md, or "No match"]
+- **Match signals**: [Bullet list of matching criteria — industry, company size, role, pain points]
+- **Relevance to our offering**: [1-2 sentences on why this lead matters]
+
 ### People
-- [Contact 1]: [role] — [key info]
+- [Contact 1]: [role] — [seniority, responsibilities, LinkedIn summary, notable background]
 - [Contact 2]: [role] — [key info]
 
-### Recent Interactions
-- [Date]: [Channel] — [Summary, action items, next steps]
+### Email History
+For each of the last 10 threads (most recent first):
+- **[Date] — [Subject line]** ([direction: inbound/outbound])
+  - Participants: [list]
+  - Key content: [2-4 sentence summary of substance — what was discussed, proposed, or asked]
+  - Action items / next steps: [verbatim if present]
+  - Status: [awaiting reply / closed / ongoing]
+
+### Meeting History
+For each meeting involving this contact:
+- **[Date] — [Meeting title]** (Attendees: [list])
+  - Discussion points: [bullet list of topics covered]
+  - Key quotes / commitments: [verbatim excerpts that reveal intent, interest level, or objections]
+  - Action items: [verbatim, with owners and deadlines if stated]
+
+### CRM Notes & Activity Log
+- [Date]: [Full note text — do not summarize]
+- Pipeline stage history: [Stage] → [Stage] (date of each transition)
 
 ### Key Selling Points
-- [Point 1 based on ICP match]
-- [Point 2 based on pain points]
+- [Point 1 based on ICP match and pain points identified above]
+- [Point 2 based on company context or meeting insights]
 
 ### Warm Paths
-- [Connection 1]: [relationship context]
+- [Connection 1]: [relationship context, how they know the lead, strength of connection]
 ```
