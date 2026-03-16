@@ -7,7 +7,7 @@ description: "View all pending activities awaiting approval"
 Invoke the `vibe-closer` skill using the Skill tool, then execute this workflow:
 
 ## Phase 1: Open Activity Viewer
-Read `actions/view-pending-activity.md`. The default behavior is to open a browser-based activity viewer via `actions/open-activity-viewer.md`. Falls back to chat-based display if the browser cannot be opened.
+Read `actions/view-pending-activity.md`. The default behavior is to open a browser-based activity viewer. Falls back to chat-based display if the browser cannot be opened.
 
 ## Phase 2: Display Activities
 Query `{{ACTIONS_DB}}` for activities where `approval_status = 'pending'` and present as a filterable table.

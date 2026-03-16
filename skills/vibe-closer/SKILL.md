@@ -178,7 +178,7 @@ All action files live in `actions/`:
 | Update content | `update-content.md` | Rebuild profile, goals, strategy, and messaging guidelines |
 | Score activity | `score-activity.md` | Evaluate activity quality and assign confidence score (0–100) |
 | Add note | `add-note.md` | Add feedback to a pending activity and flag for regeneration |
-| Open activity viewer | `open-activity-viewer.md` | Prepare and open the HTML activity viewer in browser |
+| Sync with skill | `sync-with-skill.md` | Re-sync workspace artifacts (viewer, etc.) from skill source files |
 | Add log | `add-log.md` | Log a command execution result to the logs table |
 
 ## Provider Resolution
