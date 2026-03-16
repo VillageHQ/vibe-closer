@@ -15,32 +15,26 @@ Before any action, validate the user's workspace. This step runs every time the 
 
 ### Check 1: Are we inside a vibe-closer pipeline directory?
 
-Look for `pipeline-config.md` in the current working directory. A valid pipeline directory lives at `*/vibecloser-pipelines/pipeline-*/` and contains a `pipeline-config.md`.
+Look for `pipeline-config.md` in the current working directory. Any directory containing a `pipeline-config.md` is a valid pipeline — it does not need to be under a `vibecloser-pipelines/` parent.
 
 **If `pipeline-config.md` exists in the current directory:**
 - This is the active pipeline. Proceed to Step 1.
 
-**If the current directory is inside a `vibecloser-pipelines/` folder but has no `pipeline-config.md`:**
-- Tell the user: "This directory is inside a vibecloser-pipelines workspace but doesn't have a configured pipeline. Would you like to:"
-  1. "Run `/onboard` to create a new pipeline here"
-  2. "Switch to an existing pipeline" — list any sibling `pipeline-*/` directories that do have `pipeline-config.md`
-
-**If the current directory is NOT inside a vibecloser-pipelines directory at all:**
-- Check if `~/vibecloser-pipelines/` exists and contains any `pipeline-*/pipeline-config.md` directories
-- **If pipelines exist:** List them and ask the user to select one, or offer to create a new one with `/onboard`
-- **If no pipelines exist anywhere:** Tell the user:
-  > "No vibecloser-pipelines workspace found. To get started, run `/onboard` to create your first pipeline."
+**If `pipeline-config.md` is NOT in the current directory:**
+- Walk up parent directories looking for a directory that contains `pipeline-config.md`
+- Also check `~/vibecloser-pipelines/` as the default root — look for any subdirectories containing `pipeline-config.md`
+- **If pipeline(s) found:** List them and ask the user to select one, or offer to create a new one with `/onboard`
+- **If no pipelines found anywhere:** Tell the user:
+  > "No vibe-closer pipeline found. To get started, run `/onboard` to create your first pipeline."
   >
-  > A vibecloser-pipelines workspace requires:
-  > - A root `vibecloser-pipelines/` directory (recommended: `~/vibecloser-pipelines/`)
-  > - At least one pipeline inside it (`pipeline-[name]/`) with a `pipeline-config.md`
+  > A pipeline is any directory containing a `pipeline-config.md`. The recommended location is `~/vibecloser-pipelines/pipeline-[name]/`.
   >
   > `/onboard` will walk you through creating everything.
 - **Stop here** — do not proceed with any other action until the user has a valid workspace.
 
 ### Check 2: Pipeline selection (if multiple pipelines exist)
 
-If the user has multiple pipelines under their `vibecloser-pipelines/` root and hasn't specified which one to use:
+If the user has multiple pipelines and hasn't specified which one to use:
 - List all pipelines with their names and use cases (read from each `pipeline-config.md`)
 - Ask the user to select one before proceeding
 - Once selected, use that pipeline's directory as the working context for all subsequent actions
@@ -101,6 +95,7 @@ These are user-facing commands that orchestrate multiple actions:
 | `/execute-approved-activity` | `commands/execute-approved-activity.md` | Execute all approved, due activities — sends outreach, updates CRM, adds leads |
 | `/view-pending-activity` | `commands/view-pending-activity.md` | View pending activities awaiting approval |
 | `/view-logs` | `commands/view-logs.md` | View command execution logs and outcomes |
+| `/test` | `commands/test.md` | Run end-to-end integration test of the full pipeline flow |
 
 ## Core Workflow
 

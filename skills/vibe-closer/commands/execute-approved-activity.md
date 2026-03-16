@@ -44,9 +44,10 @@ Initialize counters: `executed = 0`, `failed = 0`, `deferred = 0`, plus `failure
 For each activity:
 
 1. Set `execution_status = 'running'` and `updated_at = now()`
-2. Execute based on activity type (see below)
-3. On success: set `execution_status = 'finished'` and `updated_at = now()`, increment `executed`
-4. On failure: reset `execution_status = 'pending'` and `updated_at = now()`, add to `failures` list with error detail, increment `failed`, **continue to next activity**
+2. **Test Mode Check**: If `pipeline-config.md` contains `**Test Mode**: true`, then for outreach activities (`send_{channel}`): skip the channel Provider call, set `execution_status = 'finished'` and `updated_at = now()`, log `[TEST MODE] Skipped send for [contact] via [channel]: [summary]`, increment `executed`, and continue to next activity. CRM operations (`add_lead`, `update_followup_date`, `change_pipeline_stage`) execute normally even in test mode.
+3. Execute based on activity type (see below)
+4. On success: set `execution_status = 'finished'` and `updated_at = now()`, increment `executed`
+5. On failure: reset `execution_status = 'pending'` and `updated_at = now()`, add to `failures` list with error detail, increment `failed`, **continue to next activity**
 
 ### Outreach Activities (`send_{channel}`)
 
