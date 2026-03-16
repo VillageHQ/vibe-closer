@@ -1,5 +1,13 @@
 # View Pending Activity
 
+## Browser Viewer (Default)
+
+Open the rich HTML activity viewer by executing `actions/open-activity-viewer.md`. This provides a full-featured table with inline editing, bulk actions, scoring breakdowns, AI context viewing, filtering, and sorting — all in the browser.
+
+## Chat Fallback
+
+If the browser viewer cannot be opened (e.g., the user explicitly requests chat-based display, or the environment doesn't support `open`), fall back to the table display below.
+
 Query `{{ACTIONS_DB}}` for activities where `approval_status = 'pending'`.
 
 ## Display Format

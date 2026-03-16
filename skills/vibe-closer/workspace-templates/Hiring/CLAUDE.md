@@ -21,6 +21,7 @@ This is a vibe-closer workspace for managing your recruiting and talent acquisit
 - `/followup` — Process candidates who need follow-up
 - `/discover-leads` — Find new candidate prospects from referrals and signals
 - `/learn` — Analyze outreach performance and refine candidate targeting
+- `/view-pending-activity` — Open browser-based activity viewer to review, approve, edit, and manage activities
 - `/view-logs` — View command execution logs and outcomes
 
 ## Maintenance

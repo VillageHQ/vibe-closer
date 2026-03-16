@@ -21,6 +21,7 @@ This is a vibe-closer workspace for managing your fundraising outreach and inves
 - `/followup` — Process warm intros and due leads
 - `/discover-leads` — Find new investor prospects from warm paths and signals
 - `/learn` — Analyze outreach performance and refine investor targeting
+- `/view-pending-activity` — Open browser-based activity viewer to review, approve, edit, and manage activities
 - `/view-logs` — View command execution logs and outcomes
 
 ## Maintenance

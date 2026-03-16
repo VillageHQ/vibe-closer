@@ -20,3 +20,8 @@
 - `skills/vibe-closer/commands/` — canonical command logic (onboard, followup, discover-leads, learn)
 - `skills/vibe-closer/actions/` — 14 action files referenced by SKILL.md routing table
 - `commands/` — thin wrappers for plugin discovery (mirror frontmatter, delegate to skill)
+- `FUTURE-PLANS.md` — living record of planned improvements, gaps, and future work
+
+## Future Plans
+- `FUTURE-PLANS.md` tracks planned improvements, known gaps, and deferred work
+- When building new features or modifying existing ones, consult FUTURE-PLANS.md to check for related planned work, avoid conflicts, and update entries as they're completed

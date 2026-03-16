@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>%%PIPELINE_NAME%% — Activity Viewer</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f5f5f7;
+  --card: #fff;
+  --border: #e5e5e5;
+  --text: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --green: #34c759;
+  --green-bg: #e8f9ed;
+  --yellow: #f0a500;
+  --yellow-bg: #fff8e6;
+  --red: #ff3b30;
+  --red-bg: #ffe5e3;
+  --blue: #007aff;
+  --blue-bg: #e5f1ff;
+  --purple: #af52de;
+  --purple-bg: #f3e8f9;
+  --gray: #8e8e93;
+  --radius: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,.08);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,.12);
+}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Header */
+.header { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.header h1 { font-size: 18px; font-weight: 600; }
+.header .pipeline-badge { background: var(--blue-bg); color: var(--blue); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; margin-left: 12px; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.refresh-btn { background: none; border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 14px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+.refresh-btn:hover { background: var(--bg); }
+.activity-count { font-size: 13px; color: var(--text-secondary); }
+
+/* Filter Bar */
+.filter-bar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.filter-tabs { display: flex; background: var(--bg); border-radius: var(--radius); overflow: hidden; }
+.filter-tab { padding: 6px 16px; font-size: 13px; cursor: pointer; border: none; background: none; color: var(--text-secondary); font-weight: 500; transition: all .15s; }
+.filter-tab.active { background: var(--blue); color: #fff; }
+.filter-tab:hover:not(.active) { color: var(--text); }
+.filter-input { border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 10px; font-size: 13px; outline: none; }
+.filter-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,122,255,.1); }
+.filter-input::placeholder { color: var(--gray); }
+.filter-select { border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 10px; font-size: 13px; background: var(--card); outline: none; cursor: pointer; }
+.filter-group { display: flex; align-items: center; gap: 6px; }
+.filter-label { font-size: 12px; color: var(--text-secondary); white-space: nowrap; }
+.filter-reset { background: none; border: none; color: var(--blue); font-size: 13px; cursor: pointer; padding: 6px 8px; }
+.filter-reset:hover { text-decoration: underline; }
+
+/* Bulk Bar */
+.bulk-bar { background: var(--blue-bg); padding: 10px 24px; display: none; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+.bulk-bar.visible { display: flex; }
+.bulk-bar span { font-size: 13px; font-weight: 500; color: var(--blue); }
+.bulk-btn { padding: 5px 14px; border-radius: var(--radius); border: 1px solid var(--blue); background: var(--card); color: var(--blue); font-size: 13px; cursor: pointer; font-weight: 500; }
+.bulk-btn:hover { background: var(--blue); color: #fff; }
+.bulk-btn.danger { border-color: var(--red); color: var(--red); }
+.bulk-btn.danger:hover { background: var(--red); color: #fff; }
+
+/* Table */
+.table-wrapper { padding: 0 24px 24px; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-top: 16px; }
+thead th { background: var(--bg); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: var(--text-secondary); padding: 10px 12px; text-align: left; white-space: nowrap; border-bottom: 1px solid var(--border); cursor: pointer; user-select: none; position: sticky; top: 56px; z-index: 10; }
+thead th:hover { color: var(--text); }
+thead th.sorted::after { content: ' \u25B2'; font-size: 10px; }
+thead th.sorted.desc::after { content: ' \u25BC'; }
+tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
+tbody tr:nth-child(even) { background: #fafafa; }
+tbody tr:hover { background: #f0f4ff; }
+tbody td { padding: 10px 12px; vertical-align: middle; }
+td.checkbox-col { width: 36px; }
+td.checkbox-col input { cursor: pointer; width: 16px; height: 16px; }
+
+/* Avatar */
+.avatar { width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; flex-shrink: 0; }
+.person-cell { display: flex; align-items: center; gap: 10px; }
+.person-name { font-weight: 500; }
+.person-sub { font-size: 12px; color: var(--text-secondary); }
+
+/* Activity preview */
+.activity-subject { font-weight: 500; font-size: 13px; margin-bottom: 2px; }
+.activity-preview { font-size: 13px; color: var(--text-secondary); max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Badges */
+.badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+.badge-overdue { background: var(--red-bg); color: var(--red); }
+.badge-approved { background: var(--green-bg); color: var(--green); }
+.badge-pending { background: var(--yellow-bg); color: var(--yellow); }
+.badge-rejected { background: var(--red-bg); color: var(--red); }
+
+/* Confidence */
+.confidence { font-weight: 600; cursor: pointer; }
+.confidence:hover { text-decoration: underline; }
+.confidence.high { color: var(--green); }
+.confidence.medium { color: var(--yellow); }
+.confidence.low { color: var(--red); }
+
+/* Action buttons */
+.action-row { display: flex; gap: 6px; align-items: center; flex-wrap: nowrap; }
+.action-btn { display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--card); font-size: 12px; cursor: pointer; white-space: nowrap; transition: all .15s; }
+.action-btn:hover { background: var(--bg); }
+.action-btn.approve { border-color: var(--green); color: var(--green); }
+.action-btn.approve:hover { background: var(--green); color: #fff; }
+.action-btn.edit { border-color: var(--blue); color: var(--blue); }
+.action-btn.edit:hover { background: var(--blue); color: #fff; }
+.action-btn.context { border-color: var(--purple); color: var(--purple); }
+.action-btn.context:hover { background: var(--purple); color: #fff; }
+.action-btn.other { position: relative; }
+
+/* Dropdown */
+.dropdown { position: absolute; top: 100%; right: 0; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-lg); min-width: 200px; z-index: 50; display: none; }
+.dropdown.open { display: block; }
+.dropdown-item { padding: 8px 14px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.dropdown-item:hover { background: var(--bg); }
+.dropdown-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+.dropdown-divider { height: 1px; background: var(--border); margin: 4px 0; }
+.submenu { position: relative; }
+.submenu-items { display: none; position: absolute; left: 100%; top: 0; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-lg); min-width: 160px; }
+.submenu:hover .submenu-items { display: block; }
+.submenu-arrow { margin-left: auto; font-size: 10px; color: var(--gray); }
+
+/* Modal overlay */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--card); border-radius: 12px; box-shadow: var(--shadow-lg); max-width: 720px; width: 90%; max-height: 80vh; display: flex; flex-direction: column; }
+.modal-header { padding: 20px 24px 12px; display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 1px solid var(--border); }
+.modal-title { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.modal-subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+.modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--gray); padding: 4px 8px; border-radius: 4px; }
+.modal-close:hover { background: var(--bg); color: var(--text); }
+.modal-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
+.modal-footer { padding: 12px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; }
+
+/* Context modal content */
+.context-content { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 13px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+.context-content h1, .context-content h2, .context-content h3 { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin-top: 16px; margin-bottom: 8px; }
+.context-content p { margin-bottom: 8px; }
+.context-content code { background: var(--bg); padding: 1px 4px; border-radius: 3px; }
+.context-content pre { background: var(--bg); padding: 12px; border-radius: var(--radius); overflow-x: auto; margin: 8px 0; }
+
+/* Scoring modal */
+.score-dimension { margin-bottom: 16px; }
+.score-dim-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.score-dim-label { font-size: 13px; font-weight: 500; }
+.score-dim-value { font-size: 13px; font-weight: 600; }
+.score-bar-track { height: 8px; background: var(--bg); border-radius: 4px; overflow: hidden; }
+.score-bar-fill { height: 100%; border-radius: 4px; transition: width .3s; }
+.score-bar-fill.high { background: var(--green); }
+.score-bar-fill.medium { background: var(--yellow); }
+.score-bar-fill.low { background: var(--red); }
+.score-reasoning { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+.score-overall { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-secondary); }
+
+/* Side Panel */
+.panel-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.3); z-index: 150; display: none; }
+.panel-overlay.open { display: block; }
+.side-panel { position: fixed; top: 0; right: -500px; width: 480px; height: 100vh; background: var(--card); box-shadow: -4px 0 20px rgba(0,0,0,.1); z-index: 160; transition: right .25s ease; display: flex; flex-direction: column; overflow: hidden; }
+.side-panel.open { right: 0; }
+.panel-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+.panel-header h2 { font-size: 16px; font-weight: 600; }
+.panel-header p { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+.panel-close { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--gray); padding: 4px 8px; border-radius: 4px; }
+.panel-close:hover { background: var(--bg); }
+.panel-body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+.panel-field { margin-bottom: 16px; }
+.panel-field label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+.panel-field .field-value { font-size: 14px; padding: 8px 12px; background: var(--bg); border-radius: var(--radius); }
+.panel-field input[type="text"], .panel-field textarea { width: 100%; border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 12px; font-size: 14px; font-family: inherit; outline: none; }
+.panel-field input[type="text"]:focus, .panel-field textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,122,255,.1); }
+.panel-field textarea { min-height: 200px; resize: vertical; line-height: 1.6; }
+.panel-field .checkbox-row { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.panel-field .checkbox-row input { cursor: pointer; }
+.scheduled-note { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+/* Rich editor toolbar */
+.editor-toolbar { display: flex; gap: 2px; padding: 6px; border: 1px solid var(--border); border-bottom: none; border-radius: var(--radius) var(--radius) 0 0; background: var(--bg); }
+.editor-toolbar button { background: none; border: 1px solid transparent; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.editor-toolbar button:hover { background: var(--card); border-color: var(--border); }
+.editor-body { border: 1px solid var(--border); border-radius: 0 0 var(--radius) var(--radius); padding: 12px; min-height: 200px; outline: none; font-size: 14px; line-height: 1.6; }
+.editor-body:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,122,255,.1); }
+
+/* Body history */
+.history-toggle { background: none; border: none; color: var(--blue); font-size: 13px; cursor: pointer; padding: 0; margin-bottom: 8px; }
+.history-toggle:hover { text-decoration: underline; }
+.history-list { display: none; }
+.history-list.open { display: block; }
+.history-item { padding: 10px 12px; background: var(--bg); border-radius: var(--radius); margin-bottom: 8px; font-size: 13px; }
+.history-item .history-date { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+.history-item .history-body { white-space: pre-wrap; word-break: break-word; max-height: 120px; overflow-y: auto; }
+
+/* Notes timeline */
+.notes-list { margin-top: 8px; }
+.note-item { padding: 8px 12px; background: var(--yellow-bg); border-radius: var(--radius); margin-bottom: 6px; font-size: 13px; }
+
+/* Panel footer */
+.panel-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; }
+.btn { padding: 8px 18px; border-radius: var(--radius); font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--card); transition: all .15s; }
+.btn:hover { background: var(--bg); }
+.btn-primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+.btn-primary:hover { background: #006ae6; }
+.btn-green { background: var(--green); color: #fff; border-color: var(--green); }
+.btn-green:hover { background: #2db84e; }
+.copy-btn { padding: 8px 18px; border-radius: var(--radius); font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--card); display: flex; align-items: center; gap: 6px; }
+.copy-btn:hover { background: var(--bg); }
+
+/* Toast */
+.toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 300; display: flex; flex-direction: column; gap: 8px; }
+.toast { padding: 10px 18px; border-radius: var(--radius); box-shadow: var(--shadow-lg); font-size: 13px; font-weight: 500; animation: slideIn .2s ease; }
+.toast.success { background: var(--green); color: #fff; }
+.toast.error { background: var(--red); color: #fff; }
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+/* Loading */
+.loading { display: flex; align-items: center; justify-content: center; padding: 60px; color: var(--text-secondary); font-size: 14px; }
+.spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin .6s linear infinite; margin-right: 10px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Empty state */
+.empty-state { text-align: center; padding: 60px 24px; color: var(--text-secondary); }
+.empty-state h3 { font-size: 16px; color: var(--text); margin-bottom: 8px; }
+
+/* Note dialog */
+.note-dialog { position: fixed; inset: 0; background: rgba(0,0,0,.4); backdrop-filter: blur(4px); z-index: 250; display: none; align-items: center; justify-content: center; }
+.note-dialog.open { display: flex; }
+.note-dialog-box { background: var(--card); border-radius: 12px; box-shadow: var(--shadow-lg); width: 420px; padding: 24px; }
+.note-dialog-box h3 { font-size: 16px; margin-bottom: 12px; }
+.note-dialog-box textarea { width: 100%; min-height: 100px; border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; font-size: 14px; font-family: inherit; outline: none; resize: vertical; margin-bottom: 12px; }
+.note-dialog-box textarea:focus { border-color: var(--blue); }
+.note-dialog-btns { display: flex; gap: 8px; justify-content: flex-end; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div style="display:flex;align-items:center;">
+    <h1>Activity Viewer</h1>
+    <span class="pipeline-badge">%%PIPELINE_NAME%%</span>
+  </div>
+  <div class="header-right">
+    <span class="activity-count" id="activityCount"></span>
+    <button class="refresh-btn" onclick="loadActivities()">&#x21bb; Refresh</button>
+  </div>
+</div>
+
+<!-- Filter Bar -->
+<div class="filter-bar">
+  <div class="filter-tabs" id="statusTabs">
+    <button class="filter-tab active" data-status="pending">Pending</button>
+    <button class="filter-tab" data-status="approved">Approved</button>
+    <button class="filter-tab" data-status="rejected">Rejected</button>
+    <button class="filter-tab" data-status="all">All</button>
+  </div>
+  <div class="filter-group">
+    <label class="filter-label">Type</label>
+    <select class="filter-select" id="filterType"><option value="">All types</option></select>
+  </div>
+  <div class="filter-group">
+    <label class="filter-label">Search</label>
+    <input class="filter-input" id="filterSearch" placeholder="Contact or company..." style="width:160px;">
+  </div>
+  <div class="filter-group">
+    <label class="filter-label">Score</label>
+    <input class="filter-input" id="filterScoreMin" type="number" min="0" max="100" placeholder="Min" style="width:60px;">
+    <span style="color:var(--gray);">-</span>
+    <input class="filter-input" id="filterScoreMax" type="number" min="0" max="100" placeholder="Max" style="width:60px;">
+  </div>
+  <div class="filter-group">
+    <label class="filter-label">From</label>
+    <input class="filter-input" id="filterDateFrom" type="date">
+  </div>
+  <div class="filter-group">
+    <label class="filter-label">To</label>
+    <input class="filter-input" id="filterDateTo" type="date">
+  </div>
+  <button class="filter-reset" onclick="resetFilters()">Reset</button>
+</div>
+
+<!-- Bulk Action Bar -->
+<div class="bulk-bar" id="bulkBar">
+  <span id="bulkCount">0 selected</span>
+  <button class="bulk-btn" onclick="bulkApprove()">Approve selected</button>
+  <button class="bulk-btn" onclick="deselectAll()">Deselect all</button>
+</div>
+
+<!-- Table -->
+<div class="table-wrapper">
+  <div class="loading" id="loadingIndicator"><div class="spinner"></div> Loading activities...</div>
+  <div class="empty-state" id="emptyState" style="display:none;"><h3>No activities found</h3><p>Try adjusting your filters or refreshing.</p></div>
+  <table id="activityTable" style="display:none;">
+    <thead>
+      <tr>
+        <th class="checkbox-col"><input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this.checked)"></th>
+        <th data-sort="contacts">Target Person</th>
+        <th>Introducer</th>
+        <th data-sort="summary">Action Brief</th>
+        <th>Activity</th>
+        <th data-sort="scheduled_date" class="sorted">Scheduled</th>
+        <th data-sort="confidence_score">Confidence</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+</div>
+
+<!-- AI Context Modal -->
+<div class="modal-overlay" id="contextModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">&#x2728; AI Context &amp; Prompt</div>
+        <div class="modal-subtitle">This is the complete context and prompt that was used by the AI to generate this activity.</div>
+      </div>
+      <button class="modal-close" onclick="closeContextModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="context-content" id="contextContent"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="copy-btn" onclick="copyContext()">&#x1f4cb; Copy to Clipboard</button>
+    </div>
+  </div>
+</div>
+
+<!-- Scoring Breakdown Modal -->
+<div class="modal-overlay" id="scoringModal">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="scoringTitle">Scoring Breakdown</div>
+      </div>
+      <button class="modal-close" onclick="closeScoringModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="scoringBody"></div>
+  </div>
+</div>
+
+<!-- Note Dialog -->
+<div class="note-dialog" id="noteDialog">
+  <div class="note-dialog-box">
+    <h3 id="noteDialogTitle">Add Note</h3>
+    <textarea id="noteDialogText" placeholder="What feedback do you have for this activity?"></textarea>
+    <div class="note-dialog-btns">
+      <button class="btn" onclick="closeNoteDialog()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitNote()">Save Note</button>
+    </div>
+  </div>
+</div>
+
+<!-- Side Panel Overlay -->
+<div class="panel-overlay" id="panelOverlay" onclick="closeEditPanel()"></div>
+
+<!-- Edit Side Panel -->
+<div class="side-panel" id="editPanel">
+  <button class="panel-close" onclick="closeEditPanel()">&times;</button>
+  <div class="panel-header">
+    <h2 id="panelTitle">Review Activity</h2>
+    <p id="panelSubtitle"></p>
+  </div>
+  <div class="panel-body" id="panelBody"></div>
+  <div class="panel-footer">
+    <button class="btn" onclick="saveEdit()">Save changes</button>
+    <button class="btn btn-green" onclick="saveAndApprove()">&#x2713; Approve</button>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ── Config ──
+const CONFIG = {
+  supabaseUrl: '%%SUPABASE_URL%%',
+  supabaseKey: '%%SUPABASE_ANON_KEY%%',
+  table: '%%ACTIVITIES_TABLE%%',
+  pipeline: '%%PIPELINE_NAME%%',
+  userEmail: '%%USER_EMAIL%%',
+  autoApproveThreshold: %%AUTO_APPROVE_THRESHOLD%%
+};
+
+// ── State ──
+const State = {
+  activities: [],
+  selectedIds: new Set(),
+  filters: { status: 'pending', type: '', search: '', scoreMin: '', scoreMax: '', dateFrom: '', dateTo: '' },
+  sortBy: 'scheduled_date',
+  sortDir: 'asc',
+  editingId: null,
+  contextId: null,
+  noteId: null,
+};
+
+// ── API ──
+const API = {
+  get headers() {
+    return {
+      'apikey': CONFIG.supabaseKey,
+      'Authorization': 'Bearer ' + CONFIG.supabaseKey,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    };
+  },
+  get base() { return CONFIG.supabaseUrl + '/rest/v1/' + CONFIG.table; },
+
+  async fetchActivities() {
+    const params = new URLSearchParams({ order: State.sortBy + '.' + State.sortDir });
+    if (State.filters.status && State.filters.status !== 'all') {
+      params.append('approval_status', 'eq.' + State.filters.status);
+    }
+    if (State.filters.type) {
+      params.append('activity_type', 'eq.' + State.filters.type);
+    }
+    if (State.filters.dateFrom) {
+      params.append('scheduled_date', 'gte.' + State.filters.dateFrom + 'T00:00:00');
+    }
+    if (State.filters.dateTo) {
+      params.append('scheduled_date', 'lte.' + State.filters.dateTo + 'T23:59:59');
+    }
+    if (State.filters.scoreMin) {
+      params.append('confidence_score', 'gte.' + State.filters.scoreMin);
+    }
+    if (State.filters.scoreMax) {
+      params.append('confidence_score', 'lte.' + State.filters.scoreMax);
+    }
+    const resp = await fetch(this.base + '?' + params, { headers: this.headers });
+    if (!resp.ok) throw new Error('Failed to fetch: ' + resp.statusText);
+    return resp.json();
+  },
+
+  async patchActivity(id, updates) {
+    updates.updated_at = new Date().toISOString();
+    const resp = await fetch(this.base + '?id=eq.' + id, {
+      method: 'PATCH',
+      headers: this.headers,
+      body: JSON.stringify(updates)
+    });
+    if (!resp.ok) throw new Error('Failed to update: ' + resp.statusText);
+    return resp.json();
+  },
+
+  async getActivity(id) {
+    const resp = await fetch(this.base + '?id=eq.' + id, { headers: this.headers });
+    if (!resp.ok) throw new Error('Failed to fetch activity');
+    const rows = await resp.json();
+    return rows[0];
+  }
+};
+
+// ── Helpers ──
+function getInitials(name) {
+  if (!name) return '?';
+  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+}
+
+function hashColor(str) {
+  let hash = 0;
+  for (let i = 0; i < (str || '').length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  const colors = ['#007aff','#af52de','#ff9500','#34c759','#ff3b30','#5856d6','#ff2d55','#00c7be'];
+  return colors[Math.abs(hash) % colors.length];
+}
+
+function truncate(text, len) {
+  if (!text) return '';
+  return text.length > len ? text.slice(0, len) + '...' : text;
+}
+
+function formatDate(iso) {
+  if (!iso) return '-';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ', ' +
+    d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+}
+
+function isOverdue(iso) {
+  if (!iso) return false;
+  return new Date(iso) < new Date();
+}
+
+function confidenceClass(score) {
+  if (score == null) return '';
+  if (score >= 80) return 'high';
+  if (score >= 50) return 'medium';
+  return 'low';
+}
+
+function scoreBarClass(score) {
+  if (score >= 14) return 'high';
+  if (score >= 8) return 'medium';
+  return 'low';
+}
+
+function activityChannel(type) {
+  if (!type) return 'unknown';
+  return type.replace('send_', '');
+}
+
+function isEmailActivity(a) {
+  return a.activity_type === 'send_email';
+}
+
+function getContactName(a) {
+  return a.contacts && a.contacts[0] ? a.contacts[0].name || 'Unknown' : 'Unknown';
+}
+
+function getContactEmail(a) {
+  return a.contacts && a.contacts[0] ? a.contacts[0].email || '' : '';
+}
+
+function getCompanyName(a) {
+  return a.account ? a.account.company || a.account.name || '' : '';
+}
+
+function getIntroducer(a) {
+  const body = a.body || {};
+  if (body.recipients && body.recipients.length > 0) {
+    const recipientEmail = body.recipients[0].email || '';
+    const contactEmail = getContactEmail(a);
+    if (recipientEmail && recipientEmail !== contactEmail) {
+      return body.recipients[0].name || body.recipients[0].email || 'Via intro';
+    }
+  }
+  return 'Direct';
+}
+
+function getToField(a) {
+  const body = a.body || {};
+  if (isEmailActivity(a)) {
+    if (body.recipients && body.recipients[0]) return body.recipients[0].email;
+    return getContactEmail(a);
+  }
+  if (a.activity_type === 'send_linkedin') return body.profile_url || '';
+  if (a.activity_type === 'send_twitter') return body.handle ? '@' + body.handle : '';
+  return '';
+}
+
+function toast(msg, type) {
+  const el = document.createElement('div');
+  el.className = 'toast ' + (type || 'success');
+  el.textContent = msg;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+// ── Rendering ──
+async function loadActivities() {
+  document.getElementById('loadingIndicator').style.display = 'flex';
+  document.getElementById('activityTable').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'none';
+  try {
+    State.activities = await API.fetchActivities();
+    applyClientFilters();
+  } catch (e) {
+    toast('Error loading activities: ' + e.message, 'error');
+    document.getElementById('loadingIndicator').style.display = 'none';
+  }
+}
+
+function applyClientFilters() {
+  let filtered = State.activities;
+  const search = State.filters.search.toLowerCase();
+  if (search) {
+    filtered = filtered.filter(a => {
+      const name = getContactName(a).toLowerCase();
+      const company = getCompanyName(a).toLowerCase();
+      const summary = (a.summary || '').toLowerCase();
+      return name.includes(search) || company.includes(search) || summary.includes(search);
+    });
+  }
+  renderTable(filtered);
+}
+
+function renderTable(activities) {
+  document.getElementById('loadingIndicator').style.display = 'none';
+  const table = document.getElementById('activityTable');
+  const empty = document.getElementById('emptyState');
+
+  if (!activities.length) {
+    table.style.display = 'none';
+    empty.style.display = 'block';
+    document.getElementById('activityCount').textContent = '0 activities';
+    return;
+  }
+
+  table.style.display = 'table';
+  empty.style.display = 'none';
+  document.getElementById('activityCount').textContent = activities.length + ' activit' + (activities.length === 1 ? 'y' : 'ies');
+
+  // Build type filter options
+  const types = [...new Set(State.activities.map(a => a.activity_type))].sort();
+  const typeSelect = document.getElementById('filterType');
+  const currentType = typeSelect.value;
+  typeSelect.innerHTML = '<option value="">All types</option>' + types.map(t => '<option value="' + t + '"' + (t === currentType ? ' selected' : '') + '>' + t.replace('send_', '').replace('_', ' ') + '</option>').join('');
+
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = activities.map(a => {
+    const name = getContactName(a);
+    const company = getCompanyName(a);
+    const introducer = getIntroducer(a);
+    const body = a.body || {};
+    const channel = activityChannel(a.activity_type);
+    const checked = State.selectedIds.has(a.id) ? 'checked' : '';
+
+    return '<tr id="row-' + a.id + '">' +
+      '<td class="checkbox-col"><input type="checkbox" ' + checked + ' onchange="toggleSelect(\'' + a.id + '\', this.checked)"></td>' +
+      '<td><div class="person-cell">' +
+        '<div class="avatar" style="background:' + hashColor(name) + ';">' + getInitials(name) + '</div>' +
+        '<div><div class="person-name">' + esc(name) + '</div>' +
+        (company ? '<div class="person-sub">' + esc(company) + '</div>' : '') +
+      '</div></div></td>' +
+      '<td>' + esc(introducer) + '</td>' +
+      '<td>' + esc(truncate(a.summary || '', 120)) + '</td>' +
+      '<td>' +
+        (isEmailActivity(a) && body.subject ? '<div class="activity-subject">' + esc(truncate(body.subject, 60)) + '</div>' : '') +
+        '<div class="activity-preview">' + esc(truncate(body.message || '', 80)) + '</div>' +
+      '</td>' +
+      '<td>' + formatDate(a.scheduled_date) +
+        (isOverdue(a.scheduled_date) ? ' <span class="badge badge-overdue">Past Due</span>' : '') +
+      '</td>' +
+      '<td>' +
+        (a.confidence_score != null
+          ? '<span class="confidence ' + confidenceClass(a.confidence_score) + '" onclick="openScoringModal(\'' + a.id + '\')">' + a.confidence_score + '/100</span>'
+          : '<span style="color:var(--gray)">-</span>') +
+      '</td>' +
+      '<td><div class="action-row">' +
+        '<button class="action-btn approve" onclick="approveActivity(\'' + a.id + '\')">&#x2713; Approve</button>' +
+        '<button class="action-btn edit" onclick="openEditPanel(\'' + a.id + '\')">&#x270E; Edit</button>' +
+        '<button class="action-btn context" onclick="openContextModal(\'' + a.id + '\')">AI Context</button>' +
+        '<div style="position:relative;display:inline-block;">' +
+          '<button class="action-btn other" onclick="toggleDropdown(\'' + a.id + '\', event)">Other &#x25BE;</button>' +
+          '<div class="dropdown" id="dropdown-' + a.id + '">' +
+            '<div class="dropdown-item" onclick="openNoteDialog(\'' + a.id + '\')">&#x1F4DD; Add note / replan</div>' +
+            '<div class="dropdown-item" onclick="removeFromSequence(\'' + a.id + '\')">&#x1F6AB; Remove lead from sequence</div>' +
+            '<div class="dropdown-divider"></div>' +
+            '<div class="dropdown-item submenu">&#x1F4E8; Snooze for <span class="submenu-arrow">&#x25B6;</span>' +
+              '<div class="submenu-items">' +
+                '<div class="dropdown-item" onclick="snooze(\'' + a.id + '\', 1)">1 day</div>' +
+                '<div class="dropdown-item" onclick="snooze(\'' + a.id + '\', 3)">3 days</div>' +
+                '<div class="dropdown-item" onclick="snooze(\'' + a.id + '\', 7)">1 week</div>' +
+                '<div class="dropdown-item" onclick="openSnoozeCustom(\'' + a.id + '\')">Custom...</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div></td>' +
+    '</tr>';
+  }).join('');
+}
+
+function esc(str) {
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+
+// ── Filter events ──
+document.querySelectorAll('.filter-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    State.filters.status = tab.dataset.status;
+    loadActivities();
+  });
+});
+
+document.getElementById('filterType').addEventListener('change', e => {
+  State.filters.type = e.target.value;
+  loadActivities();
+});
+
+document.getElementById('filterSearch').addEventListener('input', e => {
+  State.filters.search = e.target.value;
+  applyClientFilters();
+});
+
+document.getElementById('filterScoreMin').addEventListener('change', e => {
+  State.filters.scoreMin = e.target.value;
+  loadActivities();
+});
+
+document.getElementById('filterScoreMax').addEventListener('change', e => {
+  State.filters.scoreMax = e.target.value;
+  loadActivities();
+});
+
+document.getElementById('filterDateFrom').addEventListener('change', e => {
+  State.filters.dateFrom = e.target.value;
+  loadActivities();
+});
+
+document.getElementById('filterDateTo').addEventListener('change', e => {
+  State.filters.dateTo = e.target.value;
+  loadActivities();
+});
+
+function resetFilters() {
+  State.filters = { status: 'pending', type: '', search: '', scoreMin: '', scoreMax: '', dateFrom: '', dateTo: '' };
+  document.getElementById('filterSearch').value = '';
+  document.getElementById('filterScoreMin').value = '';
+  document.getElementById('filterScoreMax').value = '';
+  document.getElementById('filterDateFrom').value = '';
+  document.getElementById('filterDateTo').value = '';
+  document.getElementById('filterType').value = '';
+  document.querySelectorAll('.filter-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.status === 'pending');
+  });
+  loadActivities();
+}
+
+// ── Sort ──
+document.querySelectorAll('thead th[data-sort]').forEach(th => {
+  th.addEventListener('click', () => {
+    const col = th.dataset.sort;
+    if (State.sortBy === col) {
+      State.sortDir = State.sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      State.sortBy = col;
+      State.sortDir = 'asc';
+    }
+    document.querySelectorAll('thead th').forEach(h => { h.classList.remove('sorted', 'desc'); });
+    th.classList.add('sorted');
+    if (State.sortDir === 'desc') th.classList.add('desc');
+    loadActivities();
+  });
+});
+
+// ── Selection ──
+function toggleSelect(id, checked) {
+  if (checked) State.selectedIds.add(id); else State.selectedIds.delete(id);
+  updateBulkBar();
+}
+
+function toggleSelectAll(checked) {
+  const checkboxes = document.querySelectorAll('#tableBody input[type=checkbox]');
+  checkboxes.forEach(cb => { cb.checked = checked; });
+  State.selectedIds.clear();
+  if (checked) State.activities.forEach(a => State.selectedIds.add(a.id));
+  updateBulkBar();
+}
+
+function deselectAll() {
+  State.selectedIds.clear();
+  document.querySelectorAll('#tableBody input[type=checkbox]').forEach(cb => { cb.checked = false; });
+  document.getElementById('selectAllCheckbox').checked = false;
+  updateBulkBar();
+}
+
+function updateBulkBar() {
+  const bar = document.getElementById('bulkBar');
+  const count = State.selectedIds.size;
+  if (count > 0) {
+    bar.classList.add('visible');
+    document.getElementById('bulkCount').textContent = count + ' selected';
+  } else {
+    bar.classList.remove('visible');
+  }
+}
+
+// ── Actions ──
+async function approveActivity(id) {
+  try {
+    await API.patchActivity(id, { approval_status: 'approved' });
+    toast('Activity approved');
+    loadActivities();
+  } catch (e) { toast('Error: ' + e.message, 'error'); }
+}
+
+async function bulkApprove() {
+  const ids = [...State.selectedIds];
+  if (!ids.length) return;
+  if (!confirm('Approve ' + ids.length + ' activities?')) return;
+  try {
+    await Promise.all(ids.map(id => API.patchActivity(id, { approval_status: 'approved' })));
+    toast(ids.length + ' activities approved');
+    State.selectedIds.clear();
+    loadActivities();
+  } catch (e) { toast('Error: ' + e.message, 'error'); }
+}
+
+async function addNoteToActivity(id, text) {
+  try {
+    const activity = await API.getActivity(id);
+    const notes = Array.isArray(activity.notes) ? activity.notes : [];
+    notes.push({ text: text, added_at: new Date().toISOString() });
+    await API.patchActivity(id, { notes: notes, needs_regeneration: true });
+    toast('Note added — activity will be regenerated');
+    loadActivities();
+  } catch (e) { toast('Error: ' + e.message, 'error'); }
+}
+
+async function removeFromSequence(id) {
+  if (!confirm('Remove this lead from the sequence? This will remove the followup date on the next /followup run.')) return;
+  closeAllDropdowns();
+  await addNoteToActivity(id, 'SYSTEM: Remove from sequence — remove followup date so this lead does not appear in future followup runs.');
+}
+
+async function snooze(id, days) {
+  closeAllDropdowns();
+  await addNoteToActivity(id, 'SYSTEM: Snooze — follow up in ' + days + ' day' + (days > 1 ? 's' : '') + '. Update the followup date to ' + days + ' days from now.');
+}
+
+function openSnoozeCustom(id) {
+  closeAllDropdowns();
+  const days = prompt('Snooze for how many days?');
+  if (days && !isNaN(days) && Number(days) > 0) {
+    snooze(id, Number(days));
+  }
+}
+
+// ── Dropdowns ──
+function toggleDropdown(id, event) {
+  event.stopPropagation();
+  closeAllDropdowns();
+  const dd = document.getElementById('dropdown-' + id);
+  dd.classList.toggle('open');
+}
+
+function closeAllDropdowns() {
+  document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
+}
+
+document.addEventListener('click', closeAllDropdowns);
+
+// ── Note Dialog ──
+function openNoteDialog(id) {
+  closeAllDropdowns();
+  State.noteId = id;
+  document.getElementById('noteDialogText').value = '';
+  document.getElementById('noteDialogTitle').textContent = 'Add Note / Replan';
+  document.getElementById('noteDialog').classList.add('open');
+  document.getElementById('noteDialogText').focus();
+}
+
+function closeNoteDialog() {
+  document.getElementById('noteDialog').classList.remove('open');
+  State.noteId = null;
+}
+
+async function submitNote() {
+  const text = document.getElementById('noteDialogText').value.trim();
+  if (!text) return;
+  closeNoteDialog();
+  await addNoteToActivity(State.noteId, text);
+}
+
+// ── Context Modal ──
+function openContextModal(id) {
+  const a = State.activities.find(x => x.id === id);
+  if (!a) return;
+  State.contextId = id;
+  const content = a.full_lead_context || 'No context available for this activity.';
+  try {
+    document.getElementById('contextContent').innerHTML = marked.parse(content);
+  } catch (e) {
+    document.getElementById('contextContent').textContent = content;
+  }
+  document.getElementById('contextModal').classList.add('open');
+}
+
+function closeContextModal() {
+  document.getElementById('contextModal').classList.remove('open');
+  State.contextId = null;
+}
+
+function copyContext() {
+  const a = State.activities.find(x => x.id === State.contextId);
+  if (!a) return;
+  navigator.clipboard.writeText(a.full_lead_context || '').then(() => toast('Copied to clipboard'));
+}
+
+document.getElementById('contextModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('contextModal')) closeContextModal();
+});
+
+// ── Scoring Modal ──
+function openScoringModal(id) {
+  const a = State.activities.find(x => x.id === id);
+  if (!a) return;
+  const score = a.confidence_score;
+  const breakdown = a.scoring_breakdown || {};
+  document.getElementById('scoringTitle').textContent = 'Scoring Breakdown \u2014 ' + (score != null ? score + '/100' : 'N/A');
+
+  const dimensions = [
+    { key: 'personalization_quality', label: 'Personalization Quality' },
+    { key: 'icp_match', label: 'ICP Match' },
+    { key: 'timing_appropriateness', label: 'Timing Appropriateness' },
+    { key: 'messaging_guideline_adherence', label: 'Messaging Guideline Adherence' },
+    { key: 'workflow_compliance', label: 'Workflow Compliance' },
+  ];
+
+  let html = '';
+  dimensions.forEach(dim => {
+    const d = breakdown[dim.key] || {};
+    const s = d.score || 0;
+    const pct = (s / 20) * 100;
+    html += '<div class="score-dimension">' +
+      '<div class="score-dim-header"><span class="score-dim-label">' + dim.label + '</span><span class="score-dim-value">' + s + '/20</span></div>' +
+      '<div class="score-bar-track"><div class="score-bar-fill ' + scoreBarClass(s) + '" style="width:' + pct + '%;"></div></div>' +
+      (d.reasoning ? '<div class="score-reasoning">' + esc(d.reasoning) + '</div>' : '') +
+    '</div>';
+  });
+
+  if (breakdown.overall_reasoning || a.scoring_breakdown?.overall_reasoning) {
+    html += '<div class="score-overall"><strong>Overall:</strong> ' + esc(breakdown.overall_reasoning || '') + '</div>';
+  }
+
+  document.getElementById('scoringBody').innerHTML = html;
+  document.getElementById('scoringModal').classList.add('open');
+}
+
+function closeScoringModal() {
+  document.getElementById('scoringModal').classList.remove('open');
+}
+
+document.getElementById('scoringModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('scoringModal')) closeScoringModal();
+});
+
+// ── Edit Side Panel ──
+function openEditPanel(id) {
+  const a = State.activities.find(x => x.id === id);
+  if (!a) return;
+  State.editingId = id;
+  const body = a.body || {};
+  const name = getContactName(a);
+  const isEmail = isEmailActivity(a);
+  const channel = activityChannel(a.activity_type);
+
+  document.getElementById('panelTitle').textContent = 'Review activity for ' + name;
+  document.getElementById('panelSubtitle').textContent = channel.charAt(0).toUpperCase() + channel.slice(1) + ' activity';
+
+  let html = '';
+
+  // Scheduled date
+  html += '<div class="panel-field"><label>Scheduled for (Local Time)</label>' +
+    '<div class="field-value">' + formatDate(a.scheduled_date) + '</div>' +
+    '<div class="scheduled-note">Activity will be sent at the scheduled time after approval (times are in your local timezone)</div></div>';
+
+  // From
+  html += '<div class="panel-field"><label>From</label>' +
+    '<div class="field-value">' + esc(CONFIG.userEmail) + ' <span style="color:var(--text-secondary);">(default)</span></div></div>';
+
+  // To
+  const toVal = getToField(a);
+  html += '<div class="panel-field"><label>To</label>' +
+    '<div class="field-value">' + esc(toVal) + '</div></div>';
+
+  // Subject (email only)
+  if (isEmail) {
+    html += '<div class="panel-field"><label>Subject</label>' +
+      '<input type="text" id="editSubject" value="' + esc(body.subject || '') + '"></div>';
+  }
+
+  // Reply in thread (email only)
+  if (isEmail) {
+    html += '<div class="panel-field"><div class="checkbox-row"><input type="checkbox" id="editReplyThread" ' +
+      (body.reply_in_thread ? 'checked' : '') + '> <span>Reply in a thread (if available)</span></div></div>';
+  }
+
+  // Body
+  if (isEmail) {
+    html += '<div class="panel-field"><label>Body</label>' +
+      '<div class="editor-toolbar">' +
+        '<button onclick="document.execCommand(\'bold\')"><b>B</b></button>' +
+        '<button onclick="document.execCommand(\'italic\')"><i>I</i></button>' +
+        '<button onclick="document.execCommand(\'formatBlock\', false, \'blockquote\')">&ldquo;</button>' +
+        '<button onclick="var u=prompt(\'URL:\');if(u)document.execCommand(\'createLink\',false,u)">&#x1F517;</button>' +
+        '<button onclick="document.execCommand(\'insertUnorderedList\')">&#x2022; List</button>' +
+      '</div>' +
+      '<div class="editor-body" id="editBody" contenteditable="true">' + (body.message || '') + '</div></div>';
+  } else {
+    html += '<div class="panel-field"><label>Body</label>' +
+      '<textarea id="editBody">' + esc(body.message || '') + '</textarea></div>';
+  }
+
+  // Notes
+  const notes = Array.isArray(a.notes) && a.notes.length > 0 ? a.notes : null;
+  if (notes) {
+    html += '<div class="panel-field"><label>Notes</label><div class="notes-list">' +
+      notes.map(n => {
+        const text = typeof n === 'string' ? n : (n.text || JSON.stringify(n));
+        const date = n.added_at ? '<span style="font-size:11px;color:var(--text-secondary);">' + formatDate(n.added_at) + '</span> ' : '';
+        return '<div class="note-item">' + date + esc(text) + '</div>';
+      }).join('') + '</div></div>';
+  }
+
+  // Body History
+  const history = Array.isArray(a.body_history) && a.body_history.length > 0 ? a.body_history : null;
+  if (history) {
+    html += '<div class="panel-field">' +
+      '<button class="history-toggle" onclick="this.nextElementSibling.classList.toggle(\'open\');this.textContent=this.nextElementSibling.classList.contains(\'open\')?\'Hide previous versions (\'+' + history.length + '+\')\':\'Show previous versions (\'+' + history.length + '+\')\'">Show previous versions (' + history.length + ')</button>' +
+      '<div class="history-list">' +
+      history.map(h => {
+        const b = h.body || h;
+        const date = h.edited_at ? formatDate(h.edited_at) : 'Unknown date';
+        const msg = typeof b === 'object' ? (b.message || JSON.stringify(b)) : b;
+        return '<div class="history-item"><div class="history-date">' + date + '</div><div class="history-body">' + esc(msg) + '</div></div>';
+      }).join('') +
+      '</div></div>';
+  }
+
+  document.getElementById('panelBody').innerHTML = html;
+  document.getElementById('panelOverlay').classList.add('open');
+  document.getElementById('editPanel').classList.add('open');
+}
+
+function closeEditPanel() {
+  document.getElementById('panelOverlay').classList.remove('open');
+  document.getElementById('editPanel').classList.remove('open');
+  State.editingId = null;
+}
+
+async function saveEdit() {
+  const id = State.editingId;
+  if (!id) return;
+  const a = State.activities.find(x => x.id === id);
+  if (!a) return;
+
+  const isEmail = isEmailActivity(a);
+  const bodyEl = document.getElementById('editBody');
+  const newMessage = isEmail ? bodyEl.innerHTML : bodyEl.value;
+
+  const oldBody = { ...a.body };
+  const newBody = { ...a.body, message: newMessage };
+
+  if (isEmail) {
+    const subjectEl = document.getElementById('editSubject');
+    if (subjectEl) newBody.subject = subjectEl.value;
+    const threadEl = document.getElementById('editReplyThread');
+    if (threadEl) newBody.reply_in_thread = threadEl.checked;
+  }
+
+  try {
+    // Push old body to body_history
+    const current = await API.getActivity(id);
+    const history = Array.isArray(current.body_history) ? current.body_history : [];
+    history.push({ body: oldBody, edited_at: new Date().toISOString() });
+
+    await API.patchActivity(id, { body: newBody, body_history: history });
+    toast('Changes saved');
+    closeEditPanel();
+    loadActivities();
+  } catch (e) { toast('Error: ' + e.message, 'error'); }
+}
+
+async function saveAndApprove() {
+  const id = State.editingId;
+  if (!id) return;
+  const a = State.activities.find(x => x.id === id);
+  if (!a) return;
+
+  const isEmail = isEmailActivity(a);
+  const bodyEl = document.getElementById('editBody');
+  const newMessage = isEmail ? bodyEl.innerHTML : bodyEl.value;
+
+  const oldBody = { ...a.body };
+  const newBody = { ...a.body, message: newMessage };
+
+  if (isEmail) {
+    const subjectEl = document.getElementById('editSubject');
+    if (subjectEl) newBody.subject = subjectEl.value;
+    const threadEl = document.getElementById('editReplyThread');
+    if (threadEl) newBody.reply_in_thread = threadEl.checked;
+  }
+
+  try {
+    const current = await API.getActivity(id);
+    const history = Array.isArray(current.body_history) ? current.body_history : [];
+    history.push({ body: oldBody, edited_at: new Date().toISOString() });
+
+    await API.patchActivity(id, { body: newBody, body_history: history, approval_status: 'approved' });
+    toast('Saved & approved');
+    closeEditPanel();
+    loadActivities();
+  } catch (e) { toast('Error: ' + e.message, 'error'); }
+}
+
+// ── Init ──
+loadActivities();
+
+// URL param for initial tab
+const urlTab = new URLSearchParams(window.location.search).get('tab');
+if (urlTab && ['pending', 'approved', 'rejected', 'all'].includes(urlTab)) {
+  State.filters.status = urlTab;
+  document.querySelectorAll('.filter-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.status === urlTab);
+  });
+}
+</script>
+</body>
+</html>
