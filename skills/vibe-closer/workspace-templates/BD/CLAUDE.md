@@ -21,6 +21,7 @@ This is a vibe-closer workspace for managing business development and partnershi
 - `/followup` — Process due partnerships and generate activities
 - `/discover-leads` — Find new partner opportunities from conversations and emails
 - `/learn` — Analyze partnership performance and improve workspace files
+- `/view-pending-activity` — Open browser-based activity viewer to review, approve, edit, and manage activities
 - `/view-logs` — View command execution logs and outcomes
 
 ## Maintenance

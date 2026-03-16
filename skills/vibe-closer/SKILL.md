@@ -139,7 +139,7 @@ Based on the user's request, route to the appropriate action file in `actions/`:
 | "Add these leads" / "Track this company" | `actions/add-update-leads.md` |
 | "Tell me about this lead" | `actions/gather-lead-context.md` |
 | "Draft outreach for X" / "What should I send?" | `actions/generate-lead-activity.md` |
-| "Show pending drafts" | `commands/view-pending-activity.md` |
+| "Show pending drafts" / "Open viewer" / "Show dashboard" | `commands/view-pending-activity.md` (opens browser viewer) |
 | "Edit this draft" | `actions/update-activity.md` |
 | "Approve this" / "LGTM" | `actions/approve-activity.md` |
 | "Send it" / "Execute" | `commands/execute-approved-activity.md` |
@@ -183,6 +183,7 @@ All action files live in `actions/`:
 | Update content | `update-content.md` | Rebuild profile, goals, strategy, and messaging guidelines |
 | Score activity | `score-activity.md` | Evaluate activity quality and assign confidence score (0–100) |
 | Add note | `add-note.md` | Add feedback to a pending activity and flag for regeneration |
+| Open activity viewer | `open-activity-viewer.md` | Prepare and open the HTML activity viewer in browser |
 | Add log | `add-log.md` | Log a command execution result to the logs table |
 
 ## Provider Resolution
