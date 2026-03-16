@@ -1,3 +1,7 @@
+<!-- EXAMPLE CONTENT — This file contains example content from the template.
+     ALL content below must be replaced with real content during onboarding.
+     Remove this marker once real content has been written. -->
+
 # Lead Discovery & Opportunity Sourcing
 
 This document outlines where to find job opportunities that match Jordan's target company profiles and goals.

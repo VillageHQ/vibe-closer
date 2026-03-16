@@ -50,3 +50,8 @@ Test that the content builder mode correctly audits, questions, researches, and 
 **Setup**: JobSearch pipeline workspace
 **Action**: Trigger update-content
 **Pass if**: Generated content creates candidate brief, target company profiles, career narrative — outreach framed as job seeker, not seller
+
+### TC-11: Fresh onboarding from template
+**Setup**: Workspace freshly copied from Sales template (all files have `<!-- EXAMPLE CONTENT` markers)
+**Action**: Trigger update-content
+**Pass if**: Asks ALL foundation questions (identity, targets, pain points, positioning, goals, network, materials, tone, links). Does NOT skip questions based on template example content. Generated content replaces example content entirely. All `<!-- EXAMPLE CONTENT` markers are removed from generated files.

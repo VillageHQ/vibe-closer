@@ -1,3 +1,7 @@
+<!-- EXAMPLE CONTENT — This file contains example content from the template.
+     ALL content below must be replaced with real content during onboarding.
+     Remove this marker once real content has been written. -->
+
 # Company Brief
 
 This is your founder narrative — the coherent story about your company that you reference in all investor conversations. Keep this updated and sharp.

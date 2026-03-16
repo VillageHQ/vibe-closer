@@ -1,3 +1,7 @@
+<!-- EXAMPLE CONTENT — This file contains example content from the template.
+     ALL content below must be replaced with real content during onboarding.
+     Remove this marker once real content has been written. -->
+
 # LinkedIn DM Guidelines
 
 LinkedIn is a secondary channel for investor outreach — use it when you have no email, or when the investor is active on LinkedIn but hasn't replied to your email.

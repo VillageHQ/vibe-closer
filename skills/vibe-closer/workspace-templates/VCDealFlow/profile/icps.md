@@ -1,3 +1,7 @@
+<!-- EXAMPLE CONTENT — This file contains example content from the template.
+     ALL content below must be replaced with real content during onboarding.
+     Remove this marker once real content has been written. -->
+
 # Ideal Startup Profiles
 
 ## ICP 1: AI-Native B2B SaaS — Early Revenue
