@@ -26,7 +26,7 @@ Test that lead context aggregation works across all sources.
 
 ### TC-5: Context output format completeness
 **Action**: fetch-full-lead-context
-**Pass if**: Output contains ALL section headers (Summary, ICP Match Analysis, People, Email History, Meeting History, CRM Notes & Activity Log, Key Selling Points, Warm Paths) and email entries include subject lines, direction, key content, and action items
+**Pass if**: Output contains ALL section headers (Summary, ICP Match Analysis, People, Email History, Meeting History, CRM Notes & Activity Log, Key Selling Points, Warm Paths, Workspace Messaging Context) and email entries include subject lines, direction, full message content (not summarized), and action items. Meeting entries include comprehensive summaries with specific detail, key quotes with speakers, action items, and signals/sentiment. Workspace Messaging Context includes matched ICP block, relevant templates, tone guidelines, channel guidelines, sequence flow, and case studies — all pasted in full, not summarized
 
 ### TC-6: Stored full_lead_context in generated activity
 **Setup**: Generate an activity for a lead with email and meeting history
