@@ -276,6 +276,7 @@ td:last-child { overflow: visible; }
     <button class="filter-tab active" data-status="pending">Pending</button>
     <button class="filter-tab" data-status="approved">Approved</button>
     <button class="filter-tab" data-status="rejected">Rejected</button>
+    <button class="filter-tab" data-status="regenerating">Regenerating</button>
     <button class="filter-tab" data-status="all">All</button>
   </div>
   <div class="filter-group">
@@ -438,8 +439,14 @@ const API = {
 
   async fetchActivities() {
     const params = new URLSearchParams({ order: State.sortBy + '.' + State.sortDir });
-    if (State.filters.status && State.filters.status !== 'all') {
+    if (State.filters.status === 'regenerating') {
+      params.append('approval_status', 'eq.pending');
+      params.append('needs_regeneration', 'eq.true');
+    } else if (State.filters.status && State.filters.status !== 'all') {
       params.append('approval_status', 'eq.' + State.filters.status);
+      if (State.filters.status === 'pending') {
+        params.append('or', '(needs_regeneration.is.null,needs_regeneration.eq.false)');
+      }
     }
     if (State.filters.type) {
       params.append('activity_type', 'eq.' + State.filters.type);
@@ -1171,7 +1178,7 @@ loadActivities();
 
 // URL param for initial tab
 const urlTab = new URLSearchParams(window.location.search).get('tab');
-if (urlTab && ['pending', 'approved', 'rejected', 'all'].includes(urlTab)) {
+if (urlTab && ['pending', 'approved', 'rejected', 'regenerating', 'all'].includes(urlTab)) {
   State.filters.status = urlTab;
   document.querySelectorAll('.filter-tab').forEach(t => {
     t.classList.toggle('active', t.dataset.status === urlTab);
