@@ -270,6 +270,23 @@ After all providers and channels are configured, run a connection test for every
 
 4. Only proceed to Phase 3 (database creation) once all **required** providers pass the connection test.
 
+#### Step 5d: Bootstrap MCP Hints
+
+After the connection test, populate `pipeline-mcp-hints.md` with concrete examples from every provider that passed:
+
+For each provider, record:
+1. The exact MCP tool name used in the test (e.g., `mcp__claude_ai_Attio__list-records-in-list`)
+2. The parameter structure that worked (with actual values like project_id, list name)
+3. A brief note on what the response looks like
+
+Also record the common operations for each provider (not just the test call):
+- **CRM**: list leads, search lead, update lead, add note
+- **Email**: search messages, read thread, create draft
+- **Database**: execute SQL (include project_id and table names)
+- **Meeting notes**: list meetings, search meetings
+
+For operations not tested during connection test, note the likely tool name based on the MCP's available tools (the AI can see them) and mark as "untested — verify on first use".
+
 ### Phase 3: Create Activities Database
 
 > "Now I'll create the database table that tracks every outreach draft, approval decision, and execution result. This is how I remember what's been sent and learn from the results."

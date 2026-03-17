@@ -4,6 +4,7 @@ This is a vibe-closer workspace for managing your job search outreach and pipeli
 
 ## Quick Reference
 - **Config**: `pipeline-config.md` — MCP providers, outreach channels, field mappings, and pipeline stages
+- **MCP Hints**: `pipeline-mcp-hints.md` — concrete MCP tool call examples for configured providers
 - **Goals**: `goals.md` — job search targets and success metrics
 - **Workflow**: `sequence-flow.md` — outreach sequencing rules (stages are in config)
 - **Target Companies**: `profile/target-company-profiles.md` — target company profiles

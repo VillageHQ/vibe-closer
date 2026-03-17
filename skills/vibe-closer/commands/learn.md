@@ -35,6 +35,16 @@ Self-improvement loop that updates workspace files based on real results.
    - Did they prefer certain channels over others?
 2. Compare actual workflow vs `sequence-flow.md` rules
 
+### Learn about tools
+1. Read `pipeline-mcp-hints.md` — current documented tool call patterns
+2. Read `pipeline-config.md` → `## Channels` — all configured providers
+3. For each provider, check:
+   - Are all common operations documented? (list, search, create, update for each provider type)
+   - Are the documented tool names and parameters still correct? (make a test call if unsure)
+   - Are there operations the user does frequently that aren't documented?
+4. Propose additions or corrections to `pipeline-mcp-hints.md`
+5. Present findings alongside messaging/workflow learnings for user confirmation
+
 ## Step 2: Clarify with User
 
 Present findings as a numbered list:
@@ -58,6 +68,7 @@ For each approved learning, update the relevant file:
 - Profile/ICP changes → `profile/icps.md`
 - Workflow changes → `sequence-flow.md`
 - Tone adjustments → `messaging-guidelines/tone.md`
+- Tool call patterns → `pipeline-mcp-hints.md`
 
 ## Step 4: Record & Timestamp
 
@@ -77,6 +88,9 @@ For each approved learning, update the relevant file:
 
 ### Workflow
 - [Learning 1]: [change made]
+
+### Tools
+- [Learning 1]: [tool hint added/updated in pipeline-mcp-hints.md]
 
 ### Skipped (user declined)
 - [Learning 1]: [reason]

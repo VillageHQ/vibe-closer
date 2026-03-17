@@ -4,6 +4,7 @@ This is a vibe-closer workspace for managing your VC deal flow — sourcing, eva
 
 ## Quick Reference
 - **Config**: `pipeline-config.md` — MCP providers, outreach channels, field mappings, and pipeline stages
+- **MCP Hints**: `pipeline-mcp-hints.md` — concrete MCP tool call examples for configured providers
 - **Goals**: `goals.md` — deal flow targets and timeline
 - **Workflow**: `sequence-flow.md` — founder outreach sequencing rules (stages are in config)
 - **Fund Brief**: `profile/fund-brief.md` — your fund thesis, check size, and portfolio
