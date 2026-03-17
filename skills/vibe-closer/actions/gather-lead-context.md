@@ -21,6 +21,8 @@ Deep context for activity generation. Aggregate from all sources:
 2. **Email history** via `{{EMAIL_INBOX}}`:
    - Last 10 email threads with this contact
    - Summary of each thread (dates, topics, action items, next steps)
+   - **Thread ID** (Gmail thread ID) for each thread — needed for in-thread replies
+   - **Participants with roles** (from, to, cc) for each thread — needed for smart recipient population
 
 3. **Profile enrichment** via `{{PROFILE_ENRICHMENT}}`:
    - LinkedIn profile summary
@@ -68,7 +70,10 @@ Each section must include enough detail that someone reading ONLY this context c
 ### Email History
 For each of the last 10 threads (most recent first):
 - **[Date] — [Subject line]** ([direction: inbound/outbound])
-  - Participants: [list]
+  - Thread ID: [Gmail thread ID — required for in-thread replies]
+  - From: [sender name <email>]
+  - To: [recipient names and emails, comma-separated]
+  - CC: [cc'd names and emails, comma-separated, or "none"]
   - Key content: [2-4 sentence summary of substance — what was discussed, proposed, or asked]
   - Action items / next steps: [verbatim if present]
   - Status: [awaiting reply / closed / ongoing]

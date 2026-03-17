@@ -48,7 +48,29 @@
 
 7. **If not yet connected** — Run `gather-lead-context.md` → `research-lead` first
 
-8. **Generate outreach message** — Based on the determined step:
+8. **Determine thread vs new email** (email channel only):
+
+   Review the lead context's **Email History** for existing threads with this contact:
+
+   a. **Reply in existing thread** — If the Email History contains a thread where:
+      - The most recent message is within the sequence-flow's follow-up spacing window, AND
+      - The thread topic is still relevant to the current outreach intent (not a completely new angle after a pause)
+
+      Then:
+      - Set `body.reply_in_thread = true`
+      - Set `body.thread_id` to that thread's Thread ID from the lead context
+      - Do NOT set `body.subject` (Gmail auto-derives "Re: [original subject]" for thread replies)
+      - **Populate recipients from thread**: Set `body.recipients` to the To participants from the most recent message in the thread (excluding our own email `{{USER_EMAIL}}`). Set `body.cc` to the CC participants from that message (excluding our own email). Preserve the original To/CC split from the thread.
+
+   b. **New email** — If no relevant recent thread exists:
+      - Set `body.reply_in_thread = false`
+      - Generate a new subject line as normal in step 8a below
+      - **Populate recipients from lead contact**: Set `body.recipients` from the lead's contact email in CRM. If no email is available on the lead, use `{{EMAIL_ENRICHMENT}}` provider from `pipeline-config.md` → `## Enrichment` to find the contact's email address before proceeding.
+      - Set `body.cc` to an empty array `[]`
+
+   This aligns with the email guidelines rule: "Follow-ups go in the same thread" and "New topics or new angles after a pause get new threads with new subjects."
+
+9. **Generate outreach message** — Based on the determined step:
 
    a. Select appropriate template from the channel's **Templates** file (if defined in `pipeline-config.md` → `## Channels` → `### {channel}`) or `messaging-guidelines/email-templates.md` as fallback
    b. Apply tone from `messaging-guidelines/tone.md`
@@ -59,14 +81,14 @@
 
    > **Note:** This action only generates outreach messages (`send_{channel}` for any configured channel). Pipeline stage and follow-up date updates are handled directly via `actions/add-update-leads.md` during followup orchestration.
 
-9. **Score activity** — Invoke `actions/score-activity.md` as a sub-agent, passing:
+10. **Score activity** — Invoke `actions/score-activity.md` as a sub-agent, passing:
    - The generated activity (type, body, summary, contacts, account)
    - The `full_lead_context` used for generation
    - Relevant workspace files: `profile/icps.md`, `messaging-guidelines/tone.md`, the channel's Guidelines file from `pipeline-config.md`, `sequence-flow.md`
 
    The sub-agent returns `confidence_score`, `scoring_breakdown`, and `overall_reasoning`.
 
-10. **Store in DB** — Insert into `{{ACTIONS_DB}}`:
+11. **Store in DB** — Insert into `{{ACTIONS_DB}}`:
    - `approval_status`: if `confidence_score` >= `{{AUTO_APPROVE_THRESHOLD}}` from `pipeline-config.md`, set to `'approved'`; otherwise `'pending'`
    - `execution_status`: pending
    - `activity_type`: determined type
@@ -96,7 +118,7 @@
    - `confidence_score`: score from scoring step
    - `scoring_breakdown`: full breakdown JSON from scoring step
 
-11. **Present to user** — Show the drafted activity with its confidence score:
+12. **Present to user** — Show the drafted activity with its confidence score:
    - Display: "Confidence: [score]/100 — [overall_reasoning]"
    - If auto-approved (score >= threshold): "Auto-approved (score [X] >= threshold [Y]). Will execute on scheduled date."
    - If pending (score < threshold): show for manual review as before

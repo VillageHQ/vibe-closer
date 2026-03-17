@@ -103,7 +103,7 @@ These are user-facing commands that orchestrate multiple actions:
 
 Before any action, load the relevant context:
 
-1. Read `pipeline-config.md` — MCP providers, pipeline name, field mappings (always required).
+1. Read `pipeline-config.md` — MCP providers, pipeline name, field mappings (always required). Also read `pipeline-mcp-hints.md` if it exists — these are concrete tool call examples (exact tool names, parameter structures) for the workspace's configured providers. Use them instead of discovering tool schemas from scratch.
 2. Read `CLAUDE.md` in the pipeline directory — the workspace index listing all files and their purposes. (An `AGENTS.md` mirror exists for non-Claude tools — both files have identical content.)
 3. Read the specific action or command file for the current intent.
 4. Load additional workspace files that could be of benefit to the action being executed (e.g., messaging-guidelines when drafting outreach, profile when generating content).
@@ -123,6 +123,19 @@ When an action references a channel (for generating, scoring, or executing outre
 - **Polling** — instructions for polling replies (or "None" if not supported)
 
 The `activity_type` for outreach is always `send_{channel_name}` (e.g., `send_email`, `send_linkedin`, `send_twitter`). CRM operations (`update_followup_date`, `change_pipeline_stage`, `add_lead`) are not channels and remain hardcoded.
+
+#### MCP Hints Maintenance
+
+After completing any command that made MCP tool calls (`/followup`, `/execute-approved-activity`, `/poll-new-activity`, `/discover-leads`):
+
+1. Check if `pipeline-mcp-hints.md` exists. If not, create it from the workspace template.
+2. For each MCP tool call you made during this command:
+   - Is the tool name + parameter pattern already documented in the hints file?
+   - If not, append it under the appropriate provider section with the exact tool name, parameters used, and a one-line note.
+3. If you discovered a correction (e.g., a parameter name was wrong in the hints), fix it.
+4. Keep updates brief — one entry per operation, not per call.
+
+This is a lightweight check, not a full analysis. Skip if no new patterns were discovered.
 
 ### 2. Determine Intent
 

@@ -57,6 +57,8 @@ For any `activity_type` starting with `send_`:
 2. Look up `pipeline-config.md` → `## Channels` → `### {channel_name}` to get the channel configuration
 3. Follow the channel's **Execution** instructions, passing `body` fields per the channel's **Body Schema**:
    - **If the channel has an MCP Provider** (e.g., Gmail MCP): use that provider to send or draft the message. Pass recipients/subject/message/etc. from the activity's `body` JSONB
+     - **Thread replies** (email channel): If `body.reply_in_thread` is `true` and `body.thread_id` is present, pass `threadId: body.thread_id` to `gmail_create_draft`. Do NOT pass `subject` — Gmail auto-derives "Re: [original subject]" for thread replies. If `body.thread_id` is missing despite `reply_in_thread` being true, fall back to creating a new email with "Re: [original subject]" as subject.
+     - **CC recipients** (email channel): If `body.cc` is present and non-empty, pass `cc` parameter to `gmail_create_draft` as a comma-separated string of emails (e.g., "Name <email>, Name <email>").
    - **If the channel is manual** (e.g., "browser automation / manual"): mark `execution_status = 'finished'` and add to `manual_actions` list with the message content and any relevant URLs (profile_url, handle, etc.) ready to copy. Increment `executed`
 4. If the channel is not found in `pipeline-config.md`: add to `failures` list with reason "Channel '{channel_name}' not configured", increment `failed`
 
