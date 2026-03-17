@@ -1,134 +1,197 @@
 # vibe-closer
 
-Pipeline management plugin for Claude Code. Manages end-to-end pipelines for **Sales**, **Hiring**, **Fundraising**, **BD/Partnerships**, **Job Search**, and **VC Deal Flow** — lead tracking, personalized outreach, follow-ups, and self-improving workflows.
+**A fully autonomous pipeline manager that runs from lead discovery to closing deals — with a human-in-the-loop for approving outreach.**
+
+vibe-closer is an LLM-first pipeline manager. It can be installed on **Claude Code** as a plugin, or imported as a **skill** on Claude, OpenAI, and other AI coding tools.
+
+It manages end-to-end pipelines for Sales, Hiring, Fundraising, BD/Partnerships, Job Search, VC Deal Flow, and more — discovering leads, researching context, drafting personalized outreach, following up, and improving itself over time.
+
+- 🌐 **Open-source**
+- 🤝 **Full end-to-end pipeline management** — from lead discovery to deal close
+- 🦸 **Easy onboarding** — zero to hero in under 5 minutes
+- 📖 **Build world-class pipeline collateral** from scratch or from simple resources
+- 🗃️ **System-of-record agnostic** — use any CRM (Attio, HubSpot, Salesforce, Notion, etc.)
+- 💪 **Context awareness & intelligence** more capable than any other tool out there
+- 👥 **Use-case agnostic** — inbound/outbound sales, job search, recruiting, VC/LP fundraising, deal flow, expert interviews, and more
+
+## Install
+
+### Claude Code Plugin
+
+```bash
+claude plugin add --git https://github.com/VillageHQ/vibe-closer
+```
+
+### Import as a Skill on Claude
+
+Copy the contents of `skills/vibe-closer/SKILL.md` into your Claude project's custom instructions or system prompt.
+
+### Import as a Skill on OpenAI (Codex, ChatGPT)
+
+Copy the contents of `skills/vibe-closer/SKILL.md` into your project's system instructions. The skill references `AGENTS.md` (the cross-platform standard) which is compatible with Codex, Copilot, Cursor, Zed, and other AI coding tools.
 
 ## Quick Start
 
-1. Install as a Claude Code plugin
-2. Run `/onboard` to create a pipeline workspace
-3. Run `/discover-leads` to find new prospects
-4. Run `/followup` to draft outreach for due leads
-5. Run `/view-pending-activity` to review and approve drafts
-6. Run `/execute-approved-activity` to send approved outreach
-7. Run `/learn` to improve over time
+1. Run `/onboard` to create a pipeline workspace
+2. That's it — everything else runs on autopilot
+
+## How It Runs
+
+Ideally, all commands run automatically on a schedule (via cron, Claude Code hooks, or any scheduler):
+
+```
+/discover-leads     →  finds new prospects from email, meetings, conversations
+/followup           →  drafts personalized outreach for due leads
+/poll-new-activity  →  detects replies and triggers next steps
+/execute-approved-activity  →  sends approved outreach
+/learn              →  improves messaging from edits, feedback, and outcomes
+```
+
+**The only thing you need to do is open the `activity-viewer.html` file in your workspace to approve pending activity.** Everything else — discovery, drafting, scoring, sending, reply detection, learning — runs autonomously.
+
+## Onboarding
+
+`/onboard` is a 5-minute guided conversation that builds your entire pipeline workspace. Here's how it goes:
+
+```
+vibe-closer:  What kind of pipeline are you building?
+              (Sales / Hiring / Fundraising / BD / Job Search / VC Deal Flow)
+
+you:          Sales
+
+vibe-closer:  What's your company name, and where are you based?
+
+you:          Acme Corp, San Francisco
+
+vibe-closer:  Tell me about what you sell and who you sell to.
+              Any links to your website, pitch deck, or docs are helpful.
+
+you:          We sell developer tools to engineering teams at Series B+ startups.
+              Here's our website: acme.dev
+
+vibe-closer:  Got it. Let me pull context from your website...
+              Now — what does a great customer look like for you?
+              Think: title, company size, industry, pain points.
+
+you:          VP Eng or CTO, 50-500 engineers, struggling with CI/CD speed.
+
+vibe-closer:  What tone should outreach have? Casual, professional, technical?
+
+you:          Technical but friendly. No buzzwords.
+
+vibe-closer:  Perfect. I've built your workspace with:
+              ✓ Company profile and ICP definitions
+              ✓ Email and LinkedIn templates in your voice
+              ✓ Outreach sequence (intro → follow-up → break-up)
+              ✓ Lead discovery rules
+              ✓ Goals and tracking
+              Ready to find your first leads — run /discover-leads.
+```
+
+vibe-closer takes whatever you give it — a website URL, a pitch deck, rough notes, or just a conversation — and builds production-ready pipeline collateral: ICPs, messaging guidelines, outreach templates, sequence flows, and discovery rules. All stored as editable markdown files in your workspace.
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `/onboard` | Create a new pipeline workspace or update an existing one. Walks through use case selection, tool connections, database setup, content generation, and automation setup. |
-| `/followup` | Process all due leads — gathers context, drafts personalized outreach, and presents for approval. Handles regeneration requests from prior feedback. |
-| `/discover-leads` | Find new leads from email, meetings, and conversations. Deduplicates against existing CRM records before adding. |
-| `/learn` | Analyze pipeline performance (edit patterns, feedback, reply rates) and update workspace files — messaging guidelines, profile, tone, and workflow rules. |
-| `/poll-new-activity` | Check for new email replies, match them to sent activities via fingerprinting, update leads, and trigger follow-up cycles. |
-| `/execute-approved-activity` | Execute all approved, due activities — sends outreach, updates CRM, adds new leads. Recovers stale activities stuck in execution. |
-| `/view-pending-activity` | View pending activities in a browser-based viewer or chat fallback. Filter, approve, edit, add notes, reject, snooze, or remove from sequence. |
-| `/view-logs` | View command execution logs with filtering (today, failed, limit). |
-| `/re-index` | Re-index workspace files to keep CLAUDE.md and AGENTS.md in sync with the filesystem. |
-| `/test` | Run end-to-end integration test of the full pipeline flow — onboard, followup, discover, execute, with DB/CRM checkpoint validation. |
+| `/onboard` | Create a new pipeline workspace or update an existing one |
+| `/followup` | Draft personalized outreach for all due leads |
+| `/discover-leads` | Find new leads from email, meetings, and conversations |
+| `/execute-approved-activity` | Send all approved outreach, update CRM |
+| `/view-pending-activity` | Review pending activities in browser or chat |
+| `/poll-new-activity` | Detect replies, update leads, trigger next follow-up |
+| `/learn` | Improve workspace files from edit patterns and outcomes |
+| `/view-logs` | View execution logs with filtering |
+| `/re-index` | Sync workspace index files with filesystem |
+| `/test` | Run end-to-end integration test of the full pipeline |
 
 ## Core Workflow
 
 ```
 Discover leads → Gather context → Draft outreach → Score confidence
-    → Human review (approve / edit / add note / reject)
+    → Human review (approve / edit / reject)
     → Execute approved activities → Poll for replies → Follow up
     → Learn from edits and outcomes → Improve workspace files
 ```
 
-Every outreach activity goes through a **draft → review → approve → execute** loop. Activities are scored on 5 dimensions (personalization, ICP match, tone, channel fit, CTA clarity) with a 0–100 confidence score. High-confidence activities can be auto-approved based on a configurable threshold.
+Every activity goes through a **draft → review → approve → execute** loop. Activities are scored 0–100 on personalization, ICP match, tone, channel fit, and CTA clarity. High-confidence activities can be auto-approved.
 
 ## Use Cases
 
-Each use case has a dedicated workspace template with tailored content:
+| Use Case | What Gets Built |
+|----------|-----------------|
+| **Sales** | ICP definitions, email/LinkedIn templates, sequence flow, lead discovery rules |
+| **Hiring** | Company brief, candidate ICPs, recruiting message templates |
+| **Fundraising** | Company brief, investor ICPs, fundraising outreach templates |
+| **BD / Partnerships** | Company brief, ideal partner profiles, partnership templates |
+| **Job Search** | Candidate brief, target company profiles, job search templates |
+| **VC Deal Flow** | Fund brief, startup ICPs, deal sourcing templates |
 
-| Use Case | Template Contents |
-|----------|-------------------|
-| **Sales** | ICP definitions, email/LinkedIn templates, sequence flow, scheduling links, lead discovery rules |
-| **Hiring** | Company brief, candidate ICPs, recruiting message templates, sequence flow |
-| **Fundraising** | Company brief, investor ICPs, fundraising outreach templates, sequence flow |
-| **BD / Partnerships** | Company brief, ideal partner profiles, partnership outreach templates, sequence flow |
-| **Job Search** | Candidate brief, target company profiles, job search outreach templates, sequence flow |
-| **VC Deal Flow** | Fund brief, startup ICPs, deal sourcing templates, sequence flow |
-
-All templates include: goals, messaging guidelines (tone, email guidelines, LinkedIn DM guidelines), lead/partner preferences (discovery rules, research instructions), and progress tracking directories (learnings, performance reports).
-
-## Actions
-
-Actions are the granular operations that power commands. Each action follows a step-by-step instruction file.
-
-| Action | Description |
-|--------|-------------|
-| **Get leads** | Fetch due leads (by follow-up date) or all leads from CRM |
-| **Add/update leads** | Add, update, or remove leads in CRM with full field support |
-| **Gather context** | Aggregate lead info from CRM, email, LinkedIn, meetings, network, and website crawling. Identifies warm introduction paths. |
-| **Generate activity** | Draft outreach following workflow rules, messaging guidelines, and personalization. Embeds fingerprint for reply tracking. Includes skip detection (manual outreach, prospect delay, pending next steps, workflow pause). |
-| **Update activity** | Edit a pending activity's body with version history tracking |
-| **Approve activity** | Human-in-the-loop approval — single or bulk. Flags low-confidence activities. |
-| **Score activity** | Evaluate quality across 5 dimensions (20 pts each): personalization, ICP match, tone, channel fit, CTA clarity |
-| **Add note** | Attach user feedback to a pending activity and flag it for regeneration on next `/followup` |
-| **Evaluate performance** | Measure pipeline metrics (conversion rates, reply rates, edit/rejection rates) against goals |
-| **Update content** | Rebuild workspace content through expert discovery conversation — replaces all placeholder content with specific, grounded content |
-| **Sync with skill** | Re-sync workspace artifacts (activity viewer, templates) from the skill source |
-| **View pending activity** | Display pending activities in browser viewer or chat with filtering and per-activity actions |
-| **Poll new activity** | Detect email replies via fingerprint matching or domain/sender heuristics, update leads accordingly |
-| **Add log** | Record command execution results (status, summary, errors) to the logs table |
+All templates include goals, messaging guidelines, lead preferences, and progress tracking.
 
 ## Key Features
 
 ### Multi-Channel Outreach
-Supports email, LinkedIn, and custom channels. Each channel is configured in `pipeline-config.md` with its own provider, guidelines, templates, body schema, fingerprint method, and execution instructions.
+Email, LinkedIn, and custom channels — each configured with its own provider, templates, body schema, and fingerprint method.
 
 ### Lead Context Aggregation
-Pulls from 6 sources before drafting outreach:
-- CRM records (stage, notes, history)
-- Email history (prior conversations)
-- Profile enrichment (role, seniority, recent activity)
-- Website crawling (company intelligence)
-- Meeting transcripts (prior call context)
-- Relationship graph (warm paths, mutual connections)
+Pulls from 6 sources before drafting: CRM records, email history, profile enrichment, website crawling, meeting transcripts, and relationship graph (warm paths and mutual connections).
 
 ### Confidence Scoring
-Every activity is scored 0–100 across 5 dimensions (20 points each):
-- **Personalization quality** — specific references to the lead's context
-- **ICP match** — alignment with ideal customer/candidate profile
-- **On-tone** — adherence to messaging guidelines
-- **Channel appropriateness** — right channel for the message type
-- **CTA clarity** — clear, actionable next step
+Every activity is scored 0–100 across 5 dimensions (20 pts each): personalization quality, ICP match, on-tone, channel appropriateness, CTA clarity.
 
 ### Human-in-the-Loop Approval
-All outreach goes through review before sending. Activities can be approved, edited (with version history), annotated with notes (triggering regeneration), rejected, snoozed, or removed from sequence.
+All outreach is reviewed before sending. Approve, edit (with version history), add notes (triggers regeneration), reject, snooze, or remove from sequence.
 
 ### Browser-Based Activity Viewer
-Interactive HTML viewer with real-time Supabase integration for reviewing pending activities. Supports bulk operations, filtering by type/date/company/confidence, and per-activity actions.
+Interactive HTML viewer with real-time Supabase integration. Bulk operations, filtering by type/date/company/confidence, and per-activity actions.
 
 ### Self-Improving Workflows
-`/learn` analyzes patterns from user edits, rejection reasons, reply rates, and feedback notes. It proposes updates to messaging guidelines, tone, profile, ICPs, and workflow rules — then applies approved changes to workspace files.
+`/learn` analyzes edit patterns, rejection reasons, reply rates, and feedback notes. Proposes and applies updates to messaging guidelines, tone, profile, ICPs, and workflow rules.
 
-### Reply Detection
-Sent activities are fingerprinted (UUID v4 embedded per channel's method). `/poll-new-activity` matches incoming replies by fingerprint or domain/sender heuristics, updates lead follow-up dates, and triggers the next follow-up cycle.
+### Reply Detection & Fingerprinting
+Sent activities are fingerprinted (UUID v4 per channel). `/poll-new-activity` matches replies by fingerprint or domain/sender heuristics, updates lead follow-up dates, and triggers the next cycle.
 
 ### Skip Detection
-Before generating outreach, checks whether the lead should be skipped: recent manual outreach detected, prospect requested a delay, pending next steps exist, or workflow is paused.
+Before generating outreach, checks: recent manual outreach, prospect requested delay, pending next steps, or workflow paused.
 
-### Stale Activity Recovery
-`/execute-approved-activity` detects activities stuck in `execution_status = 'running'` for over 30 minutes and recovers them.
+## Actions
+
+Actions are the granular operations that power commands:
+
+| Action | Description |
+|--------|-------------|
+| Get leads | Fetch due leads or all leads from CRM |
+| Add/update leads | Add, update, or remove leads in CRM |
+| Gather context | Aggregate lead info from CRM, email, LinkedIn, meetings, network, website |
+| Generate activity | Draft outreach with personalization, fingerprinting, and skip detection |
+| Update activity | Edit a pending activity's body with version history |
+| Approve activity | Human-in-the-loop approval — single or bulk |
+| Score activity | Evaluate quality across 5 dimensions |
+| Add note | Attach feedback to an activity, flag for regeneration |
+| Evaluate performance | Measure pipeline metrics against goals |
+| Update content | Rebuild workspace content through expert discovery conversation |
+| Sync with skill | Re-sync workspace artifacts from skill source |
+| View pending activity | Display activities in browser viewer or chat |
+| Poll new activity | Detect email replies via fingerprint or heuristic matching |
+| Add log | Record command execution results |
 
 ## Workspace Structure
 
-After onboarding, a pipeline workspace looks like:
+After onboarding, your pipeline workspace:
 
 ```
 my-pipeline/
   pipeline-config.md          # Central config: providers, channels, stages, settings
-  CLAUDE.md                   # Workspace index (auto-maintained by /re-index)
-  AGENTS.md                   # Mirror of CLAUDE.md for non-Claude tools
+  activity-viewer.html        # Open in browser to approve pending activity
+  CLAUDE.md                   # Workspace index (auto-maintained)
+  AGENTS.md                   # Mirror for non-Claude tools
   goals.md                    # Pipeline goals and targets
-  sequence-flow.md            # Multi-step outreach sequence definition
+  sequence-flow.md            # Multi-step outreach sequence
   profile/
     company-brief.md          # Your company/fund/candidate description
     icps.md                   # Ideal customer/candidate/investor profiles
-    scheduling-links.md       # Booking links for meetings
+    scheduling-links.md       # Booking links
   messaging-guidelines/
     tone.md                   # Voice and tone rules
     email-templates.md        # Email outreach templates
@@ -138,14 +201,14 @@ my-pipeline/
     lead-discovery.md         # Where and how to find leads
     research-lead.md          # How to research a new lead
   progress/
-    learnings/                # Timestamped learning reports from /learn
+    learnings/                # Learning reports from /learn
     performance/              # Performance evaluation reports
 ```
 
 ## Requirements
 
 ### Required MCP Connections
-- **CRM** (e.g., Attio) — lead tracking, pipeline stages, field updates
+- **CRM** (e.g., Attio, HubSpot, Notion) — lead tracking, pipeline stages, field updates
 - **Email** (e.g., Gmail) — inbox polling, message sending
 - **Database** (e.g., Supabase) — activity tracking, execution logs, polling cursors
 
@@ -158,8 +221,8 @@ my-pipeline/
 ## Plugin Structure
 
 ```
-.claude-plugin/plugin.json              # Plugin manifest (name, version, author)
-commands/                               # Thin wrappers for plugin slash command discovery
+.claude-plugin/plugin.json              # Plugin manifest
+commands/                               # Thin wrappers for slash command discovery
 skills/vibe-closer/
   SKILL.md                              # Main skill: intent routing + execution
   commands/                             # Canonical command logic (10 commands)
@@ -169,25 +232,27 @@ skills/vibe-closer/
   views/                                # HTML templates (activity-viewer.html)
 ```
 
-Root `commands/` contains thin wrappers that delegate to `skills/vibe-closer/commands/` — required because plugin slash command discovery only checks the plugin root.
-
 ## Evaluations
 
-The plugin includes 8 evaluation categories in `skills/vibe-closer/evaluations/`:
+8 evaluation categories in `skills/vibe-closer/evaluations/`:
 
 | Evaluation | Coverage |
 |------------|----------|
 | Workflow Routing | Intent routing to correct actions |
 | Outreach Quality | Personalization, tone, template adherence |
 | Onboarding Flow | Workspace creation, provider config, DB setup |
-| Learning Loop | Pattern detection, workspace updates, learnings capture |
+| Learning Loop | Pattern detection, workspace updates |
 | Context Gathering | Lead context aggregation from all sources |
-| Poll New Activity | Email polling, fingerprint matching, reply detection |
+| Poll New Activity | Fingerprint matching, reply detection |
 | Add Note & Regenerate | Feedback capture, regeneration flagging |
-| Update Content | Content audit, discovery conversation, placeholder replacement |
+| Update Content | Content audit, discovery conversation |
 
-Run evaluations with `skills/vibe-closer/evaluations/run-evals.sh`.
+Run with `skills/vibe-closer/evaluations/run-evals.sh`.
 
 ## Version
 
-Current version: **1.22.2**
+Current version: **1.22.3**
+
+## License
+
+[Elastic License 2.0](LICENSE)
