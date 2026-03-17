@@ -24,9 +24,8 @@ Tell the user: "No leads are due for follow-up today." Query `{{CRM_TRACKER}}` f
 For each lead:
 1. Read `actions/gather-lead-context.md` → fetch full context
 2. Read `actions/generate-lead-activity.md` → determine next step. This may return either:
-   - **A drafted activity** (normal flow) — proceed to step 3 for CRM updates
-   - **A skip result** (`activity_skipped: true`) — no outreach needed. Use the `recommended_followup_date` and `recommended_stage` from the skip result when running step 3 to update the CRM. Track these skipped leads separately for the Phase 4 summary.
-3. Read `actions/add-update-leads.md` → directly update the lead's follow-up date and pipeline stage based on workflow rules (no activity/approval needed for these CRM updates)
+   - **A drafted activity** (normal flow) — do NOT update CRM yet. Follow-up date and pipeline stage will be updated when the activity is executed in Phase 5.
+   - **A skip result** (`activity_skipped: true`) — no outreach needed. Read `actions/add-update-leads.md` → immediately update the lead's follow-up date to `recommended_followup_date` and pipeline stage to `recommended_stage` (since there is no activity to execute, the CRM update happens now). Track these skipped leads separately for the Phase 4 summary.
 
 ## Phase 4: Present for Approval
 If any leads were skipped during Phase 3 (no activity generated), present a summary first:
@@ -41,6 +40,8 @@ Read `actions/view-pending-activity.md` → present activities with `approval_st
 
 ## Phase 5: Execute Approved Activities
 For approved activities: read `commands/execute-approved-activity.md` → execute.
+
+After each activity is successfully executed, read `actions/add-update-leads.md` → update the lead's follow-up date and pipeline stage based on workflow rules. CRM updates only happen here, not at generation time, so the CRM reflects what was actually sent.
 
 ## Final: Log
 

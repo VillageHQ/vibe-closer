@@ -6,7 +6,7 @@
 2. **Load lead context** — Run `gather-lead-context.md` → `fetch-full-lead-context`
 3. **Check previous activity** — Query `{{ACTIONS_DB}}` for this lead's activity history
 4. **Check for regeneration requests** — Query `{{ACTIONS_DB}}` for activities where `needs_regeneration = true` for this lead. If found:
-   - Load the existing activity's `full_lead_context` — this is the complete gathered context from the original generation and MUST be reused as the lead context for the new activity (skip step 2's MCP fetches — the stored context already contains full email bodies, meeting notes, and all gathered intelligence)
+   - Run `gather-lead-context.md` → `fetch-full-lead-context` to gather fresh context (do NOT reuse the stored `full_lead_context` from the original activity — always research the lead from scratch so regenerated activities reflect the latest information)
    - Load the existing activity's `notes` array as user feedback context
    - Mark the existing pending activity as `approval_status = 'rejected'` (preserves history)
    - Include all notes as guidance when generating the new activity (e.g., "User feedback on previous draft: [notes]")
@@ -112,6 +112,8 @@
         ### Previous Activity History
         For each past activity with this lead (most recent first):
         - **[Date]: [activity_type]** — [outcome/status]
+          - Approval: [approved / rejected / pending]
+          - Execution: [finished / pending / failed] — if pending, this activity has not been sent yet
           - Summary: [What was communicated or attempted — include the core message, ask, or value proposition used]
           - Key context used: [What personalization hooks, talking points, or intelligence informed this activity]
           - Response received: [Full substance of lead's response — specific feedback, questions, objections, or interest signals. "No response" if none.]
