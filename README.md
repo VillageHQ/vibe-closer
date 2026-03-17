@@ -16,7 +16,15 @@ It manages end-to-end pipelines for Sales, Hiring, Fundraising, BD/Partnerships,
 
 ## Install
 
-### Claude Code Plugin
+### Claude Code Marketplace
+
+Search for **vibe-closer** in the Claude Code plugin marketplace:
+
+```bash
+claude plugin add VillageHQ/vibe-closer
+```
+
+### Claude Code (from Git)
 
 ```bash
 claude plugin add --git https://github.com/VillageHQ/vibe-closer
@@ -251,7 +259,7 @@ Run with `skills/vibe-closer/evaluations/run-evals.sh`.
 
 ## Version
 
-Current version: **1.22.4**
+Current version: **1.22.6**
 
 ## Contact
 
