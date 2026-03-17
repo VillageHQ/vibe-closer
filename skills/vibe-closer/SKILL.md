@@ -39,6 +39,10 @@ If the user has multiple pipelines and hasn't specified which one to use:
 - Ask the user to select one before proceeding
 - Once selected, use that pipeline's directory as the working context for all subsequent actions
 
+### Provider Safety Rule
+
+When reading `pipeline-config.md`, only use the MCP providers, project IDs, database tables, CRM lists, and credentials explicitly defined in that file. **NEVER** call MCP tools that browse, list, or auto-discover available projects, databases, lists, or workspaces (e.g., `list_projects`, `list-lists`, `list_tables`). Using the wrong project or database can contaminate the user's data with no ability to recover. If a required value is missing or unclear, ask the user to confirm it.
+
 ### Check 3: Workspace index freshness (daily)
 
 After confirming the active pipeline, check whether a re-index is due:

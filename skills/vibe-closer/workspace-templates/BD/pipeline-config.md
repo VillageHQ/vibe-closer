@@ -1,5 +1,7 @@
 # Partnership Pipeline Configuration
 
+> **CRITICAL — Provider Safety:** Only use the MCP providers, project IDs, database tables, CRM lists, and credentials explicitly defined in this file. NEVER browse, list, or auto-discover available projects, databases, lists, or workspaces from any MCP provider at runtime. Using the wrong project or database can contaminate the user's data with no ability to recover. If a required value is missing or unclear, ask the user to confirm it rather than discovering it automatically.
+
 ## Pipeline
 - **{{PIPELINE_NAME}}**:
   <!-- Example: "BD and Partnerships" or "Strategic Partners" -->
