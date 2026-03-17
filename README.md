@@ -11,7 +11,7 @@ It manages end-to-end pipelines for Sales, Hiring, Fundraising, BD/Partnerships,
 - 🦸 **Easy onboarding** — zero to hero in under 5 minutes
 - 📖 **Build world-class pipeline collateral** from scratch or from simple resources
 - 🗃️ **System-of-record agnostic** — use any CRM (Attio, HubSpot, Salesforce, Notion, etc.)
-- 💪 **Context awareness & intelligence** more capable than any other tool out there
+- 💪 **Context awareness & intelligence** more capable than any CRM, pipeline, or GTM workflow tool out there
 - 👥 **Use-case agnostic** — inbound/outbound sales, job search, recruiting, VC/LP fundraising, deal flow, expert interviews, and more
 
 ## Install
@@ -259,7 +259,7 @@ Run with `skills/vibe-closer/evaluations/run-evals.sh`.
 
 ## Version
 
-Current version: **1.22.6**
+Current version: **1.22.7**
 
 ## Contact
 
