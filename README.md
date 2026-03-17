@@ -251,7 +251,11 @@ Run with `skills/vibe-closer/evaluations/run-evals.sh`.
 
 ## Version
 
-Current version: **1.22.3**
+Current version: **1.22.4**
+
+## Contact
+
+Questions? Reach us at [team@village.ai](mailto:team@village.ai).
 
 ## License
 
