@@ -1,0 +1,13 @@
+{
+  "name": "vibe-closer",
+  "owner": {
+    "name": "VillageHQ"
+  },
+  "plugins": [
+    {
+      "name": "vibe-closer",
+      "source": "./",
+      "description": "Pipeline management for sales, recruiting, fundraising, VC deal flow, or partnerships. Track leads, generate personalized outreach, follow up, and improve over time."
+    }
+  ]
+}
