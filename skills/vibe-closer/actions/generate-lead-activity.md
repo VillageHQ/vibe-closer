@@ -8,9 +8,10 @@
 4. **Check for regeneration requests** — Query `{{ACTIONS_DB}}` for activities where `needs_regeneration = true` for this lead. If found:
    - Run `gather-lead-context.md` → `fetch-full-lead-context` to gather fresh context (do NOT reuse the stored `full_lead_context` from the original activity — always research the lead from scratch so regenerated activities reflect the latest information)
    - Load the existing activity's `notes` array as user feedback context
-   - Mark the existing pending activity as `approval_status = 'rejected'` (preserves history)
-   - Include all notes as guidance when generating the new activity (e.g., "User feedback on previous draft: [notes]")
-   - After generating the replacement activity, ensure `needs_regeneration` is `false` on the new record
+   - Push the current `body` to `body_history` with timestamp: `body_history = body_history || jsonb_build_object('body', body, 'edited_at', now())` (same pattern as `update-activity.md` — preserves the original draft so `learn` can compare versions)
+   - Include all notes as guidance when generating the new body (e.g., "User feedback on previous draft: [notes]")
+   - Update the **same record** in place: new `body`, `needs_regeneration = false`, `approval_status = 'pending'`, updated `confidence_score`/`scoring_breakdown`, `updated_at = now()`
+   - Do NOT create a new activity or reject the existing one — in-place update keeps `notes` and `body_history` on the record so `learn` can analyze them after execution
 
 5. **Determine workflow step** — Based on:
    - Previous activities and their outcomes
@@ -70,6 +71,14 @@
       - Set `body.cc` to an empty array `[]`
 
    This aligns with the email guidelines rule: "Follow-ups go in the same thread" and "New topics or new angles after a pause get new threads with new subjects."
+
+8b. **Determine LinkedIn message variants** (linkedin channel only):
+
+   For LinkedIn activities, generate TWO message variants in the body:
+   - `body.message`: A direct message following the DM templates from the channel's Guidelines file. Use the "First DM After Connection" template for first touch, "Follow-Up DM" for subsequent touches. Max 80 words per guidelines.
+   - `body.connection_note`: A connection request note following the "Connection Request Note" template from the channel's Guidelines file. MUST be under 300 characters (LinkedIn enforces this limit).
+
+   At execution time, the system detects connection status and uses the appropriate variant. Both variants should be personalized with the same context and talking points.
 
 9. **Generate outreach message** — Based on the determined step:
 

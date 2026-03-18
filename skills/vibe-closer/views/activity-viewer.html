@@ -284,6 +284,7 @@ td:last-child { overflow: visible; }
   </div>
   <div class="header-right">
     <span class="activity-count" id="activityCount"></span>
+    <button class="refresh-btn" style="border-color:var(--red);color:var(--red);" onclick="clearAllActivities()">&#x1F5D1; Clear All</button>
     <button class="refresh-btn" onclick="loadActivities()">&#x21bb; Refresh</button>
   </div>
 </div>
@@ -502,6 +503,14 @@ const API = {
     if (!resp.ok) throw new Error('Failed to fetch activity');
     const rows = await resp.json();
     return rows[0];
+  },
+
+  async deleteAllActivities() {
+    const resp = await fetch(this.base + '?id=not.is.null', {
+      method: 'DELETE',
+      headers: this.headers
+    });
+    if (!resp.ok) throw new Error('Failed to delete activities: ' + resp.statusText);
   }
 };
 
@@ -841,6 +850,17 @@ async function bulkApprove() {
   try {
     await Promise.all(ids.map(id => API.patchActivity(id, { approval_status: 'approved' })));
     toast(ids.length + ' activities approved');
+    State.selectedIds.clear();
+    loadActivities();
+  } catch (e) { toast('Error: ' + e.message, 'error'); }
+}
+
+async function clearAllActivities() {
+  const count = State.activities.length;
+  if (!confirm('Delete ALL ' + count + ' activities from the table? This cannot be undone.')) return;
+  try {
+    await API.deleteAllActivities();
+    toast('All activities deleted');
     State.selectedIds.clear();
     loadActivities();
   } catch (e) { toast('Error: ' + e.message, 'error'); }

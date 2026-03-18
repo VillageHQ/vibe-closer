@@ -39,6 +39,9 @@ If any activities were auto-approved during Phase 3 (confidence score >= `{{AUTO
 Read `actions/view-pending-activity.md` → present activities with `approval_status = 'pending'` for manual review. Wait for user to approve/edit/reject each activity.
 
 ## Phase 5: Execute Approved Activities
+
+**Test Mode**: Before delegating to `execute-approved-activity.md`, re-read `pipeline-config.md` to confirm Test Mode state. In Test Mode, execution creates drafts instead of sending — the Provider's draft operation is used for MCP channels, and browser-automated channels are filled but not submitted.
+
 For approved activities: read `commands/execute-approved-activity.md` → execute.
 
 After each activity is successfully executed, read `actions/add-update-leads.md` → update the lead's follow-up date and pipeline stage based on workflow rules. CRM updates only happen here, not at generation time, so the CRM reflects what was actually sent.

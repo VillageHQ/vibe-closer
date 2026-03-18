@@ -84,6 +84,9 @@ After context compaction:
 2. Use a sub-agent to extract the current phase instructions from the relevant command file — you don't need to reload the full SKILL.md or command file if you don't need it
 3. Resume from the `in_progress` task
 
+### Test Mode Awareness
+When `pipeline-config.md` contains `- **Test Mode**: true` in its `## Settings` section, all outreach execution uses the **draft path**: MCP-backed channels use the Provider's draft operation instead of send, browser-automated channels have messages filled but not submitted. This flag MUST be re-read from `pipeline-config.md` before any execution step — never rely on earlier context memory. See `execute-approved-activity.md` Phase 3 step 2.
+
 ## Commands
 
 These are user-facing commands that orchestrate multiple actions:
