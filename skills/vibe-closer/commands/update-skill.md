@@ -33,6 +33,11 @@ Your workspace is at v{workspace_version}. The latest plugin is v{plugin_version
 - New: .config/pipeline-view-config.js for viewer config
 - Changed: activity-viewer.html is now static (no token replacement)
 
+### v1.31.1 — Gmail-like HTML Email Editor & Activity Type Fix
+- New: Squire rich text editor for email activities (Gmail-like toolbar)
+- Changed: Email body now generated and stored as HTML
+- Fix: Activity type checks use activityChannel() — no hardcoded comparisons
+
 Applying updates...
 ```
 
