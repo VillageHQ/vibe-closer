@@ -1205,7 +1205,7 @@ function renderActivityTable(activities) {
       '<td><div class="activity-cell" onmouseenter="showPreview(\'' + a.id + '\', event)" onmouseleave="hidePreview()">' +
         (isEmailActivity(a) && body.reply_in_thread ? '<span class="badge badge-reply" style="margin-bottom:4px;">Reply</span> ' : '') +
         (isEmailActivity(a) && body.subject ? '<div class="activity-subject">' + esc(truncate(body.subject, 60)) + '</div>' : '') +
-        '<div class="activity-preview">' + esc(truncate(body.message || '', 80)) + '</div>' +
+        '<div class="activity-preview">' + esc(truncate(stripFingerprint(body.message) || '', 80)) + '</div>' +
       '</div></td>' +
       '<td>' + formatDate(a.scheduled_date) +
         (isOverdue(a.scheduled_date) ? ' <span class="badge badge-overdue">Past Due</span>' : '') +
@@ -1569,7 +1569,7 @@ function openEditPanel(id) {
       '</div></div>';
   } else {
     html += '<div class="panel-field"><label>Body</label>' +
-      '<textarea id="editBody">' + esc(body.message || '') + '</textarea></div>';
+      '<textarea id="editBody">' + esc(stripFingerprint(body.message) || '') + '</textarea></div>';
   }
 
   const notes = Array.isArray(a.notes) && a.notes.length > 0 ? a.notes : null;
@@ -1609,11 +1609,16 @@ function openEditPanel(id) {
 // ── Squire Editor ──
 let activeSquireEditor = null;
 
+function stripFingerprint(text) {
+  if (!text) return text;
+  return text.replace(/\s*<!--\s*vc:[0-9a-f-]+\s*-->\s*/gi, '').trim();
+}
+
 function plainTextToHTML(text) {
   // If already contains HTML tags, return as-is
-  if (/<[a-z][\s\S]*>/i.test(text)) return text;
+  if (/<[a-z][\s\S]*>/i.test(text)) return stripFingerprint(text);
   // Convert plain text to HTML paragraphs
-  return text.split(/\n\n+/).map(para =>
+  return stripFingerprint(text).split(/\n\n+/).map(para =>
     '<p>' + esc(para).replace(/\n/g, '<br>') + '</p>'
   ).join('');
 }
@@ -1837,7 +1842,7 @@ function showPreview(id, event) {
     if (isEmail && body.message) {
       content.innerHTML = plainTextToHTML(body.message);
     } else {
-      content.textContent = body.message || 'No content';
+      content.textContent = stripFingerprint(body.message) || 'No content';
     }
 
     const rect = target.getBoundingClientRect();
