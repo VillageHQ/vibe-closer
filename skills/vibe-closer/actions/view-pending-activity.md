@@ -2,33 +2,13 @@
 
 ## Browser Viewer (Default)
 
-Open the activity viewer from `{WORKSPACE_DIR}/activity-viewer.html`.
+Open the pipeline viewer from `{WORKSPACE_DIR}/activity-viewer.html`.
 
 ### First-time setup
 
-If `activity-viewer.html` does not exist in the workspace directory:
+If `activity-viewer.html` or `.config/pipeline-view-config.js` does not exist in the workspace directory:
 
-1. **Read pipeline config** from `pipeline-config.md` — extract:
-   - `{{ACTIVITIES_TABLE}}`
-   - `{{PIPELINE_NAME}}`
-   - `{{USER_EMAIL}}`
-   - `{{AUTO_APPROVE_THRESHOLD}}`
-
-2. **Resolve Supabase credentials** via `{{ACTIONS_DB}}` provider (Supabase MCP):
-   - Call `get_project_url` → Supabase URL (e.g., `https://xxx.supabase.co`)
-   - Call `get_publishable_keys` → anon key
-
-3. **Read HTML template** from `skills/vibe-closer/views/activity-viewer.html`
-
-4. **Token replacement** — Replace these tokens in the HTML template:
-   - `%%SUPABASE_URL%%` → Supabase project URL
-   - `%%SUPABASE_ANON_KEY%%` → Supabase anon key
-   - `%%ACTIVITIES_TABLE%%` → activities table name
-   - `%%PIPELINE_NAME%%` → pipeline name
-   - `%%USER_EMAIL%%` → user email
-   - `%%AUTO_APPROVE_THRESHOLD%%` → auto-approve threshold (number)
-
-5. **Write to workspace** — Write the replaced HTML to `{WORKSPACE_DIR}/activity-viewer.html`
+Run `actions/setup-workspace-artifacts.md` to generate the config and copy the viewer.
 
 ### Open viewer
 
@@ -37,7 +17,7 @@ Open `{WORKSPACE_DIR}/activity-viewer.html` in the browser:
 - Linux: `xdg-open {WORKSPACE_DIR}/activity-viewer.html`
 
 Confirm to user:
-> "Opened the activity viewer in your browser. Changes are saved to Supabase in real-time."
+> "Opened the pipeline viewer in your browser. You can switch between View Leads and View Activities using the sidebar."
 
 ## Chat Fallback
 

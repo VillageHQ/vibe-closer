@@ -402,6 +402,14 @@ Each channel defines its own body schema in `pipeline-config.md` → `## Channel
 {"contacts": [{"name": "string", "email": "string"}], "account": {"company": "string", "domain": "string"}, "initial_stage": "string", "source": "string", "followup_date": "ISO 8601 date (default: today)"}
 ```
 
+### Phase 3b: Setup Workspace Artifacts
+
+Run `actions/setup-workspace-artifacts.md` to:
+1. Generate `.config/pipeline-view-config.js` with resolved Supabase + CRM credentials
+2. Copy `activity-viewer.html` from the skill's views directory
+
+Then set `{{WORKSPACE_VERSION}}` in `pipeline-config.md` → `## Meta` to the current plugin version (read from `.claude-plugin/plugin.json`).
+
 ### Phase 4: Build Pipeline Content
 
 Before delegating to `actions/update-content.md`, help the user understand what this phase does and what sources they can point you at:
@@ -454,6 +462,7 @@ After content building is complete, educate the user on everything they can do:
 >
 > **Maintenance:**
 > - `/onboard update` — Change providers, update content, modify database schema, or switch use cases.
+> - `/update-skill` — Update your workspace to the latest plugin version (syncs viewer, config, and applies migrations).
 > - `/re-index` — Refresh the workspace file index after you've made manual edits to any files.
 
 ### Phase 6: Recommended Automation
