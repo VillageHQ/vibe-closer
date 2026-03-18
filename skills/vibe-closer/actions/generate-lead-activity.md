@@ -131,7 +131,20 @@
         - [Notes from previous rejected activity]
         ```
      Quality check: `full_lead_context` must be detailed enough that a human could draft the same outreach from it alone, without accessing any MCP or workspace file
-   - `body`: action-specific payload
+   - `body`: JSON object — use EXACTLY these field names:
+     - **Email channel** (`send_email` / `email`):
+       - `message`: string — the email body text (NOT `body`)
+       - `subject`: string — email subject line (omit if `reply_in_thread` is true)
+       - `recipients`: array of `{name, email}` objects (NOT a plain `to` string)
+       - `cc`: array of `{name, email}` objects (empty `[]` if none)
+       - `reply_in_thread`: boolean (NOT `reply_to_thread`, NOT `new_thread`)
+       - `thread_id`: string (only when `reply_in_thread` is true)
+       - `fingerprint`: string — the `<!-- vc:UUID -->` marker
+     - **LinkedIn channel** (`send_linkedin`):
+       - `message`: string — the DM text
+       - `connection_note`: string — connection request note (under 300 chars)
+       - `profile_url`: string — LinkedIn profile URL
+       - `fingerprint`: string — UUID
    - `confidence_score`: score from scoring step
    - `scoring_breakdown`: full breakdown JSON from scoring step
 
