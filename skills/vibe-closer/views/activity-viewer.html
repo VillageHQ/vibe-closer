@@ -1608,10 +1608,20 @@ function openEditPanel(id) {
 // ── Squire Editor ──
 let activeSquireEditor = null;
 
-function initSquireEditor(htmlContent) {
+function plainTextToHTML(text) {
+  // If already contains HTML tags, return as-is
+  if (/<[a-z][\s\S]*>/i.test(text)) return text;
+  // Convert plain text to HTML paragraphs
+  return text.split(/\n\n+/).map(para =>
+    '<p>' + esc(para).replace(/\n/g, '<br>') + '</p>'
+  ).join('');
+}
+
+function initSquireEditor(content) {
   if (activeSquireEditor) { activeSquireEditor.destroy(); activeSquireEditor = null; }
   const container = document.getElementById('squireEditor');
   if (!container) return;
+  const htmlContent = plainTextToHTML(content);
   activeSquireEditor = new Squire(container, {
     blockTag: 'P',
     blockAttributes: {},
@@ -1824,7 +1834,7 @@ function showPreview(id, event) {
     }
 
     if (isEmail && body.message) {
-      content.innerHTML = body.message;
+      content.innerHTML = plainTextToHTML(body.message);
     } else {
       content.textContent = body.message || 'No content';
     }
