@@ -563,7 +563,11 @@ function activityChannel(type) {
 }
 
 function isEmailActivity(a) {
-  return a.activity_type === 'send_email';
+  return a.activity_type === 'send_email' || a.activity_type === 'email';
+}
+
+function stripFingerprint(text) {
+  return (text || '').replace(/\s*<!--\s*vc:[^>]+-->\s*/g, '').trim();
 }
 
 function getContactName(a) {
@@ -690,7 +694,7 @@ function renderTable(activities) {
       '<td><div class="activity-cell" onmouseenter="showPreview(\'' + a.id + '\', event)" onmouseleave="hidePreview()">' +
         (isEmailActivity(a) && body.reply_in_thread ? '<span class="badge badge-reply" style="margin-bottom:4px;">Reply</span> ' : '') +
         (isEmailActivity(a) && body.subject ? '<div class="activity-subject">' + esc(truncate(body.subject, 60)) + '</div>' : '') +
-        '<div class="activity-preview">' + esc(truncate(body.message || '', 80)) + '</div>' +
+        '<div class="activity-preview">' + esc(truncate(stripFingerprint(body.message), 80)) + '</div>' +
       '</div></td>' +
       '<td>' + formatDate(a.scheduled_date) +
         (isOverdue(a.scheduled_date) ? ' <span class="badge badge-overdue">Past Due</span>' : '') +
@@ -1071,7 +1075,7 @@ function openEditPanel(id) {
       '<div class="editor-body" id="editBody" contenteditable="true">' + (body.message || '') + '</div></div>';
   } else {
     html += '<div class="panel-field"><label>Body</label>' +
-      '<textarea id="editBody">' + esc(body.message || '') + '</textarea></div>';
+      '<textarea id="editBody">' + esc(stripFingerprint(body.message)) + '</textarea></div>';
   }
 
   // Notes
@@ -1219,7 +1223,7 @@ function showPreview(id, event) {
     if (isEmail && body.message) {
       content.innerHTML = body.message;
     } else {
-      content.textContent = body.message || 'No content';
+      content.textContent = stripFingerprint(body.message) || 'No content';
     }
 
     // Position near the hovered cell
