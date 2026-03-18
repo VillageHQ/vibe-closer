@@ -1048,7 +1048,7 @@ function activityChannel(type) {
   return type.replace('send_', '');
 }
 
-function isEmailActivity(a) { return a.activity_type === 'send_email'; }
+function isEmailActivity(a) { return a.activity_type === 'send_email' || a.activity_type === 'email'; }
 
 function getContactName(a) {
   return a.contacts && a.contacts[0] ? a.contacts[0].name || 'Unknown' : 'Unknown';
@@ -1082,8 +1082,8 @@ function getToField(a) {
     }
     return getContactEmail(a);
   }
-  if (a.activity_type === 'send_linkedin') return body.profile_url || '';
-  if (a.activity_type === 'send_twitter') return body.handle ? '@' + body.handle : '';
+  if (a.activity_type === 'send_linkedin' || a.activity_type === 'linkedin') return body.profile_url || '';
+  if (a.activity_type === 'send_twitter' || a.activity_type === 'twitter') return body.handle ? '@' + body.handle : '';
   return '';
 }
 
