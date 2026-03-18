@@ -109,7 +109,7 @@
 11. **Store in DB** — Insert into `{{ACTIONS_DB}}`:
    - `approval_status`: if `confidence_score` >= `{{AUTO_APPROVE_THRESHOLD}}` from `pipeline-config.md`, set to `'approved'`; otherwise `'pending'`
    - `execution_status`: pending
-   - `activity_type`: determined type
+   - `activity_type`: `send_{channel}` format (e.g., `send_email`, `send_linkedin`) — always use the `send_` prefix for outreach activities
    - `contacts`: lead contacts
    - `account`: company info
    - `scheduled_date`: determined date
@@ -140,7 +140,7 @@
         ```
      Quality check: `full_lead_context` must be detailed enough that a human could draft the same outreach from it alone, without accessing any MCP or workspace file
    - `body`: JSON object — use EXACTLY these field names:
-     - **Email channel** (`send_email` / `email`):
+     - **Email channel** (`send_email`):
        - `message`: string — the email body as **HTML** (NOT plain text, NOT `body`). See step 9g for formatting rules.
        - `content_type`: `"text/html"` (always set for email activities)
        - `subject`: string — email subject line (omit if `reply_in_thread` is true)

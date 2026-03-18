@@ -49,11 +49,11 @@ For each activity:
 4. On success: set `execution_status = 'finished'` and `updated_at = now()`, increment `executed`
 5. On failure: reset `execution_status = 'pending'` and `updated_at = now()`, add to `failures` list with error detail, increment `failed`, **continue to next activity**
 
-### Outreach Activities (`send_{channel}` or `{channel}`)
+### Outreach Activities (`send_{channel}`)
 
-For any `activity_type` that is a configured channel name (e.g., `email`, `linkedin`) or starts with `send_` (e.g., `send_email`, `send_linkedin`):
+For any `activity_type` starting with `send_`:
 
-1. Get the channel name: strip the `send_` prefix if present, otherwise use the `activity_type` as-is (e.g., `send_email` → `email`, `email` → `email`, `send_linkedin` → `linkedin`)
+1. Strip the `send_` prefix to get the channel name (e.g., `send_email` → `email`, `send_linkedin` → `linkedin`, `send_twitter` → `twitter`)
 2. Look up `pipeline-config.md` → `## Channels` → `### {channel_name}` to get the channel configuration
 3. Follow the channel's **Execution** instructions, passing `body` fields per the channel's **Body Schema**:
    - **If the channel has an MCP Provider** (e.g., Gmail MCP): Check Test Mode state (from step 2). If Test Mode: use the Provider's draft operation instead of send. If not Test Mode: follow the channel's **Execution** instructions from `pipeline-config.md`. Pass recipients/subject/message/etc. from the activity's `body` JSONB

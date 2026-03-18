@@ -646,9 +646,12 @@ function toast(msg, type) {
 }
 
 // Generic dot-path field accessor for CRM response objects
+// Supports array indexing: "values.name[0].value" or "values.name.0.value"
 function getField(obj, path) {
   if (!obj || !path) return null;
-  const parts = path.split('.');
+  // Normalize bracket notation to dot notation: name[0] → name.0
+  const normalized = path.replace(/\[(\d+)\]/g, '.$1');
+  const parts = normalized.split('.');
   let current = obj;
   for (const part of parts) {
     if (current == null) return null;
@@ -724,6 +727,7 @@ const CrmApi = {
   async fetchLeads() {
     if (!hasCrmConfig) throw new Error('CRM config not available');
     const c = CONFIG.crm;
+    // Step 1: Fetch list entries
     const opts = { method: c.list.method, headers: this.headers };
     if (c.list.body && Object.keys(c.list.body).length > 0) {
       opts.body = JSON.stringify(c.list.body);
@@ -733,17 +737,52 @@ const CrmApi = {
     const json = await resp.json();
     const items = c.list.responsePath ? getField(json, c.list.responsePath) : json;
     if (!Array.isArray(items)) throw new Error('CRM response: expected array at path "' + c.list.responsePath + '"');
-    return items.map(item => ({
-      _raw: item,
-      id: getField(item, c.fieldPaths.id),
-      entryId: getField(item, c.fieldPaths.entryId),
-      name: getField(item, c.fieldPaths.name) || '',
-      email: getField(item, c.fieldPaths.email) || '',
-      company: getField(item, c.fieldPaths.company) || '',
-      followupDate: getField(item, c.fieldPaths.followupDate) || '',
-      stage: getField(item, c.fieldPaths.stage) || '',
-      notes: getField(item, c.fieldPaths.notes) || '',
-    }));
+
+    // Step 2: If parentRecord config exists, batch-fetch parent records
+    let parentMap = {};
+    if (c.parentRecord) {
+      const parentIdPath = c.parentRecord.idPath; // path to parent record ID in each entry
+      const parentIds = [...new Set(items.map(item => getField(item, parentIdPath)).filter(Boolean))];
+      if (parentIds.length > 0) {
+        // Fetch all parent records in parallel batches of 50
+        const batchSize = 50;
+        for (let i = 0; i < parentIds.length; i += batchSize) {
+          const batch = parentIds.slice(i, i + batchSize);
+          const fetches = batch.map(id =>
+            fetch(c.apiBaseUrl + substituteTemplate(c.parentRecord.endpointTemplate, { recordId: id }), {
+              headers: this.headers
+            }).then(r => r.ok ? r.json() : null)
+          );
+          const results = await Promise.all(fetches);
+          results.forEach((r, idx) => {
+            if (r) {
+              const record = c.parentRecord.responsePath ? getField(r, c.parentRecord.responsePath) : r;
+              parentMap[batch[idx]] = record;
+            }
+          });
+        }
+      }
+    }
+
+    return items.map(item => {
+      // Merge parent record data into item for field path resolution
+      const parentId = c.parentRecord ? getField(item, c.parentRecord.idPath) : null;
+      const parentRecord = parentId ? parentMap[parentId] : null;
+      const merged = parentRecord ? { ...item, parent_record: parentRecord } : item;
+
+      return {
+        _raw: item,
+        _parent: parentRecord,
+        id: getField(merged, c.fieldPaths.id),
+        entryId: getField(merged, c.fieldPaths.entryId),
+        name: getField(merged, c.fieldPaths.name) || '',
+        email: getField(merged, c.fieldPaths.email) || '',
+        company: getField(merged, c.fieldPaths.company) || '',
+        followupDate: getField(merged, c.fieldPaths.followupDate) || '',
+        stage: getField(merged, c.fieldPaths.stage) || '',
+        notes: getField(merged, c.fieldPaths.notes) || '',
+      };
+    });
   },
 
   async updateFollowupDate(recordId, fieldValue) {
@@ -1048,7 +1087,7 @@ function activityChannel(type) {
   return type.replace('send_', '');
 }
 
-function isEmailActivity(a) { return a.activity_type === 'send_email' || a.activity_type === 'email'; }
+function isEmailActivity(a) { return activityChannel(a.activity_type) === 'email'; }
 
 function getContactName(a) {
   return a.contacts && a.contacts[0] ? a.contacts[0].name || 'Unknown' : 'Unknown';
@@ -1082,8 +1121,9 @@ function getToField(a) {
     }
     return getContactEmail(a);
   }
-  if (a.activity_type === 'send_linkedin' || a.activity_type === 'linkedin') return body.profile_url || '';
-  if (a.activity_type === 'send_twitter' || a.activity_type === 'twitter') return body.handle ? '@' + body.handle : '';
+  const ch = activityChannel(a.activity_type);
+  if (ch === 'linkedin') return body.profile_url || '';
+  if (ch === 'twitter') return body.handle ? '@' + body.handle : '';
   return '';
 }
 
