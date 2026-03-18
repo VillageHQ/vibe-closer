@@ -11,7 +11,7 @@ Invoke the `vibe-closer` skill using the Skill tool, then execute this workflow:
 
 ## Test Mode
 
-This command uses a `**Test Mode**: true` flag in `pipeline-config.md`. When active, outreach sends (`send_{channel}`) are skipped during execution — everything else (DB writes, CRM updates, context gathering, scoring, approval) runs for real. See `commands/execute-approved-activity.md` Phase 3 for details.
+This command uses a `**Test Mode**: true` flag in `pipeline-config.md`. When active, outreach activities use the **draft path** — emails are created as drafts, browser-automated channels are filled but not submitted. Everything else (DB writes, CRM updates, context gathering, scoring, approval) runs for real. See `commands/execute-approved-activity.md` Phase 3 for details.
 
 ## Pre-flight: Parse Arguments
 
@@ -58,7 +58,7 @@ If `$ARGUMENTS` specifies a level (`from-scratch`, `with-config`, `with-workspac
 
 ### Enable test mode
 
-Add `- **Test Mode**: true` to the `## Settings` section of `pipeline-config.md` (create the section if it doesn't exist). This flag is checked by `execute-approved-activity.md` to skip outreach sends.
+Add `- **Test Mode**: true` to the `## Settings` section of `pipeline-config.md` (create the section if it doesn't exist). This flag is checked by `execute-approved-activity.md` to use the draft path instead of sending.
 
 ---
 
@@ -216,7 +216,7 @@ Verify: `approval_status = 'approved'`
 
 Run the `/execute-approved-activity` command.
 
-Test Mode is active → outreach sends are skipped and marked `execution_status = 'finished'`. CRM operations (follow-up date updates, stage changes) execute normally.
+Test Mode is active → outreach activities are drafted (not sent) and marked `execution_status = 'finished'`. CRM operations (follow-up date updates, stage changes) execute normally.
 
 ### Checkpoints
 
@@ -402,7 +402,7 @@ Ask the user: "Test complete. Would you like me to clean up test data?"
 ## Notes
 
 - All test data uses the `[VC-TEST-{ts}]` marker in CRM notes for identification and cleanup
-- The Test Mode flag is always removed at the end (even if cleanup is declined) to prevent accidental mock execution
+- The Test Mode flag is always removed at the end (even if cleanup is declined) to prevent accidental draft-only execution on next real run
 - If the test crashes mid-run, run `/test --cleanup` to remove the flag and any partial test data
 - Browser automation falls back to direct DB operations if tools are unavailable
 - The test workspace under `.tests/` is gitignored to prevent leaking environment variables

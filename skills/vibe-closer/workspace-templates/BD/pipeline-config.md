@@ -37,15 +37,15 @@
 - **Templates**: messaging-guidelines/email-templates.md
 - **Body Schema**: {"subject": "string (omit when reply_in_thread is true)", "message": "string", "recipients": [{"name": "string", "email": "string"}], "cc": [{"name": "string", "email": "string"}], "fingerprint": "string", "reply_in_thread": "boolean (optional, default false)", "thread_id": "string (optional, Gmail thread ID for in-thread replies)"}
 - **Fingerprint Method**: Embed `<!-- vc:UUID -->` as hidden HTML comment in email signature
-- **Execution**: Draft via Provider (P0: create as draft — pass threadId from body when reply_in_thread is true, pass cc if present; P1: send directly)
+- **Execution**: Send via Provider. Pass threadId from body when reply_in_thread is true, pass cc if present. In **Test Mode**, create as draft instead of sending.
 - **Polling**: Read inbox via Inbox Provider, match replies by sender email, domain, or fingerprint
 
 ### linkedin
-- **Provider**: Browser automation / manual
+- **Provider**: claude-in-chrome (Browser automation)
 - **Guidelines**: messaging-guidelines/linkedin-dm-guidelines.md
-- **Body Schema**: {"message": "string", "profile_url": "string", "fingerprint": "string"}
+- **Body Schema**: {"message": "string", "connection_note": "string (max 300 chars, for connection requests)", "profile_url": "string", "fingerprint": "string"}
 - **Fingerprint Method**: None (manual matching)
-- **Execution**: Present message and profile URL, user sends manually or via browser automation
+- **Execution**: Navigate to profile_url in Chrome, detect connection status. If connected: send message as DM. If not connected: send connection request with connection_note. If already pending: skip. Falls back to manual on failure. See execute-approved-activity.md → Browser Automation Execution.
 - **Polling**: None
 
 ## Enrichment (Optional)

@@ -15,5 +15,8 @@ When executing any MCP tool call, check here first for the exact tool name and p
 ## Meeting Notes: {{NOTETAKER}}
 <!-- Populated during onboard or after first use -->
 
-## Browser Automation
-<!-- Populated after first use -->
+## Browser Automation: LinkedIn
+- **Provider**: `claude-in-chrome` (`mcp__claude-in-chrome__*` tools)
+- **Usage**: Navigate to LinkedIn profile URLs, detect connection status, send DMs or connection requests
+- **Cooldown**: Wait 60–90 seconds between LinkedIn actions
+<!-- Additional hints populated after first use -->
