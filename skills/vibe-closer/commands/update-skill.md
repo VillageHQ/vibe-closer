@@ -47,9 +47,12 @@ For each pending migration in ascending version order:
 
 1. Read the migration file (e.g., `skills/vibe-closer/migrations/v1.31.0.md`)
 2. Execute the instructions in its `## Migration Steps` section **exactly** — do only what the migration specifies
-3. Do NOT automatically sync all artifacts unless the migration explicitly instructs it
 
-## Phase 4: Finalize
+## Phase 4: Re-sync Workspace Artifacts
+
+**Always run `actions/setup-workspace-artifacts.md`** after applying migrations (or even if no migrations were needed but the version changed). This ensures the workspace has the latest `activity-viewer.html` and `.config/pipeline-view-config.js`. Artifacts may have changed between versions without a dedicated migration step.
+
+## Phase 5: Finalize
 
 1. Update `{{WORKSPACE_VERSION}}` in `pipeline-config.md` → `## Meta` to the current plugin version
 2. Report:
