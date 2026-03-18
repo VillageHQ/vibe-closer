@@ -100,8 +100,9 @@ These are user-facing commands that orchestrate multiple actions:
 | `/re-index` | `commands/re-index.md` | Re-index workspace files to update CLAUDE.md and AGENTS.md |
 | `/poll-new-activity` | `commands/poll-new-activity.md` | Check for new email replies and trigger follow-up cycles |
 | `/execute-approved-activity` | `commands/execute-approved-activity.md` | Execute all approved, due activities — sends outreach, updates CRM, adds leads |
-| `/view-pending-activity` | `commands/view-pending-activity.md` | View pending activities awaiting approval |
+| `/view-pending-activity` | `commands/view-pending-activity.md` | Open the pipeline viewer — browse leads, review activities, approve outreach |
 | `/view-logs` | `commands/view-logs.md` | View command execution logs and outcomes |
+| `/update-skill` | `commands/update-skill.md` | Update workspace to latest plugin version — sync artifacts and apply migrations |
 | `/test` | `commands/test.md` | Run end-to-end integration test of the full pipeline flow |
 
 ## Core Workflow
@@ -155,6 +156,8 @@ Based on the user's request, route to the appropriate action file in `actions/`:
 | "Tell me about this lead" | `actions/gather-lead-context.md` |
 | "Draft outreach for X" / "What should I send?" | `actions/generate-lead-activity.md` |
 | "Show pending drafts" / "Open viewer" / "Show dashboard" | `commands/view-pending-activity.md` (opens browser viewer) |
+| "View all leads" / "Show CRM" / "Show my leads" | `commands/view-pending-activity.md` (opens browser viewer → View Leads) |
+| "Update skill" / "Sync workspace" / "Update workspace" | `commands/update-skill.md` |
 | "Edit this draft" | `actions/update-activity.md` |
 | "Approve this" / "LGTM" | `actions/approve-activity.md` |
 | "Send it" / "Execute" | `commands/execute-approved-activity.md` |
@@ -198,7 +201,7 @@ All action files live in `actions/`:
 | Update content | `update-content.md` | Rebuild profile, goals, strategy, and messaging guidelines |
 | Score activity | `score-activity.md` | Evaluate activity quality and assign confidence score (0–100) |
 | Add note | `add-note.md` | Add feedback to a pending activity and flag for regeneration |
-| Sync with skill | `sync-with-skill.md` | Re-sync workspace artifacts (viewer, etc.) from skill source files |
+| Setup workspace artifacts | `setup-workspace-artifacts.md` | Generate pipeline-view-config.js and copy activity-viewer.html to workspace |
 | Add log | `add-log.md` | Log a command execution result to the logs table |
 
 ## Provider Resolution

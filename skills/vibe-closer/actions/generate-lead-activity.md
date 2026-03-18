@@ -88,6 +88,14 @@
    d. Personalize using lead context and ICP match from `profile/icps.md`
    e. **Generate fingerprint** — Create a UUID v4 and store it in `body.fingerprint`. Embed using the channel's **Fingerprint Method** from `pipeline-config.md`. If the channel has no fingerprint method, store the fingerprint in body only (for DB-side matching).
    f. Check for warm paths — if found, mention mutual connection as social proof
+   g. **Email HTML formatting** (email channel only) — `body.message` MUST be valid HTML, not plain text. This ensures emails render correctly in Gmail with proper formatting and clickable links:
+      - Wrap each paragraph in `<p>...</p>` tags
+      - Use `<a href="URL">text</a>` for any links (company websites, LinkedIn profiles, articles, etc.)
+      - Use `<br>` for line breaks within a paragraph (e.g., signature lines)
+      - Signature block: `<p>--<br>Name<br>Title at Company</p>`
+      - Do NOT use inline styles, `<div>`, or complex HTML — keep it clean like Gmail compose output
+      - Example: `<p>Hi Matt,</p><p>Hunter gives reps the emails. But after they hit send, response rates are under 2%.</p><p>Is this something your product team is considering for their roadmap?</p><p>--<br>Absi<br>Co-founder at Village.ai</p>`
+      - Non-email channels (LinkedIn, Twitter): `body.message` stays as plain text
 
    > **Note:** This action only generates outreach messages (`send_{channel}` for any configured channel). Pipeline stage and follow-up date updates are handled directly via `actions/add-update-leads.md` during followup orchestration.
 
@@ -133,7 +141,8 @@
      Quality check: `full_lead_context` must be detailed enough that a human could draft the same outreach from it alone, without accessing any MCP or workspace file
    - `body`: JSON object — use EXACTLY these field names:
      - **Email channel** (`send_email` / `email`):
-       - `message`: string — the email body text (NOT `body`)
+       - `message`: string — the email body as **HTML** (NOT plain text, NOT `body`). See step 9g for formatting rules.
+       - `content_type`: `"text/html"` (always set for email activities)
        - `subject`: string — email subject line (omit if `reply_in_thread` is true)
        - `recipients`: array of `{name, email}` objects (NOT a plain `to` string)
        - `cc`: array of `{name, email}` objects (empty `[]` if none)

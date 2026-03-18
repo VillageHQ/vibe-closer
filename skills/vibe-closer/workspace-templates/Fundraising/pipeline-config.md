@@ -35,7 +35,7 @@
 - **Inbox Provider**: Gmail MCP
 - **Guidelines**: messaging-guidelines/email-guidelines.md
 - **Templates**: messaging-guidelines/email-templates.md
-- **Body Schema**: {"subject": "string (omit when reply_in_thread is true)", "message": "string", "recipients": [{"name": "string", "email": "string"}], "cc": [{"name": "string", "email": "string"}], "fingerprint": "string", "reply_in_thread": "boolean (optional, default false)", "thread_id": "string (optional, Gmail thread ID for in-thread replies)"}
+- **Body Schema**: {"subject": "string (omit when reply_in_thread is true)", "message": "string (HTML — use <p> for paragraphs, <a> for links)", "content_type": "text/html", "recipients": [{"name": "string", "email": "string"}], "cc": [{"name": "string", "email": "string"}], "fingerprint": "string", "reply_in_thread": "boolean (optional, default false)", "thread_id": "string (optional, Gmail thread ID for in-thread replies)"}
 - **Fingerprint Method**: Embed `<!-- vc:UUID -->` as hidden HTML comment in email signature
 - **Execution**: Send via Provider. Pass threadId from body when reply_in_thread is true, pass cc if present. In **Test Mode**, create as draft instead of sending.
 - **Polling**: Read inbox via Inbox Provider, match replies by sender email, domain, or fingerprint
@@ -72,3 +72,4 @@
 - **{{LAST_LEARNING_DATE}}**: Never
 - **{{LAST_REINDEX_CHECK}}**: Never
 - **{{MCP_HINTS}}**: pipeline-mcp-hints.md
+- **{{WORKSPACE_VERSION}}**: Never
